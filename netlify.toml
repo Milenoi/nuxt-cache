@@ -1,5 +1,4 @@
 [images]
-  remote_images = ["https://my-images.com/.*", "https://animals.more-images.com/[bcr]at/.*"]
   remote_images = [
     'mars.nasa.gov',
     'mars.jpl.nasa.gov',
