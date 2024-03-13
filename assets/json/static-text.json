@@ -1,0 +1,87 @@
+{
+  "common": {
+    "clearRedisCacheLabel": "Clear Redis Cache",
+    "isFetchingNowLabel": "...Fetching data now"
+  },
+  "menu": {
+    "home": {
+      "label": "Overview",
+      "link": "/"
+    },
+    "mars": {
+      "label": "Mars Rover Photos",
+      "link": "/mars-rover-photos"
+    },
+    "marvel": {
+      "label": "Marvel Characters",
+      "link": "/marvel-characters"
+    },
+    "about": {
+      "label": "About",
+      "link": "/about"
+    }
+  },
+  "overviewPage": {
+    "title": "Nuxt Cache Project",
+    "api": [
+      {
+        "meta": "Nasa Api",
+        "title": "Mars Rover Images",
+        "subTitle": "Explore Nasa API",
+        "description": "Uses: Redis / TanStack Query",
+        "media": "mars",
+        "logo": "nasa"
+      },
+      {
+        "meta": "Marvel Api",
+        "title": "Marvel Characters",
+        "subTitle": "Explore Marvel API",
+        "description": "Uses: Redis / TanStack Query",
+        "media": "marvel",
+        "logo": "marvel"
+      }
+    ]
+  },
+  "marsPhotos": {
+    "common": {
+      "activeStatusLabel": "Rover is active",
+      "backLabel": "Zurück",
+      "fromLabel": "from",
+      "photosLabel": "Photos",
+      "noResult": "No data found.",
+      "reFetchLabel": "Refetch Data",
+      "isFetchingLabel": "Data is (re)fetching now..."
+    },
+    "listPage": {
+      "title": "Mars Rover Photos",
+      "cameraLabel": "Camera Name",
+      "launchDate": "Launch Date",
+      "landingDate": "Landing Date",
+      "lastUpdate": "Last Update"
+    },
+    "detailPage": {
+      "title": "Mars Rover Photo",
+      "marsDayLabel": "SOL",
+      "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae tortor nulla"
+    }
+  },
+  "marvelCharacters": {
+    "common": {
+      "backLabel": "Zurück",
+      "updated": "Last Update",
+      "redisCacheLabel": "Api Data comes from:",
+      "reFetchLabel": "Refetch Data",
+      "isFetchingLabel": "Data is (re)fetching now..."
+    },
+    "listPage": {
+      "title": "Marvel Characters"
+    },
+    "detailPage": {
+      "statisticsLabel": "Statistics",
+      "events": "Events",
+      "stories": "Stories",
+      "series": "Series",
+      "comics": "Comics"
+    }
+  }
+}
