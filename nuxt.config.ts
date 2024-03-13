@@ -109,6 +109,7 @@ export default defineNuxtConfig({
         }
     },
     image: {
+        provider: 'netlify',
         quality: 50,
         domains: ['mars.nasa.gov', 'mars.jpl.nasa.gov', 'https://i.annihil.us/'],
         format: ['avif', 'webp'],
