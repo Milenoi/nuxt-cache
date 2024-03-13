@@ -12,10 +12,13 @@
   "dependencies": {
     "@hebilicious/vue-query-nuxt": "^0.3.0",
     "@mdi/font": "^7.4.47",
+    "@tanstack/vue-query": "^5.27.5",
     "@vueuse/router": "^10.9.0",
+    "h3": "^1.11.1",
     "h3-compression": "^0.3.2",
     "nuxt": "^3.10.3",
     "sharp": "^0.33.2",
+    "vite": "^5.1.6",
     "vite-plugin-vuetify": "^2.0.2",
     "vue": "^3.4.19",
     "vue-router": "^4.3.0",
