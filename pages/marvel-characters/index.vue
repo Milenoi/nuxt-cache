@@ -76,10 +76,8 @@ const truncateText = (text: string, maxLength: number): string => {
                             :src="item.thumbnail.path + '.' + item.thumbnail.extension"
                             width="567"
                             height="319"
-                            :placeholder="[100, 50, 75, 5]"
                             sizes="xs:567px sm:452px md:273px lg:424px xl:574px"
                             :imgAttrs="{class:'img-fit',  'alt': item.name }"
-                            class="img-fit"
                         />
                     </div>
 
