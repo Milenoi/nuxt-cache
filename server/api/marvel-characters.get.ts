@@ -1,7 +1,7 @@
 import {getFormatDate, getFormattedCounter, createHashKeyFromString} from "~/server/utils/helpers";
 import getMarvelApi from "~/server/utils/getMarvelApi";
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async (event): Promise<any> => {
     // Check if the id parameter exists in the URL
     const ids = getQuery(event)?.ids;
 

@@ -1,7 +1,9 @@
 <script lang="ts" setup>
+import {useIsFetching} from "@tanstack/vue-query";
+import {useQueryClient} from '@tanstack/vue-query'
+
 // Import static text
 import {common, menu} from 'assets/json/static-text.json';
-import {useIsFetching} from "@tanstack/vue-query";
 
 const drawer = ref(false);
 
@@ -28,6 +30,14 @@ const clearRedisCache = async () => {
 }
 
 const isFetching = useIsFetching();
+
+
+// Get QueryClient from the context
+const queryClient = useQueryClient()
+
+const invalidateQuery = () => {
+    queryClient.invalidateQueries()
+}
 </script>
 
 <template>
@@ -41,8 +51,6 @@ const isFetching = useIsFetching();
            <NuxtLink to="/" class="text-decoration-none text-white">
               Nuxt Cache Project
             </NuxtLink>
-
-
         </v-app-bar-title>
 
            <p class="mr-8 status-currently-fetching" v-if="isFetching">
@@ -50,9 +58,15 @@ const isFetching = useIsFetching();
                {{ common.isFetchingNowLabel }}
            </p>
 
-           <v-btn class="mr-4 bg-red-accent-3"
-                  @click="clearRedisCache"
-                  prepend-icon="mdi mdi-cached">
+            <v-btn class="mr-4 bg-red-accent-2"
+                   @click="invalidateQuery"
+                   prepend-icon="mdi mdi-reload">
+                {{ common.invalidate }}
+            </v-btn>
+
+            <v-btn class="mr-4 bg-red-accent-3"
+                   @click="clearRedisCache"
+                   prepend-icon="mdi mdi-cached">
                  {{ common.clearRedisCacheLabel }}
             </v-btn>
 

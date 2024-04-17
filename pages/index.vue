@@ -2,11 +2,11 @@
 // Import static text
 import {overviewPage, menu} from 'assets/json/static-text.json';
 
+
 // Seo
 useSeoMeta({
     title: 'Overview - Nuxt Cache',
 });
-
 </script>
 
 <template>

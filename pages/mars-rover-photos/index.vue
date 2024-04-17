@@ -85,17 +85,16 @@ watch(selectedCameraChipIndexes, (newValue) => {
             {{ listPage.landingDate }}: {{ nasaData.landing_date }}
             <br>
             {{ listPage.lastUpdate }}: {{ nasaData.max_date }}
-                </p>
+              </p>
 
-        <!--
-       <p class="text-center mb-12">
-           <v-btn class="mr-4 bg-green-lighten-1"
-                  @click="refetch"
-                  prepend-icon="mdi mdi-reload">
-                   {{ isFetching ? common.isFetchingLabel : common.reFetchLabel }}
-           </v-btn>
-       </p>
-       -->
+
+        <!--       <p class="text-center mb-12">
+                   <v-btn class="mr-4 bg-green-lighten-1"
+                          @click="refetch"
+                          prepend-icon="mdi mdi-reload">
+                           {{ isFetching ? common.isFetchingLabel : common.reFetchLabel }}
+                   </v-btn>
+               </p>-->
 
         <v-row class="d-flex justify-center mb-8">
           <v-chip-group multiple v-model="selectedCameraChipIndexes">

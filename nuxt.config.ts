@@ -42,9 +42,9 @@ export default defineNuxtConfig({
         // Pass the vue query client options here ...
         queryClientOptions: {
             defaultOptions: {
-
                 queries: {
                     staleTime: 24 * 60 * 60 * 1000, // 24h
+                    refetchOnMount: false,
                     refetchOnWindowFocus: false, // https://tanstack.com/query/latest/docs/framework/vue/guides/window-focus-refetching
                     retry: 2, // https://tanstack.com/query/latest/docs/framework/vue/guides/query-retries (default: 3)
                     // retryDelay: 1000, // https://tanstack.com/query/latest/docs/framework/vue/guides/query-retries
@@ -100,8 +100,8 @@ export default defineNuxtConfig({
             redis: {
                 driver: "redis",
                 /* redis connector options */
-                port: 11456, // Redis port
-                host: "redis-11456.c328.europe-west3-1.gce.cloud.redislabs.com", // Redis host
+                port: 19308, // Redis port
+                host: "redis-19308.c328.europe-west3-1.gce.cloud.redislabs.com", // Redis host
                 username: "default", // needs Redis >= 6
                 password: process.env.NUXT_REDIS_PASSWORD,
                 ttl: 86400 // Defaults to 0
@@ -113,7 +113,7 @@ export default defineNuxtConfig({
         netlify: {
             baseURl: process.env.IMAGES_URL
         },
-        quality: 50,
+        quality: 80,
         domains: ['mars.nasa.gov', 'mars.jpl.nasa.gov', 'https://i.annihil.us/'],
         format: ['avif', 'webp'],
         screens: {

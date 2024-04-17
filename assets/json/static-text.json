@@ -1,7 +1,8 @@
 {
   "common": {
     "clearRedisCacheLabel": "Clear Redis Cache",
-    "isFetchingNowLabel": "...Fetching data now"
+    "isFetchingNowLabel": "...Fetching data now",
+    "invalidate": "Invalidate vue query cache"
   },
   "menu": {
     "home": {

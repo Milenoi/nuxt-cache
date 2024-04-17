@@ -43,7 +43,7 @@ export default async function fetchMarsRoverPhotos(param?: string | RouteParamVa
         isFetching,
         refetch
     } = useQuery({
-        queryKey: param ? ['mars-rover-photo', param] : ['mars-rover-photos'],
+        queryKey: param ? ['mars-rover', param] : ['mars-rover'],
         queryFn: getMarsRoverPhotos,
         // placeholderData: placeholderList,
         // staleTime: 24 * 60 * 60 * 1000 // 24h

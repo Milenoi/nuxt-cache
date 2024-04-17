@@ -1,7 +1,7 @@
 import {getFormattedCounter, getFormatDate, createHashKeyFromString} from "~/server/utils/helpers";
 import getNasaApi from "~/server/utils/getNasaApi";
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async (event): Promise<any> => {
     // Check if the id parameter exists in the URL
     const {id} = getQuery(event);
     const itemId: number = id != null ? +id : 0;
@@ -105,7 +105,7 @@ export default defineEventHandler(async (event) => {
         }, {
             ttl: 86400 // Defaults to 0
         });
-        
+
         return id ? marsPhotoDetail : marsPhotosList;
     }
 });

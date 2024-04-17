@@ -14,7 +14,7 @@ export default async function useFetchMarvelData(param?: string | RouteParamValu
         isError,
         error
     } = useQuery({
-        queryKey: param ? ['marvel-character', param] : ['marvel-character-list'],
+        queryKey: param ? ['marvel', param] : ['marvel'],
         queryFn: async () => {
             try {
                 return await $fetch(url)

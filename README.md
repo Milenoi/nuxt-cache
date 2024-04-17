@@ -34,6 +34,9 @@ pnpm run dev
 # yarn
 yarn dev
 
+# netflify
+netflify dev
+
 # bun
 bun run dev
 ```
