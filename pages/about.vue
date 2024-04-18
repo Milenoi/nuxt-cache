@@ -42,14 +42,21 @@ import {about, common} from 'assets/json/static-text.json';
                     rel="noopener noreferrer">Vue Tanstack Query</NuxtLink> serves as the solution for client-side caching, encompassing tasks such as fetching, caching, synchronizing, and updating server state.
                 </p>
 
+                <p class="text-center mb-4 mb-lg-12">
+                    My project leverages   <NuxtLink
+                    to="https://vuetifyjs.com/" target="_blank"
+                    class="text-orange-darken-2"
+                    rel="noopener noreferrer">Vuetify</NuxtLink> for rapid prototyping, prioritizing speed and efficiency in development. While design and styling play a role, they are not the primary focus of this project.
+                </p>
+
                  <p class="text-center mb-8 mb-lg-12">
                      The website is currently hosted on
                 <NuxtLink
                     to="https://www.netlify.com/" target="_blank"
                     class="text-orange-darken-2"
                     rel="noopener noreferrer">Netlify</NuxtLink>.
-
                  </p>
+
 
                 <p class="text-center mb-4 mb-lg-12">
 
