@@ -18,7 +18,7 @@ useHead({
         {
             name: 'description',
             content: 'My personal Nuxt Cache Project'
-        },
+        }
     ],
     link: [
         {
@@ -56,11 +56,11 @@ useHead({
         :throttle="200"
     />
 
-  <NuxtLayout>
-    <v-app>
-        <NuxtPage/>
-    </v-app>
-  </NuxtLayout>
+    <NuxtLayout>
+        <v-app>
+            <NuxtPage/>
+        </v-app>
+    </NuxtLayout>
 </template>
 
 <style lang="scss">
@@ -77,7 +77,7 @@ useHead({
 
 .fade-enter-to,
 .fade-leave-from {
-    opacity: 1;
+    opacity: 2;
 }
 
 .image-container {
@@ -90,7 +90,7 @@ useHead({
         left: 0;
         width: 100%;
         height: 50%;
-        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), transparent);
+        background: linear-gradient(to bottom, rgb(0 0 0 / 80%), transparent);
     }
 }
 

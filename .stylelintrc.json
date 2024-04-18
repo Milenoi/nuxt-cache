@@ -1,0 +1,33 @@
+{
+  "extends": [
+    "stylelint-config-standard",
+    "stylelint-config-recommended-scss",
+    "stylelint-config-recommended-vue/scss"
+  ],
+  "ignoreFiles": [
+    "azure-templates/_includes/css/*.css",
+    "azure-templates/assets/scss/*.scss",
+    "src/assets/scss/signup.scss"
+  ],
+  "overrides": [
+    {
+      "files": [
+        "**/*.vue"
+      ],
+      "customSyntax": "postcss-html"
+    }
+  ],
+  "rules": {
+    "import-notation": null,
+    "media-query-no-invalid": null,
+    "no-descending-specificity": null,
+    "selector-type-no-unknown": [
+      true,
+      {
+        "ignoreTypes": [
+          "/Icon/"
+        ]
+      }
+    ]
+  }
+}
