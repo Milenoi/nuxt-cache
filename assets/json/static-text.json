@@ -1,6 +1,6 @@
 {
   "common": {
-    "clearRedisCacheLabel": "Redis DB: Clear Cache",
+    "clearRedisCacheLabel": "Redis Database: Clear Cache",
     "invalidate": "Vue Query: Invalidate  Cache",
     "isFetchingNowLabel": "...Fetching data now",
     "backLabel": "Back",
