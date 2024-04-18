@@ -2,11 +2,11 @@
 import {useRouteQuery} from '@vueuse/router';
 
 // Import static text
-import {marsPhotos, menu} from 'assets/json/static-text.json';
+import {marsPhotos, menu, common} from 'assets/json/static-text.json';
 import ApiLogo from "~/components/ApiLogo.vue";
 import {useIsFetching} from "@tanstack/vue-query";
 
-const {listPage, common} = marsPhotos;
+const {listPage, all} = marsPhotos;
 
 // Fetch Mars Rover Photos
 const {data: nasaData, isLoading, isFetching, isPending, refetch} = await useFetchMarsRoverPhotos();
@@ -87,15 +87,6 @@ watch(selectedCameraChipIndexes, (newValue) => {
             {{ listPage.lastUpdate }}: {{ nasaData.max_date }}
               </p>
 
-
-        <!--       <p class="text-center mb-12">
-                   <v-btn class="mr-4 bg-green-lighten-1"
-                          @click="refetch"
-                          prepend-icon="mdi mdi-reload">
-                           {{ isFetching ? common.isFetchingLabel : common.reFetchLabel }}
-                   </v-btn>
-               </p>-->
-
         <v-row class="d-flex justify-center mb-8">
           <v-chip-group multiple v-model="selectedCameraChipIndexes">
                 <v-chip
@@ -146,7 +137,7 @@ watch(selectedCameraChipIndexes, (newValue) => {
                     </v-card-title>
                     <v-card-subtitle>
                        {{ item.rover.total_photos }}
-                       {{ common.photosLabel }}
+                       {{ all.photosLabel }}
                     </v-card-subtitle>
                 </v-card-item>
                 <v-card-text>

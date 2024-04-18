@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // Import static text
-import {marvelCharacters, menu} from 'assets/json/static-text.json';
+import {marvelCharacters, menu, common} from 'assets/json/static-text.json';
 
 // Seo
 useSeoMeta({
@@ -8,7 +8,7 @@ useSeoMeta({
 });
 
 // Get static text
-const {listPage, common} = marvelCharacters;
+const {listPage, all} = marvelCharacters;
 
 // Fetch Mars Rover Photos
 const superHeroIds = '1009368,1009220,1010744,1009664,1009351,1009697,1009663,1009189,1017300,1011054,1009187,1009338';
@@ -49,16 +49,6 @@ const truncateText = (text: string, maxLength: number): string => {
             {{ marvelData?.attributionText }}
        </p>
 
-        <!--
-        <p class="text-center mb-12">
-            <v-btn class="mr-4 bg-green-lighten-1"
-                   @click="refetch"
-                   prepend-icon="mdi mdi-reload">
-                    {{ isFetching ? common.isFetchingLabel : common.reFetchLabel }}
-            </v-btn>
-        </p>
-        -->
-
         <v-row v-if="marvelData.results?.length > 0">
             <v-col
                 v-for="(item, index) in marvelData.results"
@@ -87,7 +77,7 @@ const truncateText = (text: string, maxLength: number): string => {
                     </v-card-title>
 
                     <v-card-subtitle>
-                      {{ common.updated }}:  {{ item.modified }}
+                      {{ all.updated }}:  {{ item.modified }}
                     </v-card-subtitle>
                 </v-card-item>
                 <v-card-text>

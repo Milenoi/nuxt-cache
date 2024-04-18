@@ -1,8 +1,10 @@
 {
   "common": {
-    "clearRedisCacheLabel": "Clear Redis Cache",
+    "clearRedisCacheLabel": "Redis DB: Clear Cache",
+    "invalidate": "Vue Query: Invalidate  Cache",
     "isFetchingNowLabel": "...Fetching data now",
-    "invalidate": "Invalidate vue query cache"
+    "backLabel": "Back",
+    "projectTitle": "Nuxt Cache Project"
   },
   "menu": {
     "home": {
@@ -43,15 +45,15 @@
       }
     ]
   },
+  "about": {
+    "title": "About this project"
+  },
   "marsPhotos": {
-    "common": {
+    "all": {
       "activeStatusLabel": "Rover is active",
-      "backLabel": "Zurück",
       "fromLabel": "from",
       "photosLabel": "Photos",
-      "noResult": "No data found.",
-      "reFetchLabel": "Refetch Data",
-      "isFetchingLabel": "Data is (re)fetching now..."
+      "noResult": "No data found."
     },
     "listPage": {
       "title": "Mars Rover Photos",
@@ -67,12 +69,9 @@
     }
   },
   "marvelCharacters": {
-    "common": {
-      "backLabel": "Zurück",
+    "all": {
       "updated": "Last Update",
-      "redisCacheLabel": "Api Data comes from:",
-      "reFetchLabel": "Refetch Data",
-      "isFetchingLabel": "Data is (re)fetching now..."
+      "redisCacheLabel": "Api Data comes from:"
     },
     "listPage": {
       "title": "Marvel Characters"

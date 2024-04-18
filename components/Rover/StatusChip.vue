@@ -2,11 +2,11 @@
 // Import static text
 import {marsPhotos} from 'assets/json/static-text.json';
 
-const {common} = marsPhotos;
+const {all} = marsPhotos;
 </script>
 
 <template>
-     <v-tooltip :text="common.activeStatusLabel">
+     <v-tooltip :text="all.activeStatusLabel">
       <template v-slot:activator="{ props }">
           <div v-bind="props" class="rover-active-status"></div>
       </template>

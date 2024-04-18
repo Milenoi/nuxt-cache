@@ -1,9 +1,9 @@
 <script setup>
 // Import static text
-import {marvelCharacters} from 'assets/json/static-text.json';
+import {marvelCharacters, common} from 'assets/json/static-text.json';
 import ApiLogo from "~/components/ApiLogo.vue";
 
-const {detailPage, common} = marvelCharacters;
+const {detailPage, all} = marvelCharacters;
 
 const route = useRoute();
 

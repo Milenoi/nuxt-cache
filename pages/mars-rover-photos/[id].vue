@@ -1,9 +1,9 @@
 <script setup>
 // Import static text
-import {marsPhotos} from 'assets/json/static-text.json';
+import {marsPhotos, common} from 'assets/json/static-text.json';
 import ApiLogo from "~/components/ApiLogo.vue";
 
-const {detailPage, common} = marsPhotos;
+const {detailPage, all} = marsPhotos;
 
 const route = useRoute();
 
@@ -26,7 +26,7 @@ const {data: item, isLoading, isFetching, isPending} = await useFetchMarsRoverPh
         </h1>
 
           <p v-if="item" class="text-center mb-12">
-            ...{{ common.fromLabel }} {{ item.earth_date }} / {{ detailPage.marsDayLabel }} {{ item.sol }}
+            ...{{ all.fromLabel }} {{ item.earth_date }} / {{ detailPage.marsDayLabel }} {{ item.sol }}
          </p>
 
 
@@ -52,7 +52,7 @@ const {data: item, isLoading, isFetching, isPending} = await useFetchMarsRoverPh
                         {{ item.rover?.name }}
                     </v-card-title>
                     <v-card-subtitle>
-                      {{ item.rover?.total_photos }} {{ common.photosLabel }}
+                      {{ item.rover?.total_photos }} {{ all.photosLabel }}
                     </v-card-subtitle>
                 </v-card-item>
 
@@ -71,7 +71,7 @@ const {data: item, isLoading, isFetching, isPending} = await useFetchMarsRoverPh
           </v-col>
         </v-row>
           <v-row v-else>
-            <p class="text-center w-100 my-8">{{ common.noResult }}</p>
+            <p class="text-center w-100 my-8">{{ all.noResult }}</p>
         </v-row>
     </v-container>
 </template>
