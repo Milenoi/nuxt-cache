@@ -29,7 +29,12 @@ To get this project up and running locally, follow these steps:
    ```bash
    cd nuxt-cache
 
-3. Install dependencies
+3. Get correct node version
+
+   ```bash
+   nvm i
+
+4. Install dependencies
 
    ```bash
    yarn install

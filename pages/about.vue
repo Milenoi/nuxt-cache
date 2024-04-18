@@ -23,7 +23,7 @@ import {about, common} from 'assets/json/static-text.json';
                                                          to="https://api.nasa.gov" target="_blank"
                                                          rel="noopener noreferrer">NASA APIs</NuxtLink> and the  <NuxtLink
                     to="https://developer.marvel.com/" target="_blank" class="text-orange-darken-2"
-                    rel="noopener noreferrer">Marvel API</NuxtLink>, both of which necessitate registration.
+                    rel="noopener noreferrer">Marvel API</NuxtLink> (both of which necessitate registration).
                 </p>
 
                 <p class="text-center mb-4 mb-lg-12">
@@ -41,6 +41,10 @@ import {about, common} from 'assets/json/static-text.json';
                     class="text-orange-darken-2"
                     rel="noopener noreferrer">Vue Tanstack Query</NuxtLink> serves as the solution for client-side caching, encompassing tasks such as fetching, caching, synchronizing, and updating server state.
                 </p>
+
+                     <p class="text-center mb-4 mb-lg-12">
+                         You can clearly see that the site is much faster due to the caching mechanisms used. Enjoy playing around with it.
+                         In the future, I intend to expand the website by incorporating additional content and unlocking the full potential of the powerful Tanstack Query tool. </p>
 
                 <p class="text-center mb-4 mb-lg-12">
                     My project leverages   <NuxtLink
