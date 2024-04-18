@@ -68,6 +68,12 @@ Open your browser and access the application at http://localhost:3000
    ```bash
    yarn start
 
+### Visit Website
+
+The website is currently hosted on Netlify
+
+https://nuxt-cache-project.netlify.app/
+
 ### Contribution
 
 Feel free to contribute by opening a pull request. Please follow the project's code of conduct.
