@@ -1,78 +1,77 @@
-# Nuxt 3 Minimal Starter
+# Project Name
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+## Description
 
-## Setup
+This project is a Nuxt.js application that utilizes caching for optimized performance.
 
-Make sure to install the dependencies:
+## Features
 
-```bash
-# npm
-npm install
+- Caching for faster loading times
+- Dynamic content updates
+- Responsive design
 
-# pnpm
-pnpm install
+## Getting Started
 
-# yarn
-yarn install
+To get this project up and running locally, follow these steps:
 
-# bun
-bun install
-```
+### Prerequisites
 
-## Development Server
+- Node.js installed on your machine
 
-Start the development server on `http://localhost:3000`:
+### Installation
 
-```bash
-# npm
-npm run dev
+1. Clone the repository
+   ```bash
+   git clone git@github.com:Milenoi/nuxt-cache.git
 
-# pnpm
-pnpm run dev
+2. Navigate to the project directory
 
-# yarn
-yarn dev
+   ```bash
+   cd nuxt-cache
 
-# netflify
-netflify dev
+3. Install dependencies
 
-# bun
-bun run dev
-```
+   ```bash
+   yarn install
 
-## Production
+## Environment Variables
 
-Build the application for production:
+To set up the necessary environment variables for this project, create a `.env` file in the project root directory and
+add the following variables:
 
-```bash
-# npm
-npm run build
+NUXT_NASA_API_KEY=YOUR_NASA_API_KEY
+NUXT_MARVEL_PUBLIC_API_KEY=YOUR_MARVEL_PUBLIC_API_KEY
+NUXT_MARVEL_SECRET_API_KEY=YOUR_MARVEL_SECRET_API_KEY
+NUXT_REDIS_PASSWORD=YOUR_REDIS_PASSWORD
+NUXT_REDIS_PORT=YOUR_REDIS_PORT
+NUXT_REDIS_HOST=YOUR_REDIS_HOST
+NUXT_REDIS_USERNAME=YOUR_REDIS_USERNAME
 
-# pnpm
-pnpm run build
+### Development
 
-# yarn
-yarn build
+1. Start the development server
 
-# bun
-bun run build
-```
+   ```bash
+   yarn dev
 
-Locally preview production build:
+Open your browser and access the application at http://localhost:3000
 
-```bash
-# npm
-npm run preview
+### Production Build
 
-# pnpm
-pnpm run preview
+1. Generate a production build
 
-# yarn
-yarn preview
+   ```bash
+   yarn build
 
-# bun
-bun run preview
-```
+2. Start the production server
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+   ```bash
+   yarn start
+
+### Contribution
+
+Feel free to contribute by opening a pull request. Please follow the project's code of conduct.
+
+### License
+
+This project is licensed under the MIT License - see the LICENSE.md file for details.
