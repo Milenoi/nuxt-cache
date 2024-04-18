@@ -1,12 +1,16 @@
 <script setup lang="ts">
+import {useIsFetching} from "@tanstack/vue-query";
+
 const alertLabel = useState('alert-label');
 const alertStatus = useState('alert-status');
 const showAlert = useState('alert-show');
 
+const isFetching = useIsFetching();
 </script>
 
 <template>
   <v-layout ref="app">
+        <LayoutIsFetchingLayer v-if="isFetching"/>
         <LayoutAppBar/>
 
         <Transition name="fade">
@@ -24,6 +28,7 @@ const showAlert = useState('alert-show');
             <slot/>
         </v-main>
 
+       <LayoutCacheActionBar/>
        <LayoutFooter/>
   </v-layout>
 </template>
@@ -35,5 +40,7 @@ const showAlert = useState('alert-show');
     top: 100px;
     left: 50%;
     transform: translateX(-50%);
+    max-width: 500px;
+    width: calc(100% - 32px)
 }
 </style>
