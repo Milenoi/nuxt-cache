@@ -39,13 +39,13 @@ To get this project up and running locally, follow these steps:
 To set up the necessary environment variables for this project, create a `.env` file in the project root directory and
 add the following variables:
 
-NUXT_NASA_API_KEY=YOUR_NASA_API_KEY
-NUXT_MARVEL_PUBLIC_API_KEY=YOUR_MARVEL_PUBLIC_API_KEY
-NUXT_MARVEL_SECRET_API_KEY=YOUR_MARVEL_SECRET_API_KEY
-NUXT_REDIS_PASSWORD=YOUR_REDIS_PASSWORD
-NUXT_REDIS_PORT=YOUR_REDIS_PORT
-NUXT_REDIS_HOST=YOUR_REDIS_HOST
-NUXT_REDIS_USERNAME=YOUR_REDIS_USERNAME
+NUXT_NASA_API_KEY=YOUR_NASA_API_KEY [Get it here](https://developer.marvel.com/)
+NUXT_MARVEL_PUBLIC_API_KEY=YOUR_MARVEL_PUBLIC_API_KEY [Get it here](https://api.nasa.gov)
+NUXT_MARVEL_SECRET_API_KEY=YOUR_MARVEL_SECRET_API_KEY [Get it here](https://api.nasa.gov)
+NUXT_REDIS_PASSWORD=YOUR_REDIS_PASSWORD [Get it here](https://app.redislabs.com/)
+NUXT_REDIS_PORT=YOUR_REDIS_PORT [Get it here](https://app.redislabs.com/)
+NUXT_REDIS_HOST=YOUR_REDIS_HOST [Get it here](https://app.redislabs.com/)
+NUXT_REDIS_USERNAME=YOUR_REDIS_USERNAME [Get it here](https://app.redislabs.com/)
 
 ### Development
 
