@@ -6,10 +6,10 @@ import imageConfig from "./utils/getImageConfig";
 export default defineNuxtConfig({
     ssr: true,
     runtimeConfig: {
+        nasaApiKey: '',
+        marvelPublicApiKey: '',
+        marvelSecretApiKey: '',
         public: {
-            nasaApiKey: '',
-            marvelPublicApiKey: '',
-            marvelSecretApiKey: '',
             siteName: 'Nuxt Cache',
             siteDescription: 'Nuxt Cache Project',
             language: 'en-US',
@@ -101,9 +101,9 @@ export default defineNuxtConfig({
             redis: {
                 driver: "redis",
                 /* redis connector options */
-                port: 19308, // Redis port
-                host: "redis-19308.c328.europe-west3-1.gce.cloud.redislabs.com", // Redis host
-                username: "default", // needs Redis >= 6
+                port: process.env.NUXT_REDIS_PORT,
+                host: process.env.NUXT_REDIS_HOST,
+                username: process.env.NUXT_REDIS_USERNAME,
                 password: process.env.NUXT_REDIS_PASSWORD,
                 ttl: 86400 // Defaults to 0
             }

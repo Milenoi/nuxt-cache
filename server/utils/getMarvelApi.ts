@@ -4,8 +4,8 @@ const getMarvelApi = (id: string): string => {
 
     const config = useRuntimeConfig();
 
-    const publicApiKey = config.public.marvelPublicApiKey;
-    const secretApiKey = config.public.marvelSecretApiKey;
+    const publicApiKey = config.marvelPublicApiKey;
+    const secretApiKey = config.marvelSecretApiKey;
     const timestamp = Math.floor(Date.now() / 1000).toString(); // Get current timestamp in seconds
 
     const generateMD5 = (timestamp: string, secretApiKey: string, publicApiKey: string): string => {
@@ -15,7 +15,7 @@ const getMarvelApi = (id: string): string => {
 
     const md5Hash = generateMD5(timestamp, secretApiKey, publicApiKey);
 
-    return `http://gateway.marvel.com/v1/public/characters/${id}?ts=${timestamp}&apikey=${config.public.marvelPublicApiKey}&hash=${md5Hash}&limit=100`
+    return `http://gateway.marvel.com/v1/public/characters/${id}?ts=${timestamp}&apikey=${config.marvelPublicApiKey}&hash=${md5Hash}&limit=100`
 
 }
 
