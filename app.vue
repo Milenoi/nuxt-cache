@@ -77,7 +77,7 @@ useHead({
 
 .fade-enter-to,
 .fade-leave-from {
-    opacity: 2;
+    opacity: 1;
 }
 
 .image-container {
