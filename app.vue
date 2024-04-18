@@ -66,6 +66,7 @@ useHead({
 <style lang="scss">
 .v-application__wrap {
     min-height: 0 !important;
+    padding-block-end: 160px !important;
 }
 
 .fade-enter-active,

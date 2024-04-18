@@ -64,11 +64,23 @@ const invalidateQuery = () => {
         flex-flow: row wrap;
         position: fixed;
         z-index: 10;
-        bottom: 70px;
+        bottom: 40px;
         width: 100%;
+        padding-block: 30px;
+
+        &::before {
+            content: "";
+            background: linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 200%;
+            pointer-events: none;
+        }
     }
 
     .min-width-300 {
-        min-width: 300px;
+        width: 325px;
     }
 </style>
