@@ -1,6 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 
 import vuetify, {transformAssetUrls} from 'vite-plugin-vuetify'
+import imageConfig from "./utils/getImageConfig";
 
 export default defineNuxtConfig({
     ssr: true,
@@ -108,20 +109,5 @@ export default defineNuxtConfig({
             }
         }
     },
-    image: {
-        provider: 'netlify',
-        netlify: {
-            baseURl: process.env.IMAGES_URL
-        },
-        quality: 80,
-        domains: ['mars.nasa.gov', 'mars.jpl.nasa.gov', 'https://i.annihil.us/'],
-        format: ['avif', 'webp'],
-        screens: {
-            'xs': 600,
-            'sm': 960,
-            'md': 1280,
-            'lg': 1920,
-            'xl': 2400,
-        },
-    }
+    image: imageConfig
 })
