@@ -69,9 +69,7 @@ const {
               <span class="text-orange-darken-2">
                 {{ item.camera?.full_name }}
               </span>
-              <span class="text-grey-lighten-1">
-                ({{ item.camera?.name }})
-              </span>
+              <span class="text-grey-lighten-1">({{ item.camera?.name }})</span>
             </p>
           </v-card-text>
         </v-card>

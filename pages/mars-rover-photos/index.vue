@@ -95,7 +95,7 @@ watch(selectedCameraChipIndexes, (newValue) => {
       {{ listPage.launchDate }}: {{ nasaData.launch_date }}
       /
       {{ listPage.landingDate }}: {{ nasaData.landing_date }}
-      <br />
+      <br >
       {{ listPage.lastUpdate }}: {{ nasaData.max_date }}
     </p>
 
@@ -158,7 +158,8 @@ watch(selectedCameraChipIndexes, (newValue) => {
             <v-card-text>
               <p class="mb-4">
                 <v-icon icon="mdi mdi-cctv" />
-                {{ listPage.cameraLabel }}:<br />
+                {{ listPage.cameraLabel }}:
+                <br >
                 <span class="text-orange-darken-2">
                   {{ item.camera.full_name }}
                 </span>

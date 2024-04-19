@@ -60,8 +60,9 @@ import { about, common } from "assets/json/static-text.json";
             target="_blank"
             rel="noopener noreferrer"
           >
-            Nuxt3 server documentation </NuxtLink
-          >.
+            Nuxt3 server documentation
+          </NuxtLink>
+          .
         </p>
 
         <p class="text-center mb-8 mb-lg-12">
@@ -100,8 +101,9 @@ import { about, common } from "assets/json/static-text.json";
             class="text-orange-darken-2"
             rel="noopener noreferrer"
           >
-            Netlify </NuxtLink
-          >.
+            Netlify
+          </NuxtLink>
+          .
         </p>
 
         <p class="text-center mb-12 mb-lg-12">
@@ -134,8 +136,9 @@ import { about, common } from "assets/json/static-text.json";
             </svg>
           </NuxtLink>
 
-          <br />
-          You can find the project on <br />
+          <br >
+          You can find the project on
+          <br >
           <NuxtLink
             to="https://github.com/Milenoi/nuxt-cache"
             target="_blank"

@@ -1,5 +1,8 @@
 {
   "extends": [
     "plugin:@tanstack/eslint-plugin-query/recommended"
-  ]
+  ],
+  "rules": {
+    "vue/html-self-closing": "off"
+  }
 }
