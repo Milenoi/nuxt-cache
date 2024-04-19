@@ -4,70 +4,7 @@ import {
   createHashKeyFromString,
 } from "~/server/utils/helpers";
 import getNasaApi from "~/server/utils/getNasaApi";
-
-// Define interfaces for raw Mars photo data
-interface RawMarsPhoto {
-  id: number;
-  sol: number;
-  camera: {
-    id: number;
-    name: string;
-    rover_id: number;
-    full_name: string;
-  };
-  img_src: string;
-  earth_date: string;
-  rover: {
-    id: number;
-    name: string;
-    landing_date: string;
-    launch_date: string;
-    status: string;
-    max_sol: number;
-    max_date: string;
-    total_photos: number;
-    cameras: {
-      id: number;
-      name: string;
-      full_name: string;
-    }[];
-  };
-}
-
-// Define the structure of Mars photos response
-interface MarsPhotosResponse {
-  photos: RawMarsPhoto[];
-}
-
-// Define interfaces for Mars photo data
-interface MarsPhoto {
-  index: number;
-  sol: number;
-  camera: {
-    id: number;
-    name: string;
-    rover_id: number;
-    full_name: string;
-  };
-  img_src: string;
-  earth_date: string;
-  rover: {
-    name: string;
-    status: string;
-    max_sol: number;
-    max_date: string;
-    total_photos: string;
-  };
-}
-
-// Define the structure of Mars photos list
-interface MarsPhotosList {
-  landing_date: string;
-  launch_date: string;
-  max_date: string;
-  cameras: { name: string; total_photos: number }[]; // Update the interface to include total_photos
-  entries: MarsPhoto[]; // Assuming this should be an array of MarsPhoto objects
-}
+import type { MarsPhoto, MarsPhotosList, MarsPhotosResponse } from "~/types";
 
 export default defineEventHandler(
   async (event): Promise<MarsPhoto | undefined | MarsPhotosList> => {
@@ -103,7 +40,9 @@ export default defineEventHandler(
               status: entry.rover.status,
               max_sol: entry.rover.max_sol,
               max_date: getFormatDate(entry.rover.max_date),
-              total_photos: getFormattedCounter(entry.rover.total_photos),
+              total_photos: getFormattedCounter(
+                entry?.rover.total_photos?.toString(),
+              ),
             },
           };
         },

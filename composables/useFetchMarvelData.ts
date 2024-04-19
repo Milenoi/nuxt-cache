@@ -2,40 +2,7 @@ import type { RouteParamValue } from "vue-router";
 import type { QueryObserverResult } from "@tanstack/vue-query";
 import { useQuery } from "@tanstack/vue-query";
 
-interface MarvelListData {
-  attributionText: string;
-  results: MarvelCharacter[];
-}
-
-interface MarvelCharacter {
-  id: number;
-  name: string;
-  modified: string;
-  description: string;
-  thumbnail: {
-    path: string;
-    extension: string;
-  };
-  events: {
-    available: string;
-  };
-  stories: {
-    available: string;
-  };
-  comics: {
-    available: string;
-  };
-  series: {
-    available: string;
-  };
-}
-
-type MarvelData = MarvelListData | MarvelCharacter;
-
-interface QueryOptions<TData> {
-  queryKey: [string, string | string[]] | [string];
-  queryFn: () => Promise<TData>;
-}
+import type { MarvelResult } from "~/types";
 
 export default async function useFetchMarvelData(
   param?: string | RouteParamValue[],
@@ -44,12 +11,20 @@ export default async function useFetchMarvelData(
   isPending: Ref<boolean>;
   isFetching: Ref<boolean>;
   isSuccess: Ref<boolean>;
-  data: Ref<MarvelData[] | undefined>;
-  refetch: () => Promise<QueryObserverResult<MarvelData[], Error>>;
+  data: Ref<MarvelResult[] | undefined>;
+  refetch: () => Promise<QueryObserverResult<MarvelResult[], Error>>;
 }> {
   const url: string = `/api/marvel-characters?ids=${param}`;
 
-  const options: QueryOptions<MarvelData[]> = {
+  const {
+    suspense,
+    isLoading,
+    isPending,
+    isFetching,
+    isSuccess,
+    data,
+    refetch,
+  } = useQuery<MarvelResult[]>({
     queryKey: param ? ["marvel", param] : ["marvel"],
     queryFn: async () => {
       try {
@@ -65,17 +40,7 @@ export default async function useFetchMarvelData(
       }
     },
     // staleTime: 24 * 60 * 60 * 1000 // 24h
-  };
-
-  const {
-    suspense,
-    isLoading,
-    isPending,
-    isFetching,
-    isSuccess,
-    data,
-    refetch,
-  } = useQuery<MarvelData[]>(options);
+  });
 
   await suspense();
 

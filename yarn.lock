@@ -2321,6 +2321,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tanstack/eslint-plugin-query@npm:^5.28.11":
+  version: 5.28.11
+  resolution: "@tanstack/eslint-plugin-query@npm:5.28.11"
+  dependencies:
+    "@typescript-eslint/utils": "npm:^6.20.0"
+  peerDependencies:
+    eslint: ^8.0.0
+  checksum: 10c0/8324de8fc5f4651171eb0a5fb1d8c1dfdf18c12f2b666201a89b1486931731a00efeb7c5a218caa50c12f5d82c31916792a00eb1b7beb435943ffe213afdcf24
+  languageName: node
+  linkType: hard
+
 "@tanstack/match-sorter-utils@npm:^8.11.8":
   version: 8.15.1
   resolution: "@tanstack/match-sorter-utils@npm:8.15.1"
@@ -2330,10 +2341,29 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/query-core@npm:5.29.0":
+"@tanstack/query-core@npm:5.29.0, @tanstack/query-core@npm:^5.29.0":
   version: 5.29.0
   resolution: "@tanstack/query-core@npm:5.29.0"
   checksum: 10c0/ec90801c7234a551e347656b02c6e4dcc448722c466cc42eaf03bb69ac535c2e26a74f7189c21cf836cacf41851f30d17beae0f9478017b6220b612e1803eddb
+  languageName: node
+  linkType: hard
+
+"@tanstack/query-persist-client-core@npm:5.29.0, @tanstack/query-persist-client-core@npm:^5.29.0":
+  version: 5.29.0
+  resolution: "@tanstack/query-persist-client-core@npm:5.29.0"
+  dependencies:
+    "@tanstack/query-core": "npm:5.29.0"
+  checksum: 10c0/e754ea16bb79ef9ce5310bf0f8a224b0bedc8c5e4f788d04bfae2c50a263e7fdce203bc7d649dd024e68d2407350a7ed2ae6c76b4b8581310aba37a7d3a5a3c0
+  languageName: node
+  linkType: hard
+
+"@tanstack/query-sync-storage-persister@npm:^5.29.0":
+  version: 5.29.0
+  resolution: "@tanstack/query-sync-storage-persister@npm:5.29.0"
+  dependencies:
+    "@tanstack/query-core": "npm:5.29.0"
+    "@tanstack/query-persist-client-core": "npm:5.29.0"
+  checksum: 10c0/53168862c4cfc2a6c95cdce6328a09dba68de3716c87e4e088c69341a9958efa9f65ec999004f3e1be12dcc3427ed960456a92b5b6bf89736dc37476e73f417c
   languageName: node
   linkType: hard
 
@@ -2646,7 +2676,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/utils@npm:^6.21.0":
+"@typescript-eslint/utils@npm:^6.20.0, @typescript-eslint/utils@npm:^6.21.0":
   version: 6.21.0
   resolution: "@typescript-eslint/utils@npm:6.21.0"
   dependencies:
@@ -7924,6 +7954,10 @@ __metadata:
     "@nuxt/eslint": "npm:^0.3.8"
     "@nuxt/image": "npm:@nuxt/image-edge@latest"
     "@nuxtjs/stylelint-module": "npm:^5.0.1"
+    "@tanstack/eslint-plugin-query": "npm:^5.28.11"
+    "@tanstack/query-core": "npm:^5.29.0"
+    "@tanstack/query-persist-client-core": "npm:^5.29.0"
+    "@tanstack/query-sync-storage-persister": "npm:^5.29.0"
     "@tanstack/vue-query": "npm:^5.27.5"
     "@vueuse/router": "npm:^10.9.0"
     eslint: "npm:^9.0.0"

@@ -4,41 +4,7 @@ import {
   createHashKeyFromString,
 } from "~/server/utils/helpers";
 import getMarvelApi from "~/server/utils/getMarvelApi";
-
-interface MarvelCharacter {
-  id: number;
-  name: string;
-  modified: string;
-  description: string;
-  thumbnail: {
-    path: string;
-    extension: string;
-  };
-  events: {
-    available: string;
-  };
-  stories: {
-    available: string;
-  };
-  comics: {
-    available: string;
-  };
-  series: {
-    available: string;
-  };
-}
-
-interface MarvelResponse {
-  data: {
-    results: MarvelCharacter[];
-  };
-  attributionText: string;
-}
-
-interface MarvelData {
-  attributionText: string;
-  results: MarvelCharacter[];
-}
+import type { MarvelData, MarvelResponse, MarvelCharacter } from "~/types";
 
 export default defineEventHandler(async (event): Promise<MarvelData> => {
   // Check if the id parameter exists in the URL

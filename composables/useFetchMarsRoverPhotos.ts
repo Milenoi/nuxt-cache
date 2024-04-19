@@ -1,61 +1,8 @@
 import type { RouteParamValue } from "vue-router";
 import type { QueryObserverResult } from "@tanstack/vue-query";
 import { useQuery } from "@tanstack/vue-query";
-
-interface MarsRoverPhoto {
-  // Properties for single photo
-  index?: number;
-  sol?: number;
-  camera?: {
-    id: number;
-    name: string;
-    rover_id: number;
-    full_name: string;
-  };
-  img_src?: string;
-  earth_date?: string;
-  rover?: {
-    name: string;
-    status: string;
-    max_sol: number;
-    max_date: string;
-    total_photos: string;
-  };
-
-  // Properties for photo list
-  landing_date?: string;
-  launch_date?: string;
-  max_date?: string;
-  cameras?: {
-    name: string;
-    full_name: string;
-    total_photos: number;
-  }[];
-  entries?: {
-    index: number;
-    sol: number;
-    camera: {
-      id: number;
-      name: string;
-      rover_id: number;
-      full_name: string;
-    };
-    img_src: string;
-    earth_date: string;
-    rover: {
-      name: string;
-      status: string;
-      max_sol: number;
-      max_date: string;
-      total_photos: string;
-    };
-  }[];
-}
-
-interface QueryOptions<TData> {
-  queryKey: [string, string | string[]] | [string];
-  queryFn: () => Promise<TData>;
-}
+import { experimental_createPersister } from "@tanstack/query-persist-client-core";
+import type { MarsRoverPhoto } from "~/types";
 
 export default async function fetchMarsRoverPhotos(
   param?: string | RouteParamValue[],
@@ -91,25 +38,31 @@ export default async function fetchMarsRoverPhotos(
   };
 
   /*
-      const placeholderItem = {
-          id: '',
-          imageUrl: 'placeholder_image_url',
-          title: 'Placeholder Title',
-          description: 'Placeholder Description'
-      };
+        const placeholderItem = {
+            id: '',
+            imageUrl: 'placeholder_image_url',
+            title: 'Placeholder Title',
+            description: 'Placeholder Description'
+        };
 
 
-      const placeholderList = Array.from({length: 10}, (_, index) => ({
-          ...placeholderItem,
-          id: `placeholder_${index}` // Unique placeholder ID
-      }));
-      */
+        const placeholderList = Array.from({length: 10}, (_, index) => ({
+            ...placeholderItem,
+            id: `placeholder_${index}` // Unique placeholder ID
+        }));
+        */
 
-  const options: QueryOptions<MarsRoverPhoto[]> = {
+  const options = {
     queryKey: param ? ["mars-rover", param] : ["mars-rover"],
     queryFn: getMarsRoverPhotos,
+    // Only include persister option on the client-side
+    ...(import.meta.client && {
+      persister: experimental_createPersister({
+        storage: localStorage,
+      }),
+    }),
+    //staleTime: 24 * 60 * 60 * 1000 // 24h
     // placeholderData: placeholderList,
-    // staleTime: 24 * 60 * 60 * 1000 // 24h
     // enabled: false,
   };
 
@@ -121,14 +74,14 @@ export default async function fetchMarsRoverPhotos(
     isFetching,
     isSuccess,
     refetch,
-  } = useQuery<MarsRoverPhoto[]>(options);
+  } = useQuery<MarsRoverPhoto[], Error, MarsRoverPhoto[]>(options);
 
   /*
-        // After a delay, trigger suspense and fetch actual data
-        setTimeout(async () => {
+          // After a delay, trigger suspense and fetch actual data
+          setTimeout(async () => {
 
-        }, 200000); // Adjust the delay time as needed (2000 milliseconds = 2 seconds)
-        */
+          }, 200000); // Adjust the delay time as needed (2000 milliseconds = 2 seconds)
+          */
 
   await suspense(); // Wait for suspense
 

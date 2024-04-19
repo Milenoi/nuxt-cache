@@ -28,7 +28,7 @@ const handleClearError = () => {
         </p>
       </v-container>
     </v-main>
-    <LayoutFooter />
+    <LayoutAppFooter />
   </v-layout>
 </template>
 

@@ -10,10 +10,10 @@ const showAlert = useState("alert-show", () => false);
 
 const clearRedisCache = async () => {
   try {
-    const { data } = await useClearRedisCache();
+    const data = await useClearRedisCache();
 
-    alertLabel.value = data.value.message;
-    alertStatus.value = data.value.status === 200;
+    alertLabel.value = data.message;
+    alertStatus.value = data.status === 200;
   } catch (error) {
     alertLabel.value = "Something went wrong. Redis Cache was not cleared.";
     alertStatus.value = false;

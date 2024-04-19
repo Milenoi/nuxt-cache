@@ -34,6 +34,11 @@ export default defineNuxtConfig({
       });
     },
   ],
+  eslint: {
+    checker: {
+      configType: "eslintrc", // <--- (consider migrating to flat config if possible)
+    },
+  },
   vueQuery: {
     // useState key used by nuxt for the vue query state.
     stateKey: "vue-query-nuxt", // default
@@ -89,15 +94,15 @@ export default defineNuxtConfig({
     },
     storage: {
       /* redis: {
-                       driver: 'redis',
-                       /!* redis connector options *!/
-                       port: 6379, // Redis port
-                       host: "localhost", // Redis host
-                       username: "", // needs Redis >= 6
-                       password: "",
-                       db: 0,
-                       ttl: 86400 // Defaults to 0
-                   },*/
+                             driver: 'redis',
+                             /!* redis connector options *!/
+                             port: 6379, // Redis port
+                             host: "localhost", // Redis host
+                             username: "", // needs Redis >= 6
+                             password: "",
+                             db: 0,
+                             ttl: 86400 // Defaults to 0
+                         },*/
       redis: {
         driver: "redis",
         /* redis connector options */
