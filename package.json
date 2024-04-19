@@ -15,7 +15,7 @@
     "lint": "yarn lint:eslint && yarn lint:prettier",
     "lint:eslint": "eslint .",
     "lint:prettier": "prettier . --check",
-    "lint:fix": "prettier --write --list-different . && eslint . --fix",
+    "lint:fix": "prettier --write . && eslint . --fix",
     "lint:staged": "yarn run lint:eslint && yarn run lint:prettier"
   },
   "dependencies": {
