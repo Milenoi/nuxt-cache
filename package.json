@@ -16,7 +16,7 @@
     "lint:eslint": "eslint .",
     "lint:prettier": "prettier . --check",
     "lint:fix": "prettier --write --list-different . && eslint . --fix",
-    "lint:staged": "yarn run lint"
+    "lint:staged": "yarn run lint:eslint && yarn run lint:prettier"
   },
   "dependencies": {
     "@hebilicious/vue-query-nuxt": "^0.3.0",
