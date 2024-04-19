@@ -154,7 +154,7 @@ import { about, common } from "assets/json/static-text.json";
 .overview-container {
   &.about-container {
     max-width: 700px !important;
-    width: 80vw !important;
+    width: 92vw !important;
   }
 }
 </style>
