@@ -71,7 +71,7 @@
   "marvelCharacters": {
     "all": {
       "updated": "Last Update",
-      "redisCacheLabel": "Api Data comes from:"
+      "noResult": "No data found."
     },
     "listPage": {
       "title": "Marvel Characters"

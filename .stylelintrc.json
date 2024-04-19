@@ -11,9 +11,7 @@
   ],
   "overrides": [
     {
-      "files": [
-        "**/*.vue"
-      ],
+      "files": ["**/*.vue"],
       "customSyntax": "postcss-html"
     }
   ],
@@ -24,9 +22,7 @@
     "selector-type-no-unknown": [
       true,
       {
-        "ignoreTypes": [
-          "/Icon/"
-        ]
+        "ignoreTypes": ["/Icon/"]
       }
     ]
   }

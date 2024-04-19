@@ -21,23 +21,31 @@ To get this project up and running locally, follow these steps:
 ### Installation
 
 1. Clone the repository
+
    ```bash
    git clone git@github.com:Milenoi/nuxt-cache.git
+
+   ```
 
 2. Navigate to the project directory
 
    ```bash
    cd nuxt-cache
 
-3. Get correct node version
+   ```
+
+3. Set correct node version
 
    ```bash
    nvm i
+
+   ```
 
 4. Install dependencies
 
    ```bash
    yarn install
+   ```
 
 ## Environment Variables
 
@@ -58,6 +66,7 @@ NUXT_REDIS_USERNAME=YOUR_REDIS_USERNAME [Get it here](https://app.redislabs.com/
 
    ```bash
    yarn dev
+   ```
 
 Open your browser and access the application at http://localhost:3000
 
@@ -68,10 +77,13 @@ Open your browser and access the application at http://localhost:3000
    ```bash
    yarn build
 
+   ```
+
 2. Start the production server
 
    ```bash
    yarn start
+   ```
 
 ### Visit Website
 

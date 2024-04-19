@@ -1,46 +1,45 @@
 <script setup lang="ts">
-import {useIsFetching} from "@tanstack/vue-query";
+import { useIsFetching } from "@tanstack/vue-query";
 
-const alertLabel = useState('alert-label');
-const alertStatus = useState('alert-status');
-const showAlert = useState('alert-show');
+const alertLabel = useState("alert-label");
+const alertStatus = useState("alert-status");
+const showAlert = useState("alert-show");
 
 const isFetching = useIsFetching();
 </script>
 
 <template>
   <v-layout ref="app">
-        <LayoutIsFetchingLayer v-if="isFetching"/>
-        <LayoutAppBar/>
+    <LayoutLoadingLayer v-if="isFetching" />
+    <LayoutAppBar />
 
-        <Transition name="fade">
-          <v-alert
-              v-if=showAlert
-              class="custom-alert"
-              :color="alertStatus ? 'success' : 'error'"
-              icon="$success"
-              :text="alertLabel"
-          >
-          </v-alert>
-        </Transition>
+    <Transition name="fade">
+      <v-alert
+        v-if="showAlert"
+        class="custom-alert"
+        :color="alertStatus ? 'success' : 'error'"
+        icon="$success"
+        :text="alertLabel"
+      />
+    </Transition>
 
-        <v-main class="d-flex align-center justify-center">
-            <slot/>
-        </v-main>
+    <v-main class="d-flex align-center justify-center">
+      <slot />
+    </v-main>
 
-       <LayoutCacheActionBar/>
-       <LayoutFooter/>
+    <LayoutCacheActionBar />
+    <LayoutAppFooter />
   </v-layout>
 </template>
 
 <style lang="scss" scoped>
 .custom-alert {
-    position: fixed;
-    z-index: 10;
-    top: 100px;
-    left: 50%;
-    transform: translateX(-50%);
-    max-width: 500px;
-    width: calc(100% - 32px)
+  position: fixed;
+  z-index: 10;
+  top: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 500px;
+  width: calc(100% - 32px);
 }
 </style>
