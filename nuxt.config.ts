@@ -5,6 +5,7 @@ import imageConfig from "./utils/getImageConfig";
 
 export default defineNuxtConfig({
   ssr: true,
+
   runtimeConfig: {
     nasaApiKey: "",
     marvelPublicApiKey: "",
@@ -15,13 +16,16 @@ export default defineNuxtConfig({
       language: "en-US",
     },
   },
+
   //...
   build: {
     transpile: ["vuetify"],
   },
+
   devtools: {
     enabled: true,
   },
+
   modules: [
     "@nuxt/eslint",
     "@nuxt/image",
@@ -34,11 +38,13 @@ export default defineNuxtConfig({
       });
     },
   ],
+
   eslint: {
     checker: {
       configType: "eslintrc", // <--- (consider migrating to flat config if possible)
     },
   },
+
   vueQuery: {
     // useState key used by nuxt for the vue query state.
     stateKey: "vue-query-nuxt", // default
@@ -61,6 +67,7 @@ export default defineNuxtConfig({
     // Pass the vue query plugin options here ....
     vueQueryPluginOptions: {},
   },
+
   vite: {
     build: {
       cssCodeSplit: true, // default
@@ -76,6 +83,7 @@ export default defineNuxtConfig({
       },
     },
   },
+
   nitro: {
     publicAssets: [
       {
@@ -114,5 +122,7 @@ export default defineNuxtConfig({
       },
     },
   },
+
   image: imageConfig,
+  compatibilityDate: "2025-01-20",
 });

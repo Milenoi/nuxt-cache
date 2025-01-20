@@ -95,11 +95,10 @@ watch(selectedCameraChipIndexes, (newValue) => {
       {{ listPage.launchDate }}: {{ nasaData.launch_date }}
       /
       {{ listPage.landingDate }}: {{ nasaData.landing_date }}
-      <br>
-      {{ listPage.lastUpdate }}: {{ nasaData.max_date }}
     </p>
 
     <v-row class="d-flex justify-center mb-8">
+
       <v-chip-group v-model="selectedCameraChipIndexes" multiple>
         <v-chip
             v-for="(camera, index) in nasaData.cameras"

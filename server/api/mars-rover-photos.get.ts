@@ -1,5 +1,4 @@
 import {
-    getFormattedCounter,
     getFormatDate,
     createHashKeyFromString,
 } from "~/server/utils/helpers";
@@ -40,49 +39,42 @@ export default defineEventHandler(
                         rover: {
                             name: entry.rover.name,
                             status: entry.rover.status,
-                            max_sol: entry.rover.max_sol,
-                            max_date: getFormatDate(entry.rover.max_date),
-                            total_photos: getFormattedCounter(
-                                entry?.rover.total_photos?.toString(),
-                            ),
                         },
-                    };
-                },
+                    }
+                }
             );
-
-
-            /*
-            * Retrieves the count of filtered data based on the provided filter.
-            *
-            * @param {string} filter - the filter to apply to the data
-            * @return {number} the count of filtered data
-            */
-            const getCounter = (filter: string): number => {
-
-                const filteredData = rawMarsPhotosData.filter((entry) => {
-                    return entry.camera.name === filter;
-                });
-
-                return filteredData.length;
-            };
 
             const firstEntry = rawMarsPhotosData[0];
 
-            const additionalCamerasObjData = firstEntry?.rover?.cameras?.map(
-                (camera: { name: string }) => {
-                    return {
-                        ...camera,
-                        total_photos: getCounter(camera.name),
-                    };
-                },
-            );
+            // Define the type of the accumulator
+            const photoCounts = modifiedData.reduce<Record<string, number>>((acc, item) => {
+                const cameraName = item.camera.name;
+
+                acc[cameraName] = (acc[cameraName] || 0) + 1;
+                return acc;
+            }, {});
+
+            // Count total photos for each camera
+            const cameras = modifiedData.reduce((acc: Array<{
+                name: string;
+                total_photos: number
+            }> = [], item: MarsPhoto) => {
+                const cameraName = item.camera.name;
+
+                if (!acc.some(camera => camera.name === cameraName)) {
+                    acc.push({
+                        name: cameraName,
+                        total_photos: photoCounts[cameraName],
+                    });
+                }
+                return acc;
+            }, []);
 
 
             const marsPhotosList = {
                 landing_date: getFormatDate(firstEntry?.rover?.launch_date),
                 launch_date: getFormatDate(firstEntry?.rover?.landing_date),
-                max_date: getFormatDate(firstEntry?.rover?.max_date),
-                cameras: additionalCamerasObjData,
+                cameras,
                 entries: [...modifiedData],
             };
 
