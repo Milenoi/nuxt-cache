@@ -37,7 +37,7 @@ useSeoMeta({
               width="464"
               height="130"
               class="overview-svg"
-            />
+            >
           </div>
 
           <v-card-item>

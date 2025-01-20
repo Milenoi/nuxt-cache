@@ -19,7 +19,7 @@ defineProps({
         height="130"
         class="api-logo"
         :class="`${logo}-api-logo`"
-      />
+      >
     </template>
   </v-tooltip>
 </template>

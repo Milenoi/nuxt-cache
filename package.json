@@ -19,31 +19,32 @@
   },
   "devDependencies": {
     "@hebilicious/vue-query-nuxt": "^0.3.0",
-    "@nuxt/eslint": "^0.3.8",
+    "@nuxt/eslint": "^0.7.5",
     "@nuxtjs/stylelint-module": "^5.0.1",
     "@tanstack/eslint-plugin-query": "^5.28.11",
     "@tanstack/query-core": "^5.29.0",
     "@tanstack/query-persist-client-core": "^5.29.0",
     "@tanstack/query-sync-storage-persister": "^5.29.0",
     "@tanstack/vue-query": "^5.27.5",
-    "@vueuse/router": "^10.9.0",
+    "@vueuse/router": "^12.4.0",
     "eslint": "^9.0.0",
     "eslint-plugin-node": "^11.1.0",
-    "eslint-scope": "^7.1.1",
+    "eslint-scope": "^8.2.0",
     "h3": "^1.11.1",
     "h3-compression": "^0.3.2",
-    "husky": "^8.0.0",
+    "husky": "^9.1.7",
     "nuxt": "^3.10.3",
     "postcss-html": "^1.5.0",
     "sass": "^1.71.1",
     "sharp": "^0.33.2",
-    "stylelint": "^15.10.0",
-    "stylelint-config-recommended-scss": "^11.0.0",
+    "stylelint": "^16.13.2",
+    "stylelint-config-recommended-scss": "^14.1.0",
     "stylelint-config-recommended-vue": "^1.4.0",
-    "stylelint-config-standard": "^34.0.0",
-    "stylelint-config-standard-scss": "^9.0.0",
+    "stylelint-config-standard": "^37.0.0",
+    "stylelint-config-standard-scss": "^14.0.0",
     "typescript": "^5.4.5",
-    "vite": "^5.1.6",
+    "vite": "^6.0.9",
+    "vite-plugin-eslint2": "^5.0.3",
     "vite-plugin-vuetify": "^2.0.2",
     "vue": "^3.4.19",
     "vue-router": "^4.3.0"
@@ -51,10 +52,10 @@
   "dependencies": {
     "@mdi/font": "^7.4.47",
     "@nuxt/image": "npm:@nuxt/image-edge@latest",
-    "vuetify": "^3.5.6"
+    "vuetify": "^3.7.7"
   },
   "optionalDependencies": {
-    "lint-staged": "^13.2.2"
+    "lint-staged": "^15.4.1"
   },
   "packageManager": "yarn@4.1.0"
 }
