@@ -1,6 +1,6 @@
 import type { QueryObserverResult } from "@tanstack/vue-query";
 import { useQuery } from "@tanstack/vue-query";
-import { experimental_createPersister } from "@tanstack/query-persist-client-core";
+import { experimental_createQueryPersister } from "@tanstack/query-persist-client-core";
 import type { ApodList } from "~/types";
 
 /**
@@ -46,7 +46,8 @@ export default async function useFetchApod<T = ApodList>(
     queryFn: fetchApod,
     // Persist to localStorage on the client for instant repeat visits.
     ...(import.meta.client && {
-      persister: experimental_createPersister({ storage: localStorage }),
+      persister: experimental_createQueryPersister({ storage: localStorage })
+        .persisterFn,
     }),
   });
 
