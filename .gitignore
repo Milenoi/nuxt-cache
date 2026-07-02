@@ -25,3 +25,14 @@ logs
 
 # Local Netlify folder
 .netlify
+
+# Tooling caches
+.eslintcache
+
+# Yarn (Berry) — keep releases/plugins, ignore local state & cache
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
