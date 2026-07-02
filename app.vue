@@ -7,7 +7,7 @@ useHead({
     },
     {
       name: "theme-color",
-      content: "#ffffff",
+      content: "#0b3d91",
     },
     {
       name: "charset",
@@ -20,27 +20,34 @@ useHead({
   ],
   link: [
     {
-      rel: "apple-touch-icon",
-      href: "/apple-touch-icon.png",
+      rel: "icon",
+      type: "image/svg+xml",
+      href: "/favicon.svg",
     },
     {
       rel: "icon",
-      type: "image/ico",
+      type: "image/x-icon",
       href: "/favicon.ico",
     },
     {
       rel: "icon",
       type: "image/png",
-      href: "/favicon.png",
+      sizes: "32x32",
+      href: "/favicon-32x32.png",
+    },
+    {
+      rel: "icon",
+      type: "image/png",
+      sizes: "16x16",
+      href: "/favicon-16x16.png",
+    },
+    {
+      rel: "apple-touch-icon",
+      href: "/apple-touch-icon.png",
     },
     {
       rel: "manifest",
       href: "/site.webmanifest",
-    },
-    {
-      rel: "mask-icon",
-      href: "/safari-pinned-tab.svg",
-      color: "#2c2d33",
     },
   ],
 });
