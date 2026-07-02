@@ -18,6 +18,13 @@ export default defineNuxtPlugin((app) => {
           colors: {
             primary: colors.grey.darken4,
             secondary: colors.grey.lighten4,
+            // Vuetify 4 dropped the Material color utility classes
+            // (bg-red-accent-2, text-orange-darken-2, ...). Re-expose the ones
+            // the templates use as theme colors so those classes are generated.
+            "red-accent-2": colors.red.accent2,
+            "red-accent-3": colors.red.accent3,
+            "orange-darken-2": colors.orange.darken2,
+            "grey-lighten-1": colors.grey.lighten1,
           },
         },
       },

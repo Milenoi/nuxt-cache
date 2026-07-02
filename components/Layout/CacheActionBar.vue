@@ -69,9 +69,11 @@ const invalidateQuery = () => {
     flex-flow: row wrap;
     position: fixed;
     z-index: 10;
-    bottom: 40px;
+    bottom: 0;
     width: 100%;
-    padding-block: 30px;
+    padding-top: 30px;
+    /* keep the buttons clear of the ~72px fixed footer */
+    padding-bottom: 96px;
 
     &::before {
         content: "";
