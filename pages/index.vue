@@ -9,7 +9,7 @@ useSeoMeta({
 </script>
 
 <template>
-  <v-container tag="section" class="my-8 overview-container">
+  <v-container tag="section" class="overview-container">
     <h1 class="text-h4 text-sm-h2 pa-2 mb-8 mx-auto text-center">
       {{ overviewPage.title }}
     </h1>
@@ -21,7 +21,7 @@ useSeoMeta({
         cols="12"
         md="7"
       >
-        <v-card class="h-100" :to="menu[api.media].link">
+        <v-card :to="menu[api.media].link">
           <div class="overview-image-container">
             <NuxtPicture
               :src="`/images/${api.media}.jpg`"
@@ -63,6 +63,13 @@ useSeoMeta({
 <style lang="scss">
 .overview-container {
   max-width: 1280px !important;
+  /* Fill the viewport so the landing page doesn't scroll.
+     v-main already offsets the app-bar (top) and footer (bottom). */
+  min-height: calc(100dvh - 136px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-bottom: 96px; /* clear the fixed cache action bar */
 }
 
 .overview-image-container {
@@ -78,7 +85,7 @@ useSeoMeta({
 .overview-image {
   width: 100%;
   /* Scale with the viewport height, bounded by a min/max instead of a fixed size. */
-  height: clamp(240px, 55vh, 560px);
+  height: clamp(160px, 38vh, 500px);
   object-fit: cover;
   filter: grayscale(30%);
   transition: filter 400ms ease;

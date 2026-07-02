@@ -75,6 +75,12 @@ useHead({
   padding-block-end: 160px !important;
 }
 
+/* The landing page fills the viewport and doesn't scroll, so it doesn't need
+   the bottom clearance that the scrollable content pages rely on. */
+body:has(.overview-container) .v-application__wrap {
+  padding-block-end: 0 !important;
+}
+
 .fade-enter-active,
 .fade-leave-active {
   opacity: 0;
