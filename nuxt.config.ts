@@ -8,8 +8,6 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     nasaApiKey: "",
-    marvelPublicApiKey: "",
-    marvelSecretApiKey: "",
     public: {
       siteName: "Nuxt Cache",
       siteDescription: "Nuxt Cache Project",

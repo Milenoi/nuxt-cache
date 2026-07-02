@@ -4,174 +4,51 @@ export interface ClearRedisCacheResponse {
     error?: string;
 }
 
-export interface MarsRoverPhoto {
-    // Properties for single photo
-    index?: number;
-    sol?: number;
-    camera?: {
-        id: number;
-        name: string;
-        rover_id: number;
-        full_name: string;
-    };
-    img_src?: string;
-    earth_date?: string;
-    rover?: {
-        name: string;
-        status: string;
-        max_sol: number;
-        total_photos: string;
-    };
+// ---- NASA APOD (Astronomy Picture of the Day) ----
 
-    // Properties for photo list
-    landing_date?: string;
-    launch_date?: string;
-    cameras?: {
-        name: string;
-        full_name: string;
-        total_photos: number;
-    }[];
-    entries?: {
-        index: number;
-        sol: number;
-        camera: {
-            id: number;
-            name: string;
-            rover_id: number;
-            full_name: string;
-        };
-        img_src: string;
-        earth_date: string;
-        rover: {
-            name: string;
-            status: string;
-            max_sol: number;
-            total_photos: string;
-        };
-    }[];
+export interface ApodQueryParams {
+    date?: string;
+    startDate?: string;
+    endDate?: string;
 }
 
-interface MarvelListData {
-    attributionText: string;
-    results: MarvelCharacter[];
+/** Raw entry as returned by the NASA APOD API. */
+export interface ApodApiEntry {
+    date: string;
+    title: string;
+    explanation: string;
+    media_type: string;
+    url: string;
+    hdurl?: string;
+    thumbnail_url?: string;
+    copyright?: string;
+    service_version?: string;
 }
 
-interface MarvelCharacter {
-    id: number;
-    name: string;
-    modified: string;
-    description: string;
-    thumbnail: {
-        path: string;
-        extension: string;
-    };
-    events: {
-        available: string;
-    };
-    stories: {
-        available: string;
-    };
-    comics: {
-        available: string;
-    };
-    series: {
-        available: string;
-    };
+export type ApodMediaType = "image" | "video" | "other";
+
+/** Normalized entry consumed by the UI. */
+export interface ApodEntry {
+    date: string;
+    title: string;
+    explanation: string;
+    mediaType: ApodMediaType;
+    url: string;
+    hdurl: string | null;
+    thumbnailUrl: string | null;
+    copyright: string | null;
+    formattedDate: string;
+    /** Present only when the payload was served from the Redis cache. */
+    redis?: string;
 }
 
-export type MarvelResult = MarvelListData | MarvelCharacter;
-
-export interface MarvelCharacter {
-    id: number;
-    name: string;
-    modified: string;
-    description: string;
-    thumbnail: {
-        path: string;
-        extension: string;
-    };
-    events: {
-        available: string;
-    };
-    stories: {
-        available: string;
-    };
-    comics: {
-        available: string;
-    };
-    series: {
-        available: string;
-    };
+export interface ApodList {
+    entries: ApodEntry[];
+    redis?: string;
 }
 
-export interface MarvelResponse {
-    data: {
-        results: MarvelCharacter[];
-    };
-    attributionText: string;
+export interface ApodEmbed {
+    type: "youtube" | "vimeo" | "file" | "external";
+    src: string;
 }
 
-export interface MarvelData {
-    attributionText: string;
-    results: MarvelCharacter[];
-}
-
-interface RawMarsPhoto {
-    id: number;
-    sol: number;
-    camera: {
-        id: number;
-        name: string;
-        rover_id: number;
-        full_name: string;
-    };
-    img_src: string;
-    earth_date: string;
-    rover: {
-        id: number;
-        name: string;
-        landing_date: string;
-        launch_date: string;
-        status: string;
-        max_sol: number;
-        total_photos: number;
-        cameras: {
-            id: number;
-            name: string;
-            full_name: string;
-        }[];
-    };
-}
-
-export interface MarsPhotosResponse {
-    photos: RawMarsPhoto[];
-}
-
-export interface MarsPhoto {
-    index: number;
-    sol: number;
-    camera: {
-        id: number;
-        name: string;
-        rover_id: number;
-        full_name: string;
-    };
-    img_src: string;
-    earth_date: string;
-    rover: {
-        name: string;
-        status: string;
-    };
-}
-
-export interface MarsPhotosList {
-    landing_date: string;
-    launch_date: string;
-    cameras: { name: string; total_photos: number }[]; // Update the interface to include total_photos
-    entries: MarsPhoto[]; // Assuming this should be an array of MarsPhoto objects
-}
-
-/*export interface QueryOptions<TData> {
-    queryKey: [string, string | string[]] | [string];
-    queryFn: () => Promise<TData>;
-}*/

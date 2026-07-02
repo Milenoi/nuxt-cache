@@ -14,12 +14,12 @@ useSeoMeta({
       {{ overviewPage.title }}
     </h1>
 
-    <v-row>
+    <v-row justify="center">
       <v-col
         v-for="(api, index) in overviewPage.api"
         :key="index"
         cols="12"
-        md="6"
+        md="7"
       >
         <v-card class="h-100" :to="menu[api.media].link">
           <div class="overview-image-container">

@@ -26,18 +26,9 @@ import { about, common } from "assets/json/static-text.json";
             target="_blank"
             rel="noopener noreferrer"
           >
-            NASA APIs
+            NASA APOD API
           </NuxtLink>
-          and the
-          <NuxtLink
-            to="https://developer.marvel.com/"
-            target="_blank"
-            class="text-orange-darken-2"
-            rel="noopener noreferrer"
-          >
-            Marvel API
-          </NuxtLink>
-          (both of which necessitate registration).
+          (Astronomy Picture of the Day, which requires a free registration).
         </p>
 
         <p class="text-center mb-8 mb-lg-12">

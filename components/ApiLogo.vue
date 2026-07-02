@@ -27,6 +27,7 @@ defineProps({
 <style lang="scss" scoped>
 .api-logo {
   position: absolute;
+  z-index: 2;
   width: 50px;
   height: auto;
   top: 1rem;

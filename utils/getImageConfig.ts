@@ -1,6 +1,6 @@
 const imageConfigDefault = {
   quality: 80,
-  domains: ["mars.nasa.gov", "mars.jpl.nasa.gov", "https://i.annihil.us/"],
+  domains: ["apod.nasa.gov", "img.youtube.com", "i.ytimg.com"],
   format: ["avif", "webp"],
   screens: {
     xs: 600,

@@ -1,12 +1,6 @@
 [images]
   remote_images = [
-    'mars.nasa.gov',
-    'mars.jpl.nasa.gov',
-    'i.annihil.us',
-    'https://mars.nasa.gov',
-    'https://mars.jpl.nasa.gov',
-    'https://i.annihil.us',
-    'https://mars.nasa.gov/.*',
-    'https://mars.jpl.nasa.gov/.*',
-    'https://i.annihil.us/.*'
+    'https://apod.nasa.gov/.*',
+    'https://img.youtube.com/.*',
+    'https://i.ytimg.com/.*'
   ]
