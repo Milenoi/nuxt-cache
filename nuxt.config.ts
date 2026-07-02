@@ -60,6 +60,21 @@ export default defineNuxtConfig({
     },
   },
 
+  routeRules: {
+    // Static pages: let the CDN cache and revalidate them in the background.
+    // APOD routes stay SSR so the Redis/NASA cache indicator is always live.
+    "/": {
+      headers: {
+        "cache-control": "public, s-maxage=3600, stale-while-revalidate=86400",
+      },
+    },
+    "/about": {
+      headers: {
+        "cache-control": "public, s-maxage=3600, stale-while-revalidate=86400",
+      },
+    },
+  },
+
   nitro: {
     publicAssets: [
       {
