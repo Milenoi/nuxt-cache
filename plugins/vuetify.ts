@@ -1,9 +1,8 @@
-// import this after install `@mdi/font` package
-import "@mdi/font/css/materialdesignicons.css";
 import { md3 } from "vuetify/blueprints";
 
 import "vuetify/styles";
-import { aliases, mdi } from "vuetify/iconsets/mdi";
+// SVG icon set (@mdi/js): only the icons we import are bundled — no icon font.
+import { aliases, mdi } from "vuetify/iconsets/mdi-svg";
 import { createVuetify } from "vuetify";
 import colors from "vuetify/util/colors";
 

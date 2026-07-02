@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { mdiTelescope } from "@mdi/js";
 import type { ApodEntry } from "~/types";
 
 defineProps<{ entry: ApodEntry }>();
@@ -15,7 +16,7 @@ defineProps<{ entry: ApodEntry }>();
       width="567"
       height="319"
       sizes="xs:567px sm:452px md:273px lg:424px xl:574px"
-      :img-attrs="{ class: 'img-fit', alt: entry.title }"
+      :img-attrs="{ class: 'img-fit', alt: entry.title, loading: 'lazy' }"
     />
 
     <!-- Video with a provided thumbnail (e.g. YouTube) -->
@@ -25,7 +26,7 @@ defineProps<{ entry: ApodEntry }>();
       width="567"
       height="319"
       sizes="xs:567px sm:452px md:273px lg:424px xl:574px"
-      :img-attrs="{ class: 'img-fit', alt: entry.title }"
+      :img-attrs="{ class: 'img-fit', alt: entry.title, loading: 'lazy' }"
     />
 
     <!-- Video file without a thumbnail: use the first frame as poster -->
@@ -40,7 +41,7 @@ defineProps<{ entry: ApodEntry }>();
 
     <!-- Anything else (rare 'other' media type) -->
     <div v-else class="apod-thumbnail-fallback img-fit">
-      <v-icon icon="mdi mdi-telescope" size="48" />
+      <v-icon :icon="mdiTelescope" size="48" />
     </div>
   </div>
 </template>

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { mdiReload, mdiCached } from "@mdi/js";
 import {useQueryClient} from "@tanstack/vue-query";
 
 // Import static text
@@ -41,7 +42,7 @@ const invalidateQuery = () => {
     <v-btn
         class="my-2 mx-2 bg-red-accent-2 min-width-300"
         :title="common.invalidate"
-        prepend-icon="mdi mdi-reload"
+        :prepend-icon="mdiReload"
         @click="invalidateQuery"
     >
       <span class="app-bar-btn">
@@ -51,7 +52,7 @@ const invalidateQuery = () => {
     <v-btn
         class="my-2 mx-2 bg-red-accent-3 min-width-300"
         :title="common.clearRedisCacheLabel"
-        prepend-icon="mdi mdi-cached"
+        :prepend-icon="mdiCached"
         @click="clearRedisCache"
     >
       <span class="app-bar-btn">

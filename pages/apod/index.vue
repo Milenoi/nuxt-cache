@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { mdiArrowLeft, mdiViewGrid, mdiImage, mdiPlayCircle } from "@mdi/js";
 import { useRouteQuery } from "@vueuse/router";
 
 // Import static text
@@ -27,9 +28,9 @@ const mediaFilter = useRouteQuery<"all" | ApodMediaType>("type", "all", {
 
 const filters: { value: "all" | ApodMediaType; label: string; icon: string }[] =
   [
-    { value: "all", label: all.filterAll, icon: "mdi mdi-view-grid" },
-    { value: "image", label: all.filterImages, icon: "mdi mdi-image" },
-    { value: "video", label: all.filterVideos, icon: "mdi mdi-play-circle" },
+    { value: "all", label: all.filterAll, icon: mdiViewGrid },
+    { value: "image", label: all.filterImages, icon: mdiImage },
+    { value: "video", label: all.filterVideos, icon: mdiPlayCircle },
   ];
 
 const filteredEntries = computed(() => {
@@ -48,7 +49,7 @@ const filteredEntries = computed(() => {
 
   <v-container v-else-if="apodData" tag="section" class="my-8">
     <p class="text-center mb-4 mb-lg-12">
-      <v-btn to="/" prepend-icon="mdi mdi-arrow-left">
+      <v-btn to="/" :prepend-icon="mdiArrowLeft">
         {{ common.backLabel }}
       </v-btn>
     </p>

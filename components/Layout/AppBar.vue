@@ -12,7 +12,10 @@ const drawer = ref(false);
         {{ common.projectTitle }}
       </NuxtLink>
     </v-app-bar-title>
-    <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+    <v-app-bar-nav-icon
+      aria-label="Open navigation menu"
+      @click.stop="drawer = !drawer"
+    />
   </v-app-bar>
 
   <v-navigation-drawer

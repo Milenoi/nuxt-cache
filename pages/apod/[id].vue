@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { mdiArrowLeft } from "@mdi/js";
+
 // Import static text
 import { apod, common } from "~/assets/json/static-text.json";
 import type { ApodEntry } from "~/types";
@@ -30,7 +32,7 @@ const embed = computed(() =>
 
   <v-container v-else-if="item" tag="section" class="my-8">
     <p class="text-center mb-4 mb-lg-12">
-      <v-btn to="/apod" prepend-icon="mdi mdi-arrow-left">
+      <v-btn to="/apod" :prepend-icon="mdiArrowLeft">
         {{ common.backLabel }}
       </v-btn>
     </p>

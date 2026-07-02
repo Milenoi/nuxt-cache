@@ -1,4 +1,6 @@
 <script setup>
+import { mdiArrowLeft } from "@mdi/js";
+
 defineProps({
   error: {
     type: Object,
@@ -22,7 +24,7 @@ const handleClearError = () => {
         </p>
 
         <p>
-          <v-btn prepend-icon="mdi mdi-arrow-left" @click="handleClearError">
+          <v-btn :prepend-icon="mdiArrowLeft" @click="handleClearError">
             Zurück
           </v-btn>
         </p>

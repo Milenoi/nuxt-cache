@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { mdiArrowLeft } from "@mdi/js";
+
 // Import static text
 import { about, common } from "~/assets/json/static-text.json";
 </script>
@@ -8,7 +10,7 @@ import { about, common } from "~/assets/json/static-text.json";
     <v-row>
       <v-col class="mx-4">
         <p class="text-center mb-4 mb-lg-12">
-          <v-btn prepend-icon="mdi mdi-arrow-left" to="/">
+          <v-btn :prepend-icon="mdiArrowLeft" to="/">
             {{ common.backLabel }}
           </v-btn>
         </p>
