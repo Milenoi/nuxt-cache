@@ -77,7 +77,9 @@ useSeoMeta({
 
 .overview-image {
   width: 100%;
-  height: auto;
+  /* Scale with the viewport height, bounded by a min/max instead of a fixed size. */
+  height: clamp(240px, 55vh, 560px);
+  object-fit: cover;
   filter: grayscale(30%);
   transition: filter 400ms ease;
 
