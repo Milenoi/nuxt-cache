@@ -36,12 +36,6 @@ export default defineNuxtConfig({
     },
   ],
 
-  eslint: {
-    checker: {
-      configType: "eslintrc", // <--- (consider migrating to flat config if possible)
-    },
-  },
-
   vite: {
     build: {
       cssCodeSplit: true, // default
@@ -55,6 +49,10 @@ export default defineNuxtConfig({
       preprocessorOptions: {
         scss: {},
       },
+    },
+    // Pre-bundle vue-query so dev doesn't reload on first discovery.
+    optimizeDeps: {
+      include: ["@tanstack/vue-query"],
     },
   },
 
