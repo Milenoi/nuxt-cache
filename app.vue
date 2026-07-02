@@ -1,4 +1,24 @@
 <script setup lang="ts">
+const { siteName, siteDescription, siteUrl } = useRuntimeConfig().public;
+const ogImage = `${siteUrl}/og-image.jpg`;
+
+// Global SEO + social share defaults (pages can override title via useSeoMeta).
+useSeoMeta({
+  description: siteDescription,
+  ogSiteName: siteName,
+  ogType: "website",
+  ogTitle: siteName,
+  ogDescription: siteDescription,
+  ogUrl: siteUrl,
+  ogImage,
+  ogImageWidth: 1200,
+  ogImageHeight: 630,
+  twitterCard: "summary_large_image",
+  twitterTitle: siteName,
+  twitterDescription: siteDescription,
+  twitterImage: ogImage,
+});
+
 useHead({
   htmlAttrs: {
     lang: "en",
@@ -15,10 +35,6 @@ useHead({
     {
       name: "charset",
       content: "utf-8",
-    },
-    {
-      name: "description",
-      content: "My personal Nuxt Cache Project",
     },
   ],
   link: [

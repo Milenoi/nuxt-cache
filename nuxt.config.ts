@@ -9,8 +9,10 @@ export default defineNuxtConfig({
   runtimeConfig: {
     nasaApiKey: "",
     public: {
-      siteName: "Nuxt Cache",
-      siteDescription: "Nuxt Cache Project",
+      siteName: "Nuxt Cache Project",
+      siteDescription:
+        "A Nuxt 4 demo of multi-layer caching (Redis + TanStack Query) over the NASA APOD API.",
+      siteUrl: "https://nuxt-cache-project.netlify.app",
       language: "en-US",
     },
   },
