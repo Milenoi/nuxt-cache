@@ -10,7 +10,7 @@ useSeoMeta({
 
 <template>
   <v-container tag="section" class="overview-container">
-    <h1 class="text-h4 text-sm-h2 pa-2 mb-8 mx-auto text-center">
+    <h1 class="d-none d-sm-block text-h4 text-sm-h2 pa-2 mb-8 mx-auto text-center">
       {{ overviewPage.title }}
     </h1>
 
@@ -65,7 +65,7 @@ useSeoMeta({
   max-width: 1280px !important;
   /* Fill the viewport so the landing page doesn't scroll.
      v-main already offsets the app-bar (top) and footer (bottom). */
-  min-height: calc(100dvh - 136px);
+  min-height: calc(100dvh - 112px);
   display: flex;
   flex-direction: column;
   justify-content: center;

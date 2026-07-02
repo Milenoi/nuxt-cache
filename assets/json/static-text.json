@@ -1,7 +1,9 @@
 {
   "common": {
     "clearRedisCacheLabel": "Redis Database: Clear Cache",
-    "invalidate": "Vue Query: Invalidate  Cache",
+    "clearRedisCacheShort": "Clear Cache",
+    "invalidate": "Vue Query: Invalidate Cache",
+    "invalidateShort": "Invalidate",
     "isFetchingNowLabel": "...Fetching data now",
     "backLabel": "Back",
     "projectTitle": "Nuxt Cache Project"

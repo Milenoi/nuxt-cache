@@ -40,24 +40,22 @@ const invalidateQuery = () => {
 <template>
   <div class="layout-cache-action-bar">
     <v-btn
-        class="my-2 mx-2 bg-red-accent-2 min-width-300"
+        class="bg-red-accent-2 cache-btn"
         :title="common.invalidate"
         :prepend-icon="mdiReload"
         @click="invalidateQuery"
     >
-      <span class="app-bar-btn">
-        {{ common.invalidate }}
-      </span>
+      <span class="app-bar-btn d-none d-sm-inline">{{ common.invalidate }}</span>
+      <span class="app-bar-btn d-sm-none">{{ common.invalidateShort }}</span>
     </v-btn>
     <v-btn
-        class="my-2 mx-2 bg-red-accent-3 min-width-300"
+        class="bg-red-accent-3 cache-btn"
         :title="common.clearRedisCacheLabel"
         :prepend-icon="mdiCached"
         @click="clearRedisCache"
     >
-      <span class="app-bar-btn">
-        {{ common.clearRedisCacheLabel }}
-      </span>
+      <span class="app-bar-btn d-none d-sm-inline">{{ common.clearRedisCacheLabel }}</span>
+      <span class="app-bar-btn d-sm-none">{{ common.clearRedisCacheShort }}</span>
     </v-btn>
   </div>
 </template>
@@ -68,13 +66,13 @@ const invalidateQuery = () => {
     justify-content: center;
     align-items: center;
     flex-flow: row wrap;
+    gap: 16px;
     position: fixed;
     z-index: 10;
     bottom: 0;
     width: 100%;
     padding-top: 30px;
-    /* keep the buttons clear of the ~72px fixed footer */
-    padding-bottom: 96px;
+    padding-bottom: 72px; /* clear the 48px fixed footer */
 
     &::before {
         content: "";
@@ -88,7 +86,28 @@ const invalidateQuery = () => {
     }
 }
 
-.min-width-300 {
+.cache-btn {
     width: 325px;
+    max-width: 100%;
+}
+
+/* Mobile only: buttons smaller + side by side, smaller label, tighter spacing. */
+@media (max-width: 599px) {
+    .layout-cache-action-bar {
+        flex-flow: row nowrap;
+        gap: 10px;
+        padding-inline: 12px;
+        padding-bottom: 64px;
+    }
+
+    .cache-btn {
+        width: auto;
+        flex: 1 1 0;
+        min-width: 0;
+    }
+
+    .cache-btn .app-bar-btn {
+        font-size: 0.72rem;
+    }
 }
 </style>
