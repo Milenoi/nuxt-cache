@@ -20,6 +20,17 @@ export default defineNuxtConfig({
     transpile: ["vuetify"],
   },
 
+  typescript: {
+    // Stricter than the Nuxt defaults; injected into the generated tsconfigs.
+    tsConfig: {
+      compilerOptions: {
+        noUncheckedIndexedAccess: true,
+        noImplicitOverride: true,
+        noFallthroughCasesInSwitch: true,
+      },
+    },
+  },
+
   devtools: {
     enabled: true,
   },

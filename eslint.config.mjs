@@ -5,5 +5,7 @@ import withNuxt from "./.nuxt/eslint.config.mjs";
 export default withNuxt({
   rules: {
     "vue/html-self-closing": "off",
+    // Ban `any` (syntactic rule, no type-info needed → fast).
+    "@typescript-eslint/no-explicit-any": "error",
   },
 });
