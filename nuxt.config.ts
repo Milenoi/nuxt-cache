@@ -27,7 +27,6 @@ export default defineNuxtConfig({
   modules: [
     "@nuxt/eslint",
     "@nuxt/image",
-    "@hebilicious/vue-query-nuxt",
     (options, nuxt) => {
       // Ensure options and nuxt are properly typed
       nuxt.hooks.hook("vite:extendConfig", (config) => {
@@ -41,29 +40,6 @@ export default defineNuxtConfig({
     checker: {
       configType: "eslintrc", // <--- (consider migrating to flat config if possible)
     },
-  },
-
-  vueQuery: {
-    // useState key used by nuxt for the vue query state.
-    stateKey: "vue-query-nuxt", // default
-    // If you only want to import some functions, specify them here.
-    // You can pass false or an empty array to disable this feature.
-    // default: ["useQuery", "useQueries", "useInfiniteQuery", "useMutation", "useIsFetching", "useIsMutating", "useQueryClient"]
-    // autoImports: ["useQuery", "useQueries", "useInfiniteQuery", "useMutation", "useIsFetching", "useIsMutating", "useQueryClient"],
-    // Pass the vue query client options here
-    queryClientOptions: {
-      defaultOptions: {
-        queries: {
-          staleTime: 24 * 60 * 60 * 1000, // 24h
-          refetchOnMount: false,
-          refetchOnWindowFocus: false, // https://tanstack.com/query/latest/docs/framework/vue/guides/window-focus-refetching
-          retry: 2, // https://tanstack.com/query/latest/docs/framework/vue/guides/query-retries (default: 3)
-          // retryDelay: 1000, // https://tanstack.com/query/latest/docs/framework/vue/guides/query-retries
-        },
-      }, // default
-    },
-    // Pass the vue query plugin options here ....
-    vueQueryPluginOptions: {},
   },
 
   vite: {
