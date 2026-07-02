@@ -50,9 +50,13 @@ export default defineNuxtConfig({
         scss: {},
       },
     },
-    // Pre-bundle vue-query so dev doesn't reload on first discovery.
+    // Pre-bundle these so dev doesn't reload on first discovery.
     optimizeDeps: {
-      include: ["@tanstack/vue-query"],
+      include: [
+        "@tanstack/vue-query",
+        "@vue/devtools-core",
+        "@vue/devtools-kit",
+      ],
     },
   },
 

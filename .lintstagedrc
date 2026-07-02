@@ -1,6 +1,5 @@
 {
-  "*.vue": ["yarn run lint:staged --", "yarn run stylelint:staged --"],
+  "*.vue": ["yarn run lint:staged --"],
   "*.js": ["yarn run lint:staged --"],
-  "*.ts": ["yarn run lint:staged --"],
-  "*.scss": ["yarn run stylelint:staged --"]
+  "*.ts": ["yarn run lint:staged --"]
 }

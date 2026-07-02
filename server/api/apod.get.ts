@@ -2,7 +2,7 @@ import { getFormatDate } from "~/server/utils/helpers";
 import getApodApi from "~/server/utils/getApodApi";
 import type { ApodApiEntry, ApodEntry, ApodList, ApodMediaType } from "~/types";
 
-const RANGE_DAYS = 14;
+const RANGE_DAYS = 32;
 const CACHE_TTL = 86400; // 24h
 const DAY_MS = 24 * 60 * 60 * 1000;
 
