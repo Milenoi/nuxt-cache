@@ -75,6 +75,12 @@ useHead({
   padding-block-end: 160px !important;
 }
 
+/* Reserve the fixed app-bar height during SSR so the content doesn't jump down
+   64px once Vuetify measures the layout on hydration. */
+.v-main {
+  padding-top: 64px !important;
+}
+
 /* The landing page fills the viewport and doesn't scroll, so it doesn't need
    the bottom clearance that the scrollable content pages rely on. */
 body:has(.overview-container) .v-application__wrap {
