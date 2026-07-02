@@ -12,19 +12,6 @@ export interface ApodQueryParams {
     endDate?: string;
 }
 
-/** Raw entry as returned by the NASA APOD API. */
-export interface ApodApiEntry {
-    date: string;
-    title: string;
-    explanation: string;
-    media_type: string;
-    url: string;
-    hdurl?: string;
-    thumbnail_url?: string;
-    copyright?: string;
-    service_version?: string;
-}
-
 export type ApodMediaType = "image" | "video" | "other";
 
 /** Normalized entry consumed by the UI. */

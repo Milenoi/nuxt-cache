@@ -1,6 +1,12 @@
+import type { ZodType } from "zod";
 import { getFormatDate } from "~/server/utils/helpers";
 import getApodApi from "~/server/utils/getApodApi";
-import type { ApodApiEntry, ApodEntry, ApodList, ApodMediaType } from "~/types";
+import {
+  ApodApiEntrySchema,
+  ApodApiListSchema,
+  type ApodApiEntry,
+} from "~/server/utils/apodSchema";
+import type { ApodEntry, ApodList, ApodMediaType } from "~/types";
 
 const RANGE_DAYS = 32;
 const CACHE_TTL = 86400; // 24h
@@ -35,14 +41,19 @@ const normalizeEntry = (raw: ApodApiEntry): ApodEntry => ({
  * We never cache a failed response, so a transient NASA outage can't poison
  * the cache.
  */
-const fetchFromNasa = async <T>(url: string): Promise<T> => {
+const fetchFromNasa = async <T>(
+  url: string,
+  schema: ZodType<T>,
+): Promise<T> => {
   try {
-    return await $fetch<T>(url);
+    // Validate the upstream shape; a mismatch throws instead of silently
+    // trusting bad data (types stay honest).
+    return schema.parse(await $fetch(url));
   } catch (error) {
     const status = (error as { status?: number }).status ?? 502;
     throw createError({
       statusCode: status,
-      statusMessage: "Failed to fetch data from the NASA APOD API.",
+      statusMessage: "Failed to fetch or validate data from the NASA APOD API.",
     });
   }
 };
@@ -62,8 +73,9 @@ export default defineEventHandler(
       const cached = await storage.getItem<ApodEntry>(cacheKey);
       if (cached) return cached;
 
-      const raw = await fetchFromNasa<ApodApiEntry>(
+      const raw = await fetchFromNasa(
         getApodApi({ date: dateParam }),
+        ApodApiEntrySchema,
       );
       const entry = normalizeEntry(raw);
 
@@ -86,8 +98,9 @@ export default defineEventHandler(
     const cached = await storage.getItem<ApodList>(cacheKey);
     if (cached) return cached;
 
-    const raw = await fetchFromNasa<ApodApiEntry[]>(
+    const raw = await fetchFromNasa(
       getApodApi({ startDate: start, endDate: end }),
+      ApodApiListSchema,
     );
 
     const entries = raw

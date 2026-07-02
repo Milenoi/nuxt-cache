@@ -2,7 +2,7 @@
 import { useRouteQuery } from "@vueuse/router";
 
 // Import static text
-import { apod, menu, common } from "assets/json/static-text.json";
+import { apod, menu, common } from "~/assets/json/static-text.json";
 import type { ApodList, ApodMediaType } from "~/types";
 
 const { listPage, all } = apod;

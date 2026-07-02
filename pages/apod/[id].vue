@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // Import static text
-import { apod, common } from "assets/json/static-text.json";
+import { apod, common } from "~/assets/json/static-text.json";
 import type { ApodEntry } from "~/types";
 
 const { all } = apod;

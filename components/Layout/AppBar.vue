@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 // Import static text
-import { common, menu } from "assets/json/static-text.json";
+import { common, menu } from "~/assets/json/static-text.json";
 
 const drawer = ref(false);
 </script>

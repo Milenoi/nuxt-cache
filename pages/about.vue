@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 // Import static text
-import { about, common } from "assets/json/static-text.json";
+import { about, common } from "~/assets/json/static-text.json";
 </script>
 
 <template>
@@ -19,7 +19,7 @@ import { about, common } from "assets/json/static-text.json";
 
         <p class="text-center mb-8 mb-lg-12">
           The project delves into the intricacies of server-side and client-side
-          caching for Nuxt3 projects. It leverages the official
+          caching for Nuxt 4 projects. It leverages the official
           <NuxtLink
             class="text-orange-darken-2"
             to="https://api.nasa.gov"
@@ -43,7 +43,7 @@ import { about, common } from "assets/json/static-text.json";
             redislabs.com
           </NuxtLink>
           (registration is mandatory, but the subscription plan is free).
-          Integration of Redis directly into Nuxt3 is facilitated, as detailed
+          Integration of Redis directly into Nuxt 4 is facilitated, as detailed
           in the
           <NuxtLink
             class="text-orange-darken-2"
@@ -51,7 +51,7 @@ import { about, common } from "assets/json/static-text.json";
             target="_blank"
             rel="noopener noreferrer"
           >
-            Nuxt3 server documentation
+            Nuxt 4 server documentation
           </NuxtLink>
           .
         </p>

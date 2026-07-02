@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // Import static text
-import { overviewPage, menu } from "assets/json/static-text.json";
+import { overviewPage, menu } from "~/assets/json/static-text.json";
 
 // Seo
 useSeoMeta({
@@ -21,7 +21,7 @@ useSeoMeta({
         cols="12"
         md="7"
       >
-        <v-card :to="menu[api.media].link">
+        <v-card :to="menu[api.media as keyof typeof menu].link">
           <div class="overview-image-container">
             <NuxtPicture
               :src="`/images/${api.media}.jpg`"

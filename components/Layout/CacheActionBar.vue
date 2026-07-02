@@ -2,7 +2,7 @@
 import {useQueryClient} from "@tanstack/vue-query";
 
 // Import static text
-import {common} from "assets/json/static-text.json";
+import {common} from "~/assets/json/static-text.json";
 
 const alertLabel = useState("alert-label", () => "");
 const alertStatus = useState("alert-status", () => false);

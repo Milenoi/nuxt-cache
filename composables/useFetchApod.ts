@@ -23,7 +23,7 @@ export default async function useFetchApod<T = ApodList>(
 
   const fetchApod = async (): Promise<T> => {
     try {
-      return await $fetch<T>(url);
+      return (await $fetch(url)) as T;
     } catch (error) {
       throw createError({
         statusCode: 404,

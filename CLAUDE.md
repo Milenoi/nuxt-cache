@@ -4,7 +4,7 @@ Guidance for Claude Code when working in this repository.
 
 ## Project overview
 
-Nuxt 3 demo application that showcases **multi-layer caching**. It fetches data
+Nuxt 4 demo application that showcases **multi-layer caching**. It fetches data
 from the **NASA APOD API** (Astronomy Picture of the Day), normalizes it on the
 server, and caches the results in **Redis**. On the client, TanStack Vue Query
 adds a second caching layer. The UI is built with Vuetify 3.
@@ -17,7 +17,7 @@ Live demo: https://nuxt-cache-project.netlify.app/ (hosted on Netlify with SSR).
 
 ## Tech stack
 
-- **Nuxt 3** (SSR enabled), Vue 3 `<script setup>`, TypeScript
+- **Nuxt 4** (SSR enabled), Vue 3 `<script setup>`, TypeScript
 - **Vuetify 3** (Material Design 3 blueprint, dark theme default) + MDI icons
 - **TanStack Vue Query** via `@hebilicious/vue-query-nuxt` — client-side query cache
 - **Redis** as Nitro storage driver — server-side response cache

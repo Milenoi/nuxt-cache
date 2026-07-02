@@ -3035,6 +3035,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/node@npm:^26.1.0":
+  version: 26.1.0
+  resolution: "@types/node@npm:26.1.0"
+  dependencies:
+    undici-types: "npm:~8.3.0"
+  checksum: 10c0/61c22ad1ef215e24138cb8b7368fb68bab9de4c123b3f23d411749b015ba1b7d22f878ad54add26a0b69068d7e07c04af665069d8571b6c6c3b9b2fb73b7bd91
+  languageName: node
+  linkType: hard
+
 "@types/resolve@npm:1.20.2":
   version: 1.20.2
   resolution: "@types/resolve@npm:1.20.2"
@@ -7041,6 +7050,7 @@ __metadata:
     "@nuxt/image": "npm:^2.0.0"
     "@tanstack/query-persist-client-core": "npm:^5.29.0"
     "@tanstack/vue-query": "npm:^5.27.5"
+    "@types/node": "npm:^26.1.0"
     "@vueuse/router": "npm:^14.3.0"
     eslint: "npm:^10.6.0"
     husky: "npm:^9.1.7"
@@ -7055,6 +7065,7 @@ __metadata:
     vue-router: "npm:^5.1.0"
     vue-tsc: "npm:^3.3.6"
     vuetify: "npm:^4.1.2"
+    zod: "npm:^4.4.3"
   dependenciesMeta:
     lint-staged:
       optional: true
@@ -9406,6 +9417,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"undici-types@npm:~8.3.0":
+  version: 8.3.0
+  resolution: "undici-types@npm:8.3.0"
+  checksum: 10c0/c8aa7e2fbebfce519654dafadc0ece59be888d2ccaf180fb4495da875e7b536d2456345c384069c7e6f3e9c9ab7435f074957da306f142343eee86ff8048855a
+  languageName: node
+  linkType: hard
+
 "undici@npm:^6.25.0":
   version: 6.27.0
   resolution: "undici@npm:6.27.0"
@@ -10376,5 +10394,12 @@ __metadata:
     compress-commons: "npm:^6.0.2"
     readable-stream: "npm:^4.0.0"
   checksum: 10c0/50f2fb30327fb9d09879abf7ae2493705313adf403e794b030151aaae00009162419d60d0519e807673ec04d442e140c8879ca14314df0a0192de3b233e8f28b
+  languageName: node
+  linkType: hard
+
+"zod@npm:^4.4.3":
+  version: 4.4.3
+  resolution: "zod@npm:4.4.3"
+  checksum: 10c0/7ea31b558e88f9faf44f31dd185e2e1cbf51fed3081787fb96cc2534749b50c0acfc6da7f0922a7353ed092dd358c7d50c28ea96c94d04af64191bd33152eca3
   languageName: node
   linkType: hard

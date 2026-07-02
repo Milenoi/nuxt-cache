@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 // Import static text
-import { common } from "assets/json/static-text.json";
+import { common } from "~/assets/json/static-text.json";
 </script>
 
 <template>
