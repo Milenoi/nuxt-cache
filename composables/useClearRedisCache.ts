@@ -1,14 +1,13 @@
 import type { ClearRedisCacheResponse } from "~/types";
 
 /**
- * A function that asynchronously clears the Redis cache by making a fetch request to the specified API endpoint.
+ * Clear the server-side Redis cache via the POST endpoint.
+ * Uses $fetch (not useFetch) because this runs imperatively from a click handler.
  *
- * @return {Promise<ClearRedisCacheResponse>} The response from the API call to clear the Redis cache.
+ * @return {Promise<ClearRedisCacheResponse>} The API response.
  */
-export default async function useClearRedisCache(): Promise<ClearRedisCacheResponse> {
-  const { data } = await useFetch<ClearRedisCacheResponse>(
-    "/api/clear-redis-cache",
-  );
-
-  return data.value as ClearRedisCacheResponse;
+export default function useClearRedisCache(): Promise<ClearRedisCacheResponse> {
+  return $fetch<ClearRedisCacheResponse>("/api/clear-redis-cache", {
+    method: "POST",
+  });
 }
