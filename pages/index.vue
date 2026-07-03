@@ -1,20 +1,23 @@
 <script setup lang="ts">
 // Import static text
 import { overviewPage, menu } from "~/assets/json/static-text.json";
+import type { ApodList } from "~/types";
 
 // Seo
 useSeoMeta({
   title: "Overview - Nuxt Cache",
 });
+
+// Pull the latest APOD so the hero itself is delivered through Redis + TanStack.
+const { data: apodData } = await useFetchApod<ApodList>();
+const latestApod = computed(
+  () => apodData.value?.entries?.find((entry) => entry.mediaType === "image") ?? null,
+);
 </script>
 
 <template>
   <v-container tag="section" class="overview-container">
-    <h1 class="d-none d-sm-block text-h4 text-sm-h2 pa-2 mb-8 mx-auto text-center">
-      {{ overviewPage.title }}
-    </h1>
-
-    <v-row justify="center">
+    <v-row justify="center" align="center">
       <v-col
         v-for="(api, index) in overviewPage.api"
         :key="index"
@@ -23,12 +26,13 @@ useSeoMeta({
       >
         <v-card :to="menu[api.media as keyof typeof menu].link">
           <div class="overview-image-container">
+            <ApiLogo :logo="apodData?.redis ? 'redis' : 'nasa'" />
             <NuxtPicture
-              :src="`/images/${api.media}.jpg`"
-              width="612"
-              height="381"
-              sizes="xs:927px sm:452px md:612px"
-              :img-attrs="{ class: 'overview-image', alt: api.meta }"
+              :src="latestApod?.url ?? `/images/${api.media}.jpg`"
+              width="1280"
+              height="720"
+              sizes="xs:100vw md:900px"
+              :img-attrs="{ class: 'overview-image', alt: latestApod?.title ?? api.meta }"
             />
 
             <img
@@ -62,7 +66,7 @@ useSeoMeta({
 
 <style lang="scss">
 .overview-container {
-  max-width: 1280px !important;
+  max-width: 1520px !important;
   /* Fill the viewport so the landing page doesn't scroll.
      v-main already offsets the app-bar (top) and footer (bottom). */
   min-height: calc(100dvh - 112px);
@@ -84,8 +88,9 @@ useSeoMeta({
 
 .overview-image {
   width: 100%;
-  /* Scale with the viewport height, bounded by a min/max instead of a fixed size. */
-  height: clamp(160px, 38vh, 500px);
+  /* One fixed aspect ratio everywhere — no per-viewport crop changes. */
+  aspect-ratio: 16 / 9;
+  height: auto;
   object-fit: cover;
   filter: grayscale(30%);
   transition: filter 400ms ease;

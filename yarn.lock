@@ -2971,12 +2971,31 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tanstack/query-devtools@npm:5.101.2":
+  version: 5.101.2
+  resolution: "@tanstack/query-devtools@npm:5.101.2"
+  checksum: 10c0/d874046aebb4d7e09f33d5f4b7d0c3dafbd47d8c4d5e5ef4896cbb4997be625a0e7dd7f42fa8ea7ce1123e95a76d8e67bc811ef2d53e329b5694d22cb714c75b
+  languageName: node
+  linkType: hard
+
 "@tanstack/query-persist-client-core@npm:^5.29.0":
   version: 5.101.2
   resolution: "@tanstack/query-persist-client-core@npm:5.101.2"
   dependencies:
     "@tanstack/query-core": "npm:5.101.2"
   checksum: 10c0/a57f9046a19cebc21ce30c367eca679b5063e6a357f2395bb06e5858c8e6e1df68cae33a148a16b6d33e037a30e9bb0b13eae3d9e0b8d484de8221d3a3189437
+  languageName: node
+  linkType: hard
+
+"@tanstack/vue-query-devtools@npm:^6.1.36":
+  version: 6.1.36
+  resolution: "@tanstack/vue-query-devtools@npm:6.1.36"
+  dependencies:
+    "@tanstack/query-devtools": "npm:5.101.2"
+  peerDependencies:
+    "@tanstack/vue-query": ^5.101.2
+    vue: ^3.3.0
+  checksum: 10c0/14f6524cabb675b26f3b50feb0ea5daae4ab274a5ba8d9de4e7b8b70ea31d4a8ffab9f2416c2add7aff9eb6bb5625df6a68d16dda06616e5ae60941c213c10e8
   languageName: node
   linkType: hard
 
@@ -7050,6 +7069,7 @@ __metadata:
     "@nuxt/image": "npm:^2.0.0"
     "@tanstack/query-persist-client-core": "npm:^5.29.0"
     "@tanstack/vue-query": "npm:^5.27.5"
+    "@tanstack/vue-query-devtools": "npm:^6.1.36"
     "@types/node": "npm:^26.1.0"
     "@vueuse/router": "npm:^14.3.0"
     eslint: "npm:^10.6.0"

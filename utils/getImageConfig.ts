@@ -1,7 +1,8 @@
-const imageConfigDefault = {
+const shared = {
   quality: 80,
-  domains: ["apod.nasa.gov", "img.youtube.com", "i.ytimg.com"],
   format: ["avif", "webp"],
+  // Allowlist for transforming remote images (also mirrored in netlify.toml).
+  domains: ["apod.nasa.gov", "img.youtube.com", "i.ytimg.com"],
   screens: {
     xs: 600,
     sm: 960,
@@ -11,17 +12,11 @@ const imageConfigDefault = {
   },
 };
 
-const netflifyImageConfig = {
-  provider: "netlify",
-  netlify: {
-    baseURl: process.env.IMAGES_URL,
-  },
-  ...imageConfigDefault,
-};
-
+// Production (Netlify) → Netlify Image CDN (/.netlify/images) at the edge, no
+// serverless IPX. Local `nuxt dev` → IPX, since /.netlify/images isn't available.
 const imageConfig =
   process.env.NODE_ENV === "development"
-    ? imageConfigDefault
-    : netflifyImageConfig;
+    ? shared
+    : { provider: "netlify", ...shared };
 
 export default imageConfig;

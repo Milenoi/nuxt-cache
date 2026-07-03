@@ -99,6 +99,21 @@ import { about, common } from "~/assets/json/static-text.json";
           .
         </p>
 
+        <p class="text-center mb-8 mb-lg-12">
+          Images are optimized responsively with
+          <NuxtLink
+            to="https://image.nuxt.com/"
+            target="_blank"
+            class="text-orange-darken-2"
+            rel="noopener noreferrer"
+          >
+            @nuxt/image</NuxtLink>: during development they run through the built-in
+          IPX optimizer, while in production they are served by Netlify's Image CDN,
+          which generates AVIF/WebP variants on the fly at the edge. On top of that,
+          the static pages send <code>stale-while-revalidate</code> cache headers so
+          the CDN can serve them instantly while refreshing in the background.
+        </p>
+
         <p class="text-center mb-12 mb-lg-12">
           You can clearly see that the site is much faster due to the caching
           mechanisms used. Enjoy playing around with it. In the future, I intend

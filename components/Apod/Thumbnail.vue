@@ -15,7 +15,7 @@ defineProps<{ entry: ApodEntry }>();
       :src="entry.url"
       width="567"
       height="319"
-      sizes="xs:567px sm:452px md:273px lg:424px xl:574px"
+      sizes="xs:100vw sm:50vw md:33vw lg:25vw"
       :img-attrs="{ class: 'img-fit', alt: entry.title, loading: 'lazy' }"
     />
 
@@ -25,7 +25,7 @@ defineProps<{ entry: ApodEntry }>();
       :src="entry.thumbnailUrl"
       width="567"
       height="319"
-      sizes="xs:567px sm:452px md:273px lg:424px xl:574px"
+      sizes="xs:100vw sm:50vw md:33vw lg:25vw"
       :img-attrs="{ class: 'img-fit', alt: entry.title, loading: 'lazy' }"
     />
 

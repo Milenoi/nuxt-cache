@@ -70,6 +70,13 @@ useHead({
     },
   ],
 });
+
+// Vue Query Devtools — dev only, lazy-loaded so it is tree-shaken out of prod.
+const VueQueryDevtools = import.meta.dev
+  ? defineAsyncComponent(() =>
+      import("@tanstack/vue-query-devtools").then((m) => m.VueQueryDevtools),
+    )
+  : null;
 </script>
 
 <template>
@@ -83,6 +90,9 @@ useHead({
   <NuxtLayout>
     <v-app>
       <NuxtPage />
+      <ClientOnly>
+        <component :is="VueQueryDevtools" v-if="VueQueryDevtools" />
+      </ClientOnly>
     </v-app>
   </NuxtLayout>
 </template>
@@ -98,6 +108,15 @@ useHead({
    64px once Vuetify measures the layout on hydration. */
 .v-main {
   padding-top: 64px !important;
+}
+
+/* Cap header content AND page content to the same column so their edges align
+   and nothing stretches edge to edge on ultra-wide screens. */
+.v-toolbar__content,
+.v-main .v-container {
+  max-width: 1520px;
+  margin-inline: auto;
+  width: 100%;
 }
 
 /* The landing page fills the viewport and doesn't scroll, so it doesn't need

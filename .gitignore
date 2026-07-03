@@ -18,6 +18,9 @@ logs
 .fleet
 .idea
 
+# Local AI assistant notes (not shared)
+CLAUDE.md
+
 # Local env files
 .env
 .env.*

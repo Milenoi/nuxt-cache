@@ -72,6 +72,7 @@ const invalidateQuery = () => {
     bottom: 0;
     width: 100%;
     padding-top: 30px;
+    padding-inline: 24px;
     padding-bottom: 72px; /* clear the 48px fixed footer */
 
     &::before {
