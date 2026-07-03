@@ -39,8 +39,8 @@ const latestApod = computed(
               width="1280"
               height="720"
               sizes="xs:100vw md:900px"
-              quality="50"
-              preload
+              quality="40"
+              :preload="{ fetchPriority: 'high' }"
               :img-attrs="{
                 class: 'overview-image',
                 alt: latestApod?.title ?? api.meta,

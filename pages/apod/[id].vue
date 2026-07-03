@@ -65,7 +65,7 @@ const embed = computed(() =>
               width="1000"
               height="657"
               sizes="xs:927px sm:868px md:1000px"
-              quality="50"
+              quality="40"
               :img-attrs="{ class: 'img-fit-detail', alt: item.title }"
             />
 

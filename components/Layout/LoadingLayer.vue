@@ -18,7 +18,13 @@ const logoSrc = computed(() =>
       <span class="loader" />
       <span class="loading-text">
         {{ common.isFetchingFromLabel }} {{ source }}
-        <img :src="logoSrc" :alt="source" class="source-logo">
+        <img
+          :src="logoSrc"
+          :alt="source"
+          class="source-logo"
+          :width="redisCleared ? 110 : 369"
+          :height="redisCleared ? 92 : 126"
+        >
       </span>
     </div>
   </div>

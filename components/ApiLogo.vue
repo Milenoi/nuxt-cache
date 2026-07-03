@@ -21,6 +21,8 @@ defineProps<{
         alt="Served from the TanStack Query client cache"
         title="Served from the TanStack Query client cache"
         class="cache-badge tanstack-badge"
+        width="3178"
+        height="660"
       >
     </Transition>
     <!-- keyed by source so switching redis <-> nasa cross-fades instead of a hard swap -->
@@ -32,6 +34,8 @@ defineProps<{
         :title="`Server source: ${serverSource}`"
         class="cache-badge"
         :class="`${serverSource}-badge`"
+        :width="serverSource === 'nasa' ? 110 : 369"
+        :height="serverSource === 'nasa' ? 92 : 126"
       >
     </Transition>
   </div>
