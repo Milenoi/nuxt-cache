@@ -39,7 +39,14 @@ const latestApod = computed(
               width="1280"
               height="720"
               sizes="xs:100vw md:900px"
-              :img-attrs="{ class: 'overview-image', alt: latestApod?.title ?? api.meta }"
+              quality="50"
+              preload
+              :img-attrs="{
+                class: 'overview-image',
+                alt: latestApod?.title ?? api.meta,
+                fetchpriority: 'high',
+                loading: 'eager',
+              }"
             />
 
             <img
