@@ -4,8 +4,9 @@
     "clearRedisCacheShort": "Clear Cache",
     "invalidate": "Vue Query: Invalidate Cache",
     "invalidateShort": "Invalidate",
-    "isFetchingNowLabel": "...Fetching data now",
+    "isFetchingFromLabel": "...Fetching data from",
     "backLabel": "Back",
+    "howItWorks": "How it works",
     "projectTitle": "Nuxt Cache Project"
   },
   "menu": {

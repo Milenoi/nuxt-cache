@@ -9,7 +9,11 @@ useSeoMeta({
 });
 
 // Pull the latest APOD so the hero itself is delivered through Redis + TanStack.
-const { data: apodData } = await useFetchApod<ApodList>();
+const {
+  data: apodData,
+  serverSource,
+  fromClientCache,
+} = await useFetchApod<ApodList>();
 const latestApod = computed(
   () => apodData.value?.entries?.find((entry) => entry.mediaType === "image") ?? null,
 );
@@ -26,7 +30,10 @@ const latestApod = computed(
       >
         <v-card :to="menu[api.media as keyof typeof menu].link">
           <div class="overview-image-container">
-            <ApiLogo :logo="apodData?.redis ? 'redis' : 'nasa'" />
+            <ApiLogo
+              :server-source="serverSource"
+              :from-client-cache="fromClientCache"
+            />
             <NuxtPicture
               :src="latestApod?.url ?? `/images/${api.media}.jpg`"
               width="1280"

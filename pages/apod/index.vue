@@ -11,6 +11,8 @@ const { listPage, all } = apod;
 // Fetch APOD list
 const {
   data: apodData,
+  serverSource,
+  fromClientCache,
   isLoading,
   isFetching,
   isPending,
@@ -84,7 +86,10 @@ const filteredEntries = computed(() => {
         >
           <v-card :to="`${menu.apod.link}/${entry.date}`" class="h-100">
             <div class="image-container">
-              <ApiLogo :logo="apodData.redis ? 'redis' : 'nasa'" />
+              <ApiLogo
+                :server-source="serverSource"
+                :from-client-cache="fromClientCache"
+              />
               <ApodThumbnail :entry="entry" />
             </div>
 

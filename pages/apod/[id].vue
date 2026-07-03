@@ -12,6 +12,8 @@ const route = useRoute();
 // Fetch a single APOD entry by date
 const {
   data: item,
+  serverSource,
+  fromClientCache,
   isLoading,
   isFetching,
   isPending,
@@ -51,7 +53,10 @@ const embed = computed(() =>
       <v-col>
         <v-card class="h-100 mx-auto" max-width="1000">
           <div class="position-relative">
-            <ApiLogo :logo="item.redis ? 'redis' : 'nasa'" />
+            <ApiLogo
+              :server-source="serverSource"
+              :from-client-cache="fromClientCache"
+            />
 
             <!-- Image -->
             <NuxtPicture

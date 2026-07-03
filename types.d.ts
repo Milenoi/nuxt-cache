@@ -14,6 +14,9 @@ export interface ApodQueryParams {
 
 export type ApodMediaType = "image" | "video" | "other";
 
+/** Where the server got the current APOD data (for the source badge). */
+export type ApodSource = "redis" | "nasa";
+
 /** Normalized entry consumed by the UI. */
 export interface ApodEntry {
     date: string;

@@ -8,32 +8,49 @@ import {common} from "~/assets/json/static-text.json";
 const alertLabel = useState("alert-label", () => "");
 const alertStatus = useState("alert-status", () => false);
 const showAlert = useState("alert-show", () => false);
+// Shared with useFetchApod: flips the badge to "nasa" after Redis is cleared.
+const redisCleared = useState("redis-cleared", () => false);
+// Duration of the last real fetch (ms), written by useFetchApod.
+const lastFetchMs = useState<number | null>("last-fetch-ms", () => null);
 
-const clearRedisCache = async () => {
-    try {
-        const data = await useClearRedisCache();
-
-        alertLabel.value = data.message;
-        alertStatus.value = data.status === 200;
-    } catch (error) {
-        alertLabel.value = "Something went wrong. Redis Cache was not cleared.";
-        alertStatus.value = false;
-
-        console.log(error)
-    } finally {
-        showAlert.value = true;
-
-        setTimeout(() => {
-            showAlert.value = false;
-        }, 5000);
-    }
-};
-
-// Get QueryClient from the context
 const queryClient = useQueryClient();
 
-const invalidateQuery = () => {
-    queryClient.invalidateQueries();
+const flashAlert = (message: string, ok: boolean) => {
+  alertLabel.value = message;
+  alertStatus.value = ok;
+  showAlert.value = true;
+  setTimeout(() => {
+    showAlert.value = false;
+  }, 5000);
+};
+
+const clearRedisCache = async () => {
+  try {
+    const data = await useClearRedisCache();
+    const ok = data.status === 200;
+    flashAlert(data.message, ok);
+    // Redis is now empty → flip the badge to "nasa" straight away (no refetch,
+    // no reload). The next "Invalidate" then really fetches from NASA.
+    if (ok) redisCleared.value = true;
+  } catch {
+    flashAlert("Something went wrong. Redis cache was not cleared.", false);
+  }
+};
+
+const invalidateQuery = async () => {
+  // Await the refetch so we can report where the fresh data actually came from
+  // (Redis if it's populated, otherwise straight from the NASA API). During the
+  // fetch the "redisCleared" flag still drives the loader label; only afterwards
+  // do we hand the badge back to the real data.redis flag.
+  await queryClient.invalidateQueries();
+  redisCleared.value = false;
+  const cached = queryClient.getQueryData<{ redis?: string }>(["apod"]);
+  const from = cached?.redis ? "Redis" : "NASA";
+  const timing =
+    lastFetchMs.value !== null
+      ? ` in ${(lastFetchMs.value / 1000).toFixed(2)} s`
+      : "";
+  flashAlert(`Refetched from ${from}${timing}.`, true);
 };
 </script>
 

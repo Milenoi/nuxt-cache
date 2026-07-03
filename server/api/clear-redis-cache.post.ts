@@ -10,7 +10,7 @@ export default defineEventHandler(async () => {
 
     return {
       status: 200,
-      message: `Cleared ${keys.length} cached entries. Refresh to see the changes.`,
+      message: `Cleared ${keys.length} cached entries — the next fetch will hit NASA.`,
     };
   } catch {
     return {

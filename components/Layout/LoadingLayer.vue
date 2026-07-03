@@ -1,13 +1,25 @@
 <script lang="ts" setup>
 // Import static text
 import { common } from "~/assets/json/static-text.json";
+
+// Redis is only ever empty right after a manual clear (otherwise the key lives
+// for 24h), so the next fetch source is predictable: NASA after a clear, else
+// Redis — matching what the badge will show once the data arrives.
+const redisCleared = useState("redis-cleared", () => false);
+const source = computed(() => (redisCleared.value ? "NASA" : "Redis"));
+const logoSrc = computed(() =>
+  redisCleared.value ? "/favicon.svg" : "/svg/redis.svg",
+);
 </script>
 
 <template>
   <div class="loading-modal">
     <div class="loading-modal-inner">
       <span class="loader" />
-      {{ common.isFetchingNowLabel }}
+      <span class="loading-text">
+        {{ common.isFetchingFromLabel }} {{ source }}
+        <img :src="logoSrc" :alt="source" class="source-logo">
+      </span>
     </div>
   </div>
 </template>
@@ -22,6 +34,17 @@ import { common } from "~/assets/json/static-text.json";
   z-index: 100;
   inset: 0;
   background: rgb(0 0 0 / 80%);
+}
+
+.loading-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.source-logo {
+  height: 22px;
+  width: auto;
 }
 
 .loader {
