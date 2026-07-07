@@ -63,7 +63,6 @@ const embed = computed(() =>
               v-if="item.mediaType === 'image'"
               :src="item.hdurl || item.url"
               width="1000"
-              height="657"
               sizes="xs:927px sm:868px md:1000px"
               quality="80"
               :img-attrs="{ class: 'img-fit-detail', alt: item.title }"
