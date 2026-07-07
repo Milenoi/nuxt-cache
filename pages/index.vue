@@ -35,7 +35,7 @@ const latestApod = computed(
               :from-client-cache="fromClientCache"
             />
             <NuxtPicture
-              :src="latestApod?.url ?? `/images/${api.media}.jpg`"
+              :src="latestApod?.hdurl ?? latestApod?.url ?? `/images/${api.media}.jpg`"
               width="1280"
               height="720"
               sizes="xs:100vw md:900px"
