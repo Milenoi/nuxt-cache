@@ -40,6 +40,7 @@ const latestApod = computed(
               height="720"
               sizes="xs:100vw md:900px"
               quality="80"
+              fit="cover"
               :preload="{ fetchPriority: 'high' }"
               :img-attrs="{
                 class: 'overview-image',
