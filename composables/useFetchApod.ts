@@ -33,16 +33,33 @@ export default async function useFetchApod<T = ApodList>(
   // Duration of the last real fetch (ms) — a Redis hit is far faster than a
   // fresh NASA round-trip, which makes the cache benefit visible.
   const lastFetchMs = useState<number | null>("last-fetch-ms", () => null);
+  // Source of the last real fetch (redis hit vs fresh from NASA). Read by the
+  // cache footer so "Refetched from X" is correct on every page (list AND
+  // detail), instead of always inspecting the list query key.
+  const lastFetchSource = useState<ApodSource>("last-fetch-source", () => "nasa");
 
   const fetchApod = async (): Promise<T> => {
     const start = performance.now();
     try {
-      const result = (await $fetch(url)) as T;
+      // Cast around the typed-route overloads: `url` is a dynamic string, which
+      // makes the typed $fetch recurse ("excessive stack depth").
+      const result = await ($fetch as (u: string) => Promise<T>)(url);
       lastFetchMs.value = Math.round(performance.now() - start);
+      const isRedisHit = !!(result as { redis?: string })?.redis;
+      lastFetchSource.value = isRedisHit ? "redis" : "nasa";
+      // A real Redis hit means the cache is warm again — clear the "cleared" flag
+      // so the loader/badge stop predicting NASA.
+      if (isRedisHit) redisCleared.value = false;
       return result;
     } catch (error) {
+      // Preserve the real upstream status (fetchFromNasa already forwards
+      // 404/429/502/…) instead of masking everything as "Not Found".
+      const statusCode =
+        (error as { statusCode?: number; status?: number }).statusCode ??
+        (error as { status?: number }).status ??
+        500;
       throw createError({
-        statusCode: 404,
+        statusCode,
         message: (error as Error).message,
         fatal: true,
       });

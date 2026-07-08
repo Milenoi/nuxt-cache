@@ -8,10 +8,13 @@ export default defineEventHandler(async () => {
     const keys = await storage.getKeys("apod");
     await Promise.all(keys.map((key) => storage.removeItem(key)));
 
-    return {
-      status: 200,
-      message: `Cleared ${keys.length} cached entries — the next fetch will hit NASA.`,
-    };
+    const count = keys.length;
+    const message =
+      count === 0
+        ? "Redis cache is already empty — the next fetch will hit NASA."
+        : `Cleared ${count} cached ${count === 1 ? "entry" : "entries"} — the next fetch will hit NASA.`;
+
+    return { status: 200, message };
   } catch {
     return {
       status: 500,

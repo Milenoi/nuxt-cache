@@ -1,122 +1,113 @@
 <script setup lang="ts">
-import { mdiArrowLeft, mdiViewGrid, mdiImage, mdiPlayCircle } from "@mdi/js";
 import { useRouteQuery } from "@vueuse/router";
-
-// Import static text
-import { apod, menu, common } from "~/assets/json/static-text.json";
+import { apod } from "~/assets/json/static-text.json";
 import type { ApodList, ApodMediaType } from "~/types";
 
 const { listPage, all } = apod;
 
-// Fetch APOD list
-const {
-  data: apodData,
-  serverSource,
-  fromClientCache,
-  isLoading,
-  isFetching,
-  isPending,
-} = await useFetchApod<ApodList>();
+const { data, serverSource, isPending } = await useFetchApod<ApodList>();
 
-// Seo
 useSeoMeta({
-  title: "Astronomy Picture of the Day - Nuxt Cache",
+  title: "Recent captures - Nuxt Cache",
+  description:
+    "Browse the last 60 days of NASA's Astronomy Picture of the Day — images and videos, served instantly from Redis and TanStack Vue Query.",
+  ogTitle: "Recent captures — Nuxt Cache",
+  ogDescription:
+    "The last 60 days of NASA's Astronomy Picture of the Day, filterable by images and videos and served from cache.",
+  twitterTitle: "Recent captures — Nuxt Cache",
+  twitterDescription:
+    "The last 60 days of NASA's Astronomy Picture of the Day, filterable by images and videos and served from cache.",
 });
 
-// Media-type filter (all / image / video), synced to the URL query
+// Media-type filter (all / image / video), synced to the URL query.
 const mediaFilter = useRouteQuery<"all" | ApodMediaType>("type", "all", {
   mode: "push",
 });
 
-const filters: { value: "all" | ApodMediaType; label: string; icon: string }[] =
-  [
-    { value: "all", label: all.filterAll, icon: mdiViewGrid },
-    { value: "image", label: all.filterImages, icon: mdiImage },
-    { value: "video", label: all.filterVideos, icon: mdiPlayCircle },
-  ];
+const filters = [
+  { value: "all", label: all.filterAll },
+  { value: "image", label: all.filterImages },
+  { value: "video", label: all.filterVideos },
+] as const;
 
 const filteredEntries = computed(() => {
-  const entries = apodData.value?.entries ?? [];
-
+  const entries = data.value?.entries ?? [];
   if (mediaFilter.value === "image" || mediaFilter.value === "video") {
     return entries.filter((entry) => entry.mediaType === mediaFilter.value);
   }
-
   return entries;
 });
 </script>
 
 <template>
-  <LoadingIndicator v-if="isFetching || isLoading || isPending" />
-
-  <v-container v-else-if="apodData" tag="section" class="my-8">
-    <p class="text-center mb-4 mb-lg-12">
-      <v-btn to="/" :prepend-icon="mdiArrowLeft">
-        {{ common.backLabel }}
-      </v-btn>
-    </p>
-
-    <h1 class="text-h4 text-sm-h2 pa-2 mb-4 mx-auto text-center">
-      {{ listPage.title }}
-    </h1>
-
-    <v-row class="d-flex justify-center mb-8">
-      <v-chip-group v-model="mediaFilter" mandatory selected-class="apod-chip-active">
-        <v-chip
-          v-for="filter in filters"
-          :key="filter.value"
-          :value="filter.value"
-          class="ma-2 rounded-lg"
+  <section
+    class="container mx-auto min-h-screen px-5 pb-40 pt-32 md:px-8 [animation:fadeUp_0.4s_ease]"
+  >
+    <!-- Header: tagline + heading, with the segmented media filter -->
+    <div class="mb-10 flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <div class="mb-3 text-[15px] font-medium tracking-[0.01em] text-text-muted">
+          {{ listPage.title }}
+        </div>
+        <h1
+          class="m-0 font-serif text-[clamp(42px,5.4vw,68px)] font-normal leading-none tracking-tight"
         >
-          <v-icon :icon="filter.icon" class="mr-2" />
-          {{ filter.label }}
-        </v-chip>
-      </v-chip-group>
-    </v-row>
+          {{ listPage.heading }}
+        </h1>
+      </div>
 
-    <v-row v-if="filteredEntries.length > 0">
-      <transition-group name="fade">
-        <v-col
-          v-for="entry in filteredEntries"
-          :key="entry.date"
-          cols="12"
-          sm="6"
-          md="4"
-          lg="3"
+      <div
+        role="group"
+        aria-label="Filter by media type"
+        class="inline-flex items-center gap-1 rounded-[11px] border border-[#1c1c20] bg-[#0e0e11] p-1"
+      >
+        <button
+          v-for="f in filters"
+          :key="f.value"
+          type="button"
+          :aria-pressed="mediaFilter === f.value"
+          class="rounded-lg px-4 py-2 text-[13px] font-medium leading-none transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          :class="
+            mediaFilter === f.value
+              ? 'bg-accent text-foreground'
+              : 'text-text-secondary hover:text-foreground'
+          "
+          @click="mediaFilter = f.value"
         >
-          <v-card :to="`${menu.apod.link}/${entry.date}`" class="h-100">
-            <div class="image-container">
-              <ApiLogo
-                :server-source="serverSource"
-                :from-client-cache="fromClientCache"
-              />
-              <ApodThumbnail :entry="entry" />
-            </div>
+          {{ f.label }}
+        </button>
+      </div>
+    </div>
 
-            <v-card-item>
-              <v-card-title>
-                {{ entry.title }}
-              </v-card-title>
-              <v-card-subtitle>
-                {{ all.fromLabel }} {{ entry.formattedDate }}
-              </v-card-subtitle>
-            </v-card-item>
-            <v-card-text v-if="entry.copyright">
-              <p class="mb-4 text-grey-lighten-1">© {{ entry.copyright }}</p>
-            </v-card-text>
-          </v-card>
-        </v-col>
-      </transition-group>
-    </v-row>
-    <v-row v-else>
-      <p class="text-center w-100">{{ all.noResult }}</p>
-    </v-row>
-  </v-container>
+    <!-- Loading skeletons -->
+    <div
+      v-if="isPending"
+      class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3"
+    >
+      <div
+        v-for="n in 6"
+        :key="n"
+        class="overflow-hidden rounded-2xl border border-[#17171a] bg-surface-card"
+      >
+        <UiSkeleton class="aspect-[3/2] w-full rounded-none" />
+        <div class="space-y-2 p-4">
+          <UiSkeleton class="h-3 w-2/3" />
+          <UiSkeleton class="h-2.5 w-2/5" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Grid -->
+    <ul
+      v-else-if="filteredEntries.length"
+      class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3"
+    >
+      <li v-for="entry in filteredEntries" :key="entry.date">
+        <ApodCard :entry="entry" :server-source="serverSource" />
+      </li>
+    </ul>
+
+    <!-- Empty -->
+    <p v-else class="text-text-muted">{{ all.noResult }}</p>
+  </section>
 </template>
-
-<style lang="scss" scoped>
-.apod-chip-active {
-  background-color: #f57c00;
-  color: #fff;
-}
-</style>

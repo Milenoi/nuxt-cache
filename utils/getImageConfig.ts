@@ -3,12 +3,13 @@ const shared = {
   format: ["avif", "webp"],
   // Allowlist for transforming remote images (also mirrored in netlify.toml).
   domains: ["apod.nasa.gov", "img.youtube.com", "i.ytimg.com"],
+  // Page is capped at 1920, so no image ever needs to be wider than that.
   screens: {
     xs: 600,
     sm: 960,
     md: 1280,
-    lg: 1920,
-    xl: 2400,
+    lg: 1600,
+    xl: 1920,
   },
 };
 

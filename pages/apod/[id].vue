@@ -1,135 +1,166 @@
 <script setup lang="ts">
-import { mdiArrowLeft } from "@mdi/js";
-
-// Import static text
+import { ArrowLeft } from "lucide-vue-next";
 import { apod, common } from "~/assets/json/static-text.json";
 import type { ApodEntry } from "~/types";
 
-const { all } = apod;
+const { all, listPage } = apod;
 
 const route = useRoute();
+const id = route.params.id as string;
 
-// Fetch a single APOD entry by date
-const {
-  data: item,
-  serverSource,
-  fromClientCache,
-  isLoading,
-  isFetching,
-  isPending,
-} = await useFetchApod<ApodEntry>(route.params.id as string);
+// The slug is a date. Reject anything else with a real 404 page (otherwise the
+// failed fetch is swallowed by vue-query's suspense and the page renders blank).
+if (!/^\d{4}-\d{2}-\d{2}$/.test(id)) {
+  throw createError({
+    statusCode: 404,
+    statusMessage: "Page not found.",
+    fatal: true,
+  });
+}
 
-// Seo
+// Fetch a single APOD entry by date.
+const { data: item, serverSource } = await useFetchApod<ApodEntry>(id);
+
+const seoDescription = computed(() => {
+  const text = item.value?.explanation ?? "";
+  return text.length > 200 ? `${text.slice(0, 197).trimEnd()}…` : text;
+});
+
 useSeoMeta({
-  title: () => `${item.value?.title ?? "Astronomy Picture of the Day"} - Nuxt Cache`,
+  title: () =>
+    `${item.value?.title ?? "Astronomy Picture of the Day"} - Nuxt Cache`,
+  description: () => seoDescription.value,
+  ogTitle: () => item.value?.title ?? "Astronomy Picture of the Day",
+  ogDescription: () => seoDescription.value,
+  ogImage: () => item.value?.thumbnailUrl || item.value?.url,
+  twitterTitle: () => item.value?.title ?? "Astronomy Picture of the Day",
+  twitterDescription: () => seoDescription.value,
+  twitterImage: () => item.value?.thumbnailUrl || item.value?.url,
 });
 
 const embed = computed(() =>
   item.value?.mediaType === "video" ? getApodEmbed(item.value.url) : null,
 );
+
+// NASA delivers the explanation as one blob — split it into readable paragraphs
+// of ~2 sentences each.
+const paragraphs = computed(() => {
+  const text = item.value?.explanation ?? "";
+  const sentences = text.match(/[^.!?]+[.!?]+["')\]]?(?:\s|$)/g) ?? [text];
+  const groups: string[] = [];
+  for (let i = 0; i < sentences.length; i += 2) {
+    groups.push(sentences.slice(i, i + 2).join(" ").trim());
+  }
+  return groups.filter(Boolean);
+});
 </script>
 
 <template>
-  <LoadingIndicator v-if="isFetching || isLoading || isPending" />
+  <section
+    v-if="item"
+    class="container mx-auto min-h-screen px-5 pb-40 pt-32 md:px-8 [animation:fadeUp_0.4s_ease]"
+  >
+   <div class="text-center lg:text-left">
+    <NuxtLink
+      to="/apod"
+      class="mb-8 inline-flex items-center gap-2 text-sm text-text-muted transition-colors hover:text-foreground"
+    >
+      <ArrowLeft class="h-4 w-4" />
+      {{ common.backLabel }}
+    </NuxtLink>
 
-  <v-container v-else-if="item" tag="section" class="my-8">
-    <p class="text-center mb-4 mb-lg-12">
-      <v-btn to="/apod" :prepend-icon="mdiArrowLeft">
-        {{ common.backLabel }}
-      </v-btn>
-    </p>
-
+    <div class="mb-3 text-[15px] font-medium tracking-[0.01em] text-text-muted">
+      {{ listPage.title }}
+    </div>
     <h1
-      class="text-h4 text-sm-h2 pa-2 mb-4 mx-auto text-center detail-page-headline"
+      class="m-0 mx-auto max-w-[80%] text-balance text-center font-serif text-[clamp(34px,4.6vw,56px)] font-normal leading-tight tracking-tight lg:mx-0 lg:max-w-none lg:text-left"
     >
       {{ item.title }}
     </h1>
-
-    <p class="text-center mb-12 mx-auto detail-page-description">
+    <p class="mb-8 mt-3 text-sm text-text-faint">
       {{ all.fromLabel }} {{ item.formattedDate }}
     </p>
 
-    <v-row>
-      <v-col>
-        <v-card class="h-100 mx-auto" max-width="1000">
-          <div class="position-relative">
-            <ApiLogo
-              :server-source="serverSource"
-              :from-client-cache="fromClientCache"
-            />
+    <!-- Body: image (left) + narrow description column (right) on lg+ -->
+    <div class="mt-8 grid gap-8 text-center lg:grid-cols-[1fr_320px] lg:items-start lg:text-left">
+     <div>
+      <!-- Media -->
+      <div
+        class="relative overflow-hidden rounded-2xl border border-[#17171a] bg-surface-card"
+      >
+        <ApodCacheBadge
+        :server-source="serverSource"
+        class="absolute left-3 top-3 z-10"
+      />
 
-            <!-- Image -->
-            <NuxtPicture
-              v-if="item.mediaType === 'image'"
-              :src="item.hdurl || item.url"
-              width="1000"
-              sizes="xs:927px sm:868px md:1000px"
-              quality="80"
-              :img-attrs="{ class: 'img-fit-detail', alt: item.title }"
-            />
+      <!-- Image: full natural-ratio width on mobile; fixed 3:2 (contain) only in
+           the 2-column layout, where a reserved box keeps the grid aligned. -->
+      <div v-if="item.mediaType === 'image'" class="w-full lg:aspect-[3/2]">
+        <NuxtImg
+          :src="item.hdurl || item.url"
+          :alt="item.title"
+          width="1200"
+          sizes="100vw lg:1120px"
+          densities="x1"
+          format="avif"
+          quality="80"
+          :placeholder="[80, 53, 40, 6]"
+          class="block h-auto w-full lg:h-full lg:object-contain"
+        />
+      </div>
 
-            <!-- Video: embeddable provider (YouTube / Vimeo) -->
-            <div
-              v-else-if="
-                embed && (embed.type === 'youtube' || embed.type === 'vimeo')
-              "
-              class="apod-embed"
-            >
-              <iframe
-                :src="embed.src"
-                title="APOD video"
-                frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen
-              />
-            </div>
+      <!-- Video: embeddable provider (YouTube / Vimeo), 16:9 reserved -->
+      <div
+        v-else-if="embed && (embed.type === 'youtube' || embed.type === 'vimeo')"
+        class="aspect-video w-full"
+      >
+        <iframe
+          :src="embed.src"
+          title="APOD video"
+          class="h-full w-full"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+        />
+      </div>
 
-            <!-- Video: direct media file -->
-            <video
-              v-else-if="embed && embed.type === 'file'"
-              :src="embed.src"
-              class="img-fit-detail"
-              controls
-              playsinline
-            />
+      <!-- Video: direct media file, 16:9 reserved -->
+      <div v-else-if="embed && embed.type === 'file'" class="aspect-video w-full">
+        <video
+          :src="embed.src"
+          class="h-full w-full object-contain"
+          controls
+          playsinline
+        />
+      </div>
 
-            <!-- Fallback: link out to the source -->
-            <p v-else class="pa-8 text-center">
-              <v-btn :href="item.url" target="_blank" rel="noopener noreferrer">
-                {{ all.viewSourceLabel }}
-              </v-btn>
-            </p>
-          </div>
+      <!-- Fallback: link out to the source -->
+      <div v-else class="p-8 text-center">
+        <a
+          :href="item.url"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 rounded-lg border border-white/[0.16] bg-white/[0.03] px-5 py-3 text-sm font-medium transition-colors hover:border-white/30 hover:bg-white/[0.09]"
+        >
+          {{ all.viewSourceLabel }} ↗
+        </a>
+      </div>
+      </div>
+     </div>
 
-          <v-card-item v-if="item.copyright">
-            <v-card-subtitle>© {{ item.copyright }}</v-card-subtitle>
-          </v-card-item>
-
-          <v-card-text>
-            <p class="mb-4">{{ item.explanation }}</p>
-          </v-card-text>
-        </v-card>
-      </v-col>
-    </v-row>
-  </v-container>
+     <div class="space-y-4">
+       <p
+         v-for="(para, i) in paragraphs"
+         :key="i"
+         class="text-[15px] leading-relaxed text-text-secondary"
+       >
+         {{ para }}
+       </p>
+       <p v-if="item.copyright" class="pt-2 text-xs text-text-faint">
+         © {{ item.copyright }}
+       </p>
+     </div>
+    </div>
+   </div>
+  </section>
 </template>
-
-<style lang="scss">
-.detail-page-headline,
-.detail-page-description {
-  max-width: 1000px;
-}
-
-.apod-embed {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-
-  iframe {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-  }
-}
-</style>

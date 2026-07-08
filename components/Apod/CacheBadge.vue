@@ -1,0 +1,31 @@
+<script setup lang="ts">
+import { apod } from "~/assets/json/static-text.json";
+import type { ApodSource } from "~/types";
+
+// Every gallery item flows through both caches, so we show the client (Vue Query)
+// mark next to the live server source (Redis, or NASA once the cache is cleared).
+const props = defineProps<{ serverSource: ApodSource }>();
+
+// Forward positioning classes (e.g. `absolute left-3 top-3`) to the trigger span.
+defineOptions({ inheritAttrs: false });
+
+const serverMark = computed(() =>
+  props.serverSource === "nasa" ? "/svg/marks/nasa.svg" : "/svg/marks/redis.svg",
+);
+</script>
+
+<template>
+  <UiTooltip>
+    <UiTooltipTrigger as-child>
+      <span
+        v-bind="$attrs"
+        class="inline-flex items-center gap-3 rounded-full border border-white/[0.12] bg-[rgba(6,6,8,0.6)] px-3.5 py-2 backdrop-blur-sm"
+      >
+        <img src="/svg/marks/query.svg" alt="" class="h-5 w-auto">
+        <span class="h-5 w-px bg-white/[0.18]" />
+        <img :src="serverMark" alt="" class="h-5 w-auto">
+      </span>
+    </UiTooltipTrigger>
+    <UiTooltipContent>{{ apod.all.bothCaches }}</UiTooltipContent>
+  </UiTooltip>
+</template>

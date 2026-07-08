@@ -1,171 +1,81 @@
-<script lang="ts" setup>
-import { mdiArrowLeft } from "@mdi/js";
+<script setup lang="ts">
+import { about } from "~/assets/json/static-text.json";
 
-// Import static text
-import { about, common } from "~/assets/json/static-text.json";
+useSeoMeta({
+  title: "About - Nuxt Cache",
+  description:
+    "A small Nuxt 4 side project about multi-layer caching over NASA's Astronomy Picture of the Day API.",
+  ogTitle: "About — Nuxt Cache",
+  ogDescription:
+    "Why and how Nuxt Cache layers Redis and TanStack Vue Query over a slow, rate-limited NASA API.",
+  twitterTitle: "About — Nuxt Cache",
+  twitterDescription:
+    "Why and how Nuxt Cache layers Redis and TanStack Vue Query over a slow, rate-limited NASA API.",
+});
+
+const githubUrl = "https://github.com/Milenoi/nuxt-cache";
 </script>
 
 <template>
-  <v-container class="my-8 overview-container about-container" tag="section">
-    <v-row>
-      <v-col class="mx-4">
-        <p class="text-center mb-4 mb-lg-12">
-          <v-btn :prepend-icon="mdiArrowLeft" to="/">
-            {{ common.backLabel }}
-          </v-btn>
-        </p>
+  <section
+    class="mx-auto min-h-screen max-w-3xl px-5 pb-40 pt-32 md:px-8 [animation:fadeUp_0.4s_ease]"
+  >
+    <div class="text-center">
+      <div class="mb-3 text-[15px] font-medium tracking-[0.01em] text-text-muted">
+        {{ about.tagline }}
+      </div>
+      <h1
+        class="m-0 mx-auto mb-6 max-w-[15ch] text-balance text-center font-serif text-[clamp(40px,5.5vw,64px)] font-normal leading-[1.05] tracking-tight"
+      >
+        {{ about.heading }}
+      </h1>
 
-        <h1 class="text-h4 text-sm-h2 pa-2 mb-8 mx-auto text-center">
-          {{ about.title }}
-        </h1>
+      <p class="mx-auto mb-5 max-w-[56ch] text-base leading-relaxed text-text-body">
+        {{ about.lead1 }}
+      </p>
+      <p class="mx-auto max-w-[56ch] text-[15px] leading-relaxed text-text-secondary">
+        {{ about.lead2 }}
+      </p>
 
-        <p class="text-center mb-8 mb-lg-12">
-          The project delves into the intricacies of server-side and client-side
-          caching for Nuxt 4 projects. It leverages the official
-          <NuxtLink
-            class="text-orange-darken-2"
-            to="https://api.nasa.gov"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            NASA APOD API
-          </NuxtLink>
-          (Astronomy Picture of the Day, which requires a free registration).
-        </p>
+      <div class="mb-1 mt-14 text-xs uppercase tracking-[0.14em] text-text-faint">
+        {{ about.techStackLabel }}
+      </div>
+      <dl class="mx-auto max-w-xl border-t border-white/[0.08]">
+        <div
+          v-for="row in about.techStack"
+          :key="row.label"
+          class="flex justify-between gap-4 border-b border-white/[0.07] py-4"
+        >
+          <dt class="text-sm text-text-muted">{{ row.label }}</dt>
+          <dd class="m-0 text-right text-[14.5px] text-text-strong">
+            {{ row.value }}
+          </dd>
+        </div>
+      </dl>
 
-        <p class="text-center mb-8 mb-lg-12">
-          The gathered data is aggregated and subsequently cached on the server
-          side, utilizing a Redis database hosted at
-          <NuxtLink
-            to="https://app.redislabs.com/"
-            class="text-orange-darken-2"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            redislabs.com
-          </NuxtLink>
-          (registration is mandatory, but the subscription plan is free).
-          Integration of Redis directly into Nuxt 4 is facilitated, as detailed
-          in the
-          <NuxtLink
-            class="text-orange-darken-2"
-            to="https://nuxt.com/docs/guide/directory-structure/server"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Nuxt 4 server documentation
-          </NuxtLink>
-          .
-        </p>
+      <div class="text-center">
+        <a
+          :href="githubUrl"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="mt-10 inline-flex items-center gap-2 rounded-lg border border-white/[0.16] bg-white/[0.03] px-5 py-3 text-sm font-medium transition-colors hover:border-white/30 hover:bg-white/[0.09]"
+        >
+          {{ about.cta }}
+        </a>
+      </div>
 
-        <p class="text-center mb-8 mb-lg-12">
-          <NuxtLink
-            to="https://tanstack.com/query/latest/docs/framework/vue/overview"
-            target="_blank"
-            class="text-orange-darken-2"
-            rel="noopener noreferrer"
-          >
-            Vue Tanstack Query
-          </NuxtLink>
-          serves as the solution for client-side caching, encompassing tasks
-          such as fetching, caching, synchronizing, and updating server state.
-        </p>
-
-        <p class="text-center mb-8 mb-lg-12">
-          My project leverages
-          <NuxtLink
-            to="https://vuetifyjs.com/"
-            target="_blank"
-            class="text-orange-darken-2"
-            rel="noopener noreferrer"
-          >
-            Vuetify
-          </NuxtLink>
-          for rapid prototyping, prioritizing speed and efficiency in
-          development. While design and styling play a role, they are not the
-          primary focus of this project.
-        </p>
-
-        <p class="text-center mb-8 mb-lg-12">
-          The website is currently hosted on
-          <NuxtLink
-            to="https://www.netlify.com/"
-            target="_blank"
-            class="text-orange-darken-2"
-            rel="noopener noreferrer"
-          >
-            Netlify
-          </NuxtLink>
-          .
-        </p>
-
-        <p class="text-center mb-8 mb-lg-12">
-          Images are optimized responsively with
-          <NuxtLink
-            to="https://image.nuxt.com/"
-            target="_blank"
-            class="text-orange-darken-2"
-            rel="noopener noreferrer"
-          >
-            @nuxt/image</NuxtLink>: during development they run through the built-in
-          IPX optimizer, while in production they are served by Netlify's Image CDN,
-          which generates AVIF/WebP variants on the fly at the edge. On top of that,
-          the static pages send <code>stale-while-revalidate</code> cache headers so
-          the CDN can serve them instantly while refreshing in the background.
-        </p>
-
-        <p class="text-center mb-12 mb-lg-12">
-          You can clearly see that the site is much faster due to the caching
-          mechanisms used. Enjoy playing around with it. In the future, I intend
-          to expand the website by incorporating additional content and
-          unlocking the full potential of the powerful Tanstack Query tool.
-        </p>
-
-        <p class="text-center mb-8 mb-lg-12">
-          <NuxtLink
-            to="https://github.com/Milenoi/nuxt-cache"
-            target="_blank"
-            class="text-orange-darken-2"
-            aria-label="GitHub"
-            rel="noopener noreferrer"
-          >
-            <svg
-              class="mb-8"
-              width="98"
-              height="96"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-                d="M48.854 0C21.839 0 0 22 0 49.217c0 21.756 13.993 40.172 33.405 46.69 2.427.49 3.316-1.059 3.316-2.362 0-1.141-.08-5.052-.08-9.127-13.59 2.934-16.42-5.867-16.42-5.867-2.184-5.704-5.42-7.17-5.42-7.17-4.448-3.015.324-3.015.324-3.015 4.934.326 7.523 5.052 7.523 5.052 4.367 7.496 11.404 5.378 14.235 4.074.404-3.178 1.699-5.378 3.074-6.6-10.839-1.141-22.243-5.378-22.243-24.283 0-5.378 1.94-9.778 5.014-13.2-.485-1.222-2.184-6.275.486-13.038 0 0 4.125-1.304 13.426 5.052a46.97 46.97 0 0 1 12.214-1.63c4.125 0 8.33.571 12.213 1.63 9.302-6.356 13.427-5.052 13.427-5.052 2.67 6.763.97 11.816.485 13.038 3.155 3.422 5.015 7.822 5.015 13.2 0 18.905-11.404 23.06-22.324 24.283 1.78 1.548 3.316 4.481 3.316 9.126 0 6.6-.08 11.897-.08 13.526 0 1.304.89 2.853 3.316 2.364 19.412-6.52 33.405-24.935 33.405-46.691C97.707 22 75.788 0 48.854 0z"
-                fill="#fff"
-              />
-            </svg>
-          </NuxtLink>
-
-          <br >
-          You can find the project on
-          <br >
-          <NuxtLink
-            to="https://github.com/Milenoi/nuxt-cache"
-            target="_blank"
-            class="text-orange-darken-2"
-            rel="noopener noreferrer"
-          >
-            https://github.com/Milenoi/nuxt-cache
-          </NuxtLink>
-        </p>
-      </v-col>
-    </v-row>
-  </v-container>
+      <p class="mx-auto mt-10 max-w-[56ch] text-center text-sm leading-relaxed text-text-muted">
+        {{ about.creditText }} {{ about.creditSep }}
+        <a
+          :href="about.creditUrl"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="viridis.de (opens in a new tab)"
+          class="text-text-strong underline decoration-white/20 underline-offset-4 transition-colors hover:text-foreground hover:decoration-white/50"
+        >
+          {{ about.creditLinkLabel }}
+        </a>
+      </p>
+    </div>
+  </section>
 </template>
-
-<style lang="scss" scoped>
-.overview-container {
-  &.about-container {
-    max-width: 700px !important;
-    width: 92vw !important;
-  }
-}
-</style>

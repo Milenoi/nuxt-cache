@@ -1,0 +1,188 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+  Nuxt Cache redesign — dark-only, shadcn-style editorial theme.
+  Tokens mirror design_handoff_nuxt_cache/README.md exactly.
+*/
+
+:root {
+  /* shadcn semantic tokens (dark values — app is dark-only) */
+  --background: #050506;
+  --foreground: #fafafa;
+  --card: #0b0b0d;
+  --card-foreground: #fafafa;
+  --popover: #0e0e12;
+  --popover-foreground: #fafafa;
+  --primary: #fafafa;
+  --primary-foreground: #050506;
+  --secondary: #0e0e12;
+  --secondary-foreground: #fafafa;
+  --muted: #17171a;
+  --muted-foreground: #a1a1aa;
+  --accent: #26262b;
+  --accent-foreground: #fafafa;
+  --destructive: #f87171;
+  --destructive-foreground: #fafafa;
+  --border: #1c1c20;
+  --input: #1c1c20;
+  --ring: #38bdf8;
+  --radius: 0.625rem;
+
+  /* Surfaces */
+  --surface-app: #050506;
+  --surface-card: #0b0b0d;
+  --surface-panel: #0e0e12;
+
+  /* Text scale */
+  --text-primary: #fafafa;
+  --text-strong: #e4e4e7;
+  --text-body: #c4c4cb;
+  --text-secondary: #a1a1aa;
+  --text-muted: #8b8b93;
+  /* Raised for WCAG AA (≥4.5:1 on the near-black background). */
+  --text-faint: #82828b;
+  --text-dim: #82828b;
+
+  /* Brand / cache colors */
+  --redis: #f87171;
+  --redis-border: rgba(248, 113, 113, 0.34);
+  --redis-tint: rgba(248, 113, 113, 0.08);
+  --tanstack: #38bdf8;
+  --tanstack-border: rgba(56, 189, 248, 0.32);
+  --tanstack-tint: rgba(56, 189, 248, 0.07);
+  --nasa: #fafafa;
+  --nasa-border: rgba(255, 255, 255, 0.3);
+  --nasa-tint: rgba(255, 255, 255, 0.07);
+  --redis-online: #34d399;
+
+  /* Fonts (self-hosted by @nuxt/fonts) */
+  --font-sans: "Schibsted Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --serif: "Newsreader", ui-serif, serif;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* custom brand + surface + text tokens usable as utilities */
+  --color-surface-app: var(--surface-app);
+  --color-surface-card: var(--surface-card);
+  --color-surface-panel: var(--surface-panel);
+  --color-text-strong: var(--text-strong);
+  --color-text-body: var(--text-body);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --color-text-faint: var(--text-faint);
+  --color-text-dim: var(--text-dim);
+  --color-redis: var(--redis);
+  --color-redis-border: var(--redis-border);
+  --color-redis-tint: var(--redis-tint);
+  --color-tanstack: var(--tanstack);
+  --color-tanstack-border: var(--tanstack-border);
+  --color-tanstack-tint: var(--tanstack-tint);
+  --color-nasa: var(--nasa);
+  --color-nasa-border: var(--nasa-border);
+  --color-nasa-tint: var(--nasa-tint);
+  --color-redis-online: var(--redis-online);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --font-sans: var(--font-sans);
+  --font-serif: var(--serif);
+}
+
+@keyframes shimmer {
+  0% { background-position: -680px 0; }
+  100% { background-position: 680px 0; }
+}
+@keyframes slowzoom {
+  0% { transform: scale(1.05); }
+  100% { transform: scale(1.14); }
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes orbit {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes corepulse {
+  0%, 100% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(1.35); opacity: 1; }
+}
+@keyframes twinkle {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 1; }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-14px); }
+}
+@keyframes flyacross {
+  from { transform: translate(-10vw, -8vh); }
+  to { transform: translate(135vw, 24vh); }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    color-scheme: dark;
+  }
+  body {
+    /* Black gutters outside the 1920 page frame (frame itself is bg-background). */
+    @apply bg-black text-foreground antialiased;
+    font-family: var(--font-sans);
+  }
+  ::selection {
+    background: rgba(56, 189, 248, 0.32);
+  }
+}
+
+/* Toasts (vue-sonner): frosted-glass, tinted per type, borderless — styling the
+   library's generated DOM, so a global selector is required. */
+.toaster {
+  --success-bg: rgba(16, 66, 48, 0.62);
+  --success-text: #d1fae5;
+  --success-border: transparent;
+  --error-bg: rgba(66, 20, 20, 0.62);
+  --error-text: #fecaca;
+  --error-border: transparent;
+  --warning-bg: rgba(64, 48, 12, 0.62);
+  --warning-text: #fde68a;
+  --warning-border: transparent;
+  --info-bg: rgba(12, 34, 54, 0.62);
+  --info-text: #bae6fd;
+  --info-border: transparent;
+}
+
+[data-sonner-toast] {
+  border: none !important;
+  backdrop-filter: blur(16px) saturate(1.3);
+  -webkit-backdrop-filter: blur(16px) saturate(1.3);
+}

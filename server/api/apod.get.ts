@@ -8,7 +8,7 @@ import {
 } from "~/server/utils/apodSchema";
 import type { ApodEntry, ApodList, ApodMediaType } from "~/types";
 
-const RANGE_DAYS = 32;
+const RANGE_DAYS = 60;
 const CACHE_TTL = 86400; // 24h
 const DAY_MS = 24 * 60 * 60 * 1000;
 
@@ -62,6 +62,13 @@ export default defineEventHandler(
   async (event): Promise<ApodList | ApodEntry> => {
     const { date } = getQuery(event);
     const dateParam = typeof date === "string" && date.length > 0 ? date : null;
+
+    // Reject malformed dates up front: a failed NASA response is never cached, so
+    // an invalid `?date=` would otherwise hit the rate-limited API on every call.
+    if (dateParam && !/^\d{4}-\d{2}-\d{2}$/.test(dateParam)) {
+      throw createError({ statusCode: 400, statusMessage: "Invalid date." });
+    }
+
     const storage = useStorage("redis");
 
     // ---- Detail: a single day, keyed by date ----

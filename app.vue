@@ -1,15 +1,21 @@
 <script setup lang="ts">
-const { siteName, siteDescription, siteUrl } = useRuntimeConfig().public;
+const { siteName, siteDescription, siteUrl, language } =
+  useRuntimeConfig().public;
 const ogImage = `${siteUrl}/og-image.jpg`;
 
-// Global SEO + social share defaults (pages can override title via useSeoMeta).
+// Canonical / og:url track the current route so every page points at itself
+// (not the homepage), and duplicate ?type= variants collapse to one canonical.
+const route = useRoute();
+const canonical = computed(() => `${siteUrl}${route.path}`);
+
+// Global SEO + social share defaults (pages override title/description/og/twitter).
 useSeoMeta({
   description: siteDescription,
   ogSiteName: siteName,
   ogType: "website",
   ogTitle: siteName,
   ogDescription: siteDescription,
-  ogUrl: siteUrl,
+  ogUrl: () => canonical.value,
   ogImage,
   ogImageWidth: 1200,
   ogImageHeight: 630,
@@ -21,7 +27,7 @@ useSeoMeta({
 
 useHead({
   htmlAttrs: {
-    lang: "en",
+    lang: language,
   },
   meta: [
     {
@@ -38,6 +44,7 @@ useHead({
     },
   ],
   link: [
+    { rel: "canonical", href: () => canonical.value },
     {
       rel: "icon",
       type: "image/svg+xml",
@@ -88,84 +95,9 @@ const VueQueryDevtools = import.meta.dev
   />
 
   <NuxtLayout>
-    <v-app>
-      <NuxtPage />
-      <ClientOnly>
-        <component :is="VueQueryDevtools" v-if="VueQueryDevtools" />
-      </ClientOnly>
-    </v-app>
+    <NuxtPage />
+    <ClientOnly>
+      <component :is="VueQueryDevtools" v-if="VueQueryDevtools" />
+    </ClientOnly>
   </NuxtLayout>
 </template>
-
-<style lang="scss">
-/* stylelint-disable selector-class-pattern */
-.v-application__wrap {
-  min-height: 0 !important;
-  padding-block-end: 160px !important;
-}
-
-/* Reserve the fixed app-bar height during SSR so the content doesn't jump down
-   64px once Vuetify measures the layout on hydration. */
-.v-main {
-  padding-top: 64px !important;
-}
-
-/* Cap header content AND page content to the same column so their edges align
-   and nothing stretches edge to edge on ultra-wide screens. */
-.v-toolbar__content,
-.v-main .v-container {
-  max-width: 1520px;
-  margin-inline: auto;
-  width: 100%;
-}
-
-/* The landing page fills the viewport and doesn't scroll, so it doesn't need
-   the bottom clearance that the scrollable content pages rely on. */
-body:has(.overview-container) .v-application__wrap {
-  padding-block-end: 0 !important;
-}
-
-.fade-enter-active,
-.fade-leave-active {
-  opacity: 0;
-  transition: opacity 400ms;
-}
-
-.fade-enter-to,
-.fade-leave-from {
-  opacity: 1;
-}
-
-.image-container {
-  position: relative;
-
-  &::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 50%;
-    background: linear-gradient(to bottom, rgb(0 0 0 / 80%), transparent);
-  }
-}
-
-.img-fit-detail {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-.img-fit {
-  object-fit: cover;
-  aspect-ratio: 16/9;
-  width: 100%;
-  height: auto;
-}
-
-.v-slide-group__content {
-  flex-flow: row wrap !important;
-  justify-content: center !important;
-  flex: fit-content !important;
-}
-</style>

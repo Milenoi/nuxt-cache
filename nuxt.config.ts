@@ -1,6 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 
-import vuetify, { transformAssetUrls } from "vite-plugin-vuetify";
+import tailwindcss from "@tailwindcss/vite";
 import imageConfig from "./utils/getImageConfig";
 
 export default defineNuxtConfig({
@@ -15,11 +15,6 @@ export default defineNuxtConfig({
       siteUrl: "https://nuxt-cache-project.netlify.app",
       language: "en-US",
     },
-  },
-
-  //...
-  build: {
-    transpile: ["vuetify"],
   },
 
   typescript: {
@@ -37,31 +32,21 @@ export default defineNuxtConfig({
     enabled: true,
   },
 
-  modules: [
-    "@nuxt/eslint",
-    "@nuxt/image",
-    (options, nuxt) => {
-      // Ensure options and nuxt are properly typed
-      nuxt.hooks.hook("vite:extendConfig", (config) => {
-        // Ensure config is properly typed
-        config?.plugins?.push(vuetify()); // Assuming vuetify() is a valid Vite plugin
-      });
-    },
-  ],
+  // Global stylesheet: Tailwind v4 entry + design tokens + toast base styles.
+  css: ["~/assets/css/tailwind.css", "vue-sonner/style.css"],
+
+  modules: ["@nuxt/eslint", "@nuxt/image", "@nuxt/fonts", "shadcn-nuxt"],
+
+  // shadcn-vue: no component prefix, components live under ~/components/ui.
+  shadcn: {
+    prefix: "Ui",
+    componentDir: "@/components/ui",
+  },
 
   vite: {
+    plugins: [tailwindcss()],
     build: {
       cssCodeSplit: true, // default
-    },
-    vue: {
-      template: {
-        transformAssetUrls,
-      },
-    },
-    css: {
-      preprocessorOptions: {
-        scss: {},
-      },
     },
     // Pre-bundle these so dev doesn't reload on first discovery.
     optimizeDeps: {
@@ -82,6 +67,11 @@ export default defineNuxtConfig({
       },
     },
     "/about": {
+      headers: {
+        "cache-control": "public, s-maxage=3600, stale-while-revalidate=86400",
+      },
+    },
+    "/how": {
       headers: {
         "cache-control": "public, s-maxage=3600, stale-while-revalidate=86400",
       },

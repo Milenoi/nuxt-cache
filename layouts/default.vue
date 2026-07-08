@@ -1,45 +1,39 @@
 <script setup lang="ts">
-import {useIsFetching} from "@tanstack/vue-query";
+import { useIsFetching } from "@tanstack/vue-query";
+import { common } from "~/assets/json/static-text.json";
 
-const alertLabel = useState("alert-label");
-const alertStatus = useState("alert-status");
-const showAlert = useState("alert-show");
-
+// Full-screen "Fetching from Redis/NASA" overlay stays a signature feature.
 const isFetching = useIsFetching();
 </script>
 
 <template>
-  <v-layout ref="app">
-    <LayoutLoadingLayer v-if="isFetching"/>
-    <LayoutAppBar/>
+  <UiTooltipProvider :delay-duration="200">
+    <div class="mx-auto min-h-screen max-w-[1920px] bg-background text-foreground">
+      <a
+        href="#main"
+        class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:border focus:border-white/20 focus:bg-surface-panel focus:px-4 focus:py-2 focus:text-sm focus:text-foreground"
+      >
+        {{ common.skipToContent }}
+      </a>
+      <LayoutSiteHeader />
 
-    <Transition name="fade">
-      <v-alert
-          v-if="showAlert"
-          class="custom-alert"
-          icon="$success"
-          :color="alertStatus ? 'success' : 'error'"
-          :text="alertLabel as string"
-      />
-    </Transition>
+      <Transition
+        enter-active-class="transition-opacity duration-150"
+        enter-from-class="opacity-0"
+        leave-active-class="transition-opacity duration-150"
+        leave-to-class="opacity-0"
+      >
+        <LayoutLoadingLayer v-if="isFetching" />
+      </Transition>
 
-    <v-main class="d-flex align-center justify-center">
-      <slot/>
-    </v-main>
+      <main id="main">
+        <slot />
+      </main>
 
-    <LayoutCacheActionBar/>
-    <LayoutAppFooter/>
-  </v-layout>
+      <LayoutCacheFooter />
+      <LayoutScrollToTop />
+
+      <UiToaster position="top-center" :duration="4000" theme="dark" rich-colors />
+    </div>
+  </UiTooltipProvider>
 </template>
-
-<style lang="scss" scoped>
-.custom-alert {
-    position: fixed;
-    z-index: 10;
-    top: 100px;
-    left: 50%;
-    transform: translateX(-50%);
-    max-width: 500px;
-    width: calc(100% - 32px);
-}
-</style>
