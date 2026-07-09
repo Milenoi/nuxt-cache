@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { AppWindow } from "lucide-vue-next";
+import { AppWindow } from "@lucide/vue";
 import type { Component } from "vue";
 import { how } from "~/assets/json/static-text.json";
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Play, Telescope } from "lucide-vue-next";
+import { Play, Telescope } from "@lucide/vue";
 import { apod, menu } from "~/assets/json/static-text.json";
 import type { ApodEntry, ApodSource } from "~/types";
 
@@ -18,9 +18,9 @@ const imageSrc = computed(() =>
 <template>
   <NuxtLink
     :to="to"
-    class="group block overflow-hidden rounded-2xl border border-[#17171a] bg-surface-card"
+    class="group flex h-full flex-col overflow-hidden rounded-2xl border border-[#17171a] bg-surface-card"
   >
-    <div class="relative aspect-[3/2] overflow-hidden">
+    <div class="relative aspect-[3/2] shrink-0 overflow-hidden">
       <NuxtImg
         v-if="imageSrc"
         :src="imageSrc"
@@ -68,7 +68,7 @@ const imageSrc = computed(() =>
       </template>
     </div>
 
-    <div class="p-4">
+    <div class="flex-1 p-4">
       <time :datetime="entry.date" class="mb-1.5 block text-xs text-text-faint">
         {{ entry.formattedDate }}
       </time>
