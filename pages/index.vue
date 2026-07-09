@@ -18,13 +18,47 @@ useSeoMeta({
 // Pull the latest APOD so the hero itself is delivered through Redis + TanStack.
 const { data, serverSource, fromClientCache } = await useFetchApod<ApodList>();
 
-const latestApod = computed(
-  () => data.value?.entries?.find((entry) => entry.mediaType === "image") ?? null,
-);
+// Newest APOD, any media type — the hero reflects today's actual entry.
+const latestApod = computed(() => data.value?.entries?.[0] ?? null);
 
-const heroImage = computed(
-  () => latestApod.value?.hdurl ?? latestApod.value?.url ?? "/images/apod.jpg",
+// A direct video file (mp4/webm) plays as an ambient hero background; embeds
+// (YouTube/Vimeo) fall back to their thumbnail, images to the image itself.
+const heroEmbed = computed(() =>
+  latestApod.value?.mediaType === "video"
+    ? getApodEmbed(latestApod.value.url)
+    : null,
 );
+const heroVideo = computed(() =>
+  heroEmbed.value?.type === "file" ? heroEmbed.value.src : null,
+);
+const heroImage = computed(() => {
+  const entry = latestApod.value;
+  if (!entry) return "/images/apod.jpg";
+  if (entry.mediaType === "image") return entry.hdurl ?? entry.url;
+  return entry.thumbnailUrl ?? "/images/apod.jpg";
+});
+
+const ytId = (u: string) =>
+  u.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|watch\?v=|v\/))([\w-]{11})/)?.[1];
+const vimeoId = (u: string) => u.match(/vimeo\.com\/(?:video\/)?(\d+)/)?.[1];
+
+// Autoplay, muted, looping background embed for YouTube/Vimeo heroes.
+const heroIframe = computed(() => {
+  const e = heroEmbed.value;
+  if (e?.type === "youtube") {
+    const id = ytId(e.src);
+    return id
+      ? `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&loop=1&playlist=${id}&controls=0&modestbranding=1&playsinline=1&rel=0`
+      : null;
+  }
+  if (e?.type === "vimeo") {
+    const id = vimeoId(e.src);
+    return id
+      ? `https://player.vimeo.com/video/${id}?background=1&autoplay=1&muted=1&loop=1`
+      : null;
+  }
+  return null;
+});
 
 // Two cache layers, both shown when true (mirrors the old ApiLogo + gallery
 // cards): the client cache (Vue Query) and the server source (Redis warm / NASA
@@ -55,10 +89,30 @@ const serverPill = computed(() =>
 
 <template>
   <section class="group relative h-screen min-h-[600px] overflow-hidden">
-    <!-- Background: latest APOD, ambient slow zoom. Single <img srcset> — no art
-         direction here, just one image at responsive sizes. -->
+    <!-- Background: newest APOD. A direct video file or a YouTube/Vimeo embed
+         plays muted+looping; otherwise a single responsive AVIF image. -->
     <div class="absolute inset-0 overflow-hidden">
+      <video
+        v-if="heroVideo"
+        :src="heroVideo"
+        autoplay
+        muted
+        loop
+        playsinline
+        :poster="heroImage"
+        class="h-full w-full object-cover"
+      />
+      <iframe
+        v-else-if="heroIframe"
+        :src="heroIframe"
+        class="pointer-events-none absolute left-1/2 top-1/2 h-[56.25vw] min-h-full w-[177.78vh] min-w-full -translate-x-1/2 -translate-y-1/2"
+        allow="autoplay; encrypted-media; picture-in-picture"
+        title=""
+        aria-hidden="true"
+        tabindex="-1"
+      />
       <NuxtImg
+        v-else
         :src="heroImage"
         :alt="latestApod?.title ?? hero.tagline"
         width="1920"
