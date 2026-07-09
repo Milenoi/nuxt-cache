@@ -114,6 +114,19 @@ export default defineNuxtConfig({
         password: process.env.NUXT_REDIS_PASSWORD,
         ttl: 86400, // Defaults to 0
       },
+      // Nitro's own cache layer (defineCachedFunction / SWR). Backed by the same
+      // Redis instance but under a separate `nitro:` key namespace, so the SWR
+      // cache is persistent, inspectable, and clearable independently of our
+      // explicit `apod:` cache-aside entries.
+      cache: {
+        driver: "redis",
+        base: "nitro",
+        port: process.env.NUXT_REDIS_PORT,
+        host: process.env.NUXT_REDIS_HOST,
+        username: process.env.NUXT_REDIS_USERNAME,
+        password: process.env.NUXT_REDIS_PASSWORD,
+        ttl: 86400,
+      },
     },
   },
 

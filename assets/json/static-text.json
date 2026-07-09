@@ -20,21 +20,24 @@
     "serverRedis": "Redis",
     "serverRedisLayer": "server cache",
     "serverNasa": "NASA",
-    "serverNasaLayer": "fresh fetch"
+    "serverNasaLayer": "fresh fetch",
+    "serverNitro": "Nitro",
+    "serverNitroLayer": "SWR cache"
   },
   "footer": {
-    "clearCache": "Clear cache",
-    "clearShort": "Clear:",
+    "invalidateLabel": "Invalidate:",
+    "deleteLabel": "Delete:",
     "vueQuery": "Vue Query",
+    "nitro": "Nitro",
     "redis": "Redis",
-    "vueQueryTitle": "Empties the TanStack Vue Query client cache",
-    "redisTitle": "Wipes the apod: namespace on the Redis server",
+    "nasa": "NASA",
+    "vueQueryTitle": "Invalidate Layer 1 — revalidate the TanStack Vue Query client cache (refetch from the server chain)",
+    "nitroTitle": "Clear Layer 2 — the Nitro SWR cache (server, nitro: namespace)",
+    "redisTitle": "Clear Layer 3 — the Redis cache (server, apod: namespace)",
     "statusReady": "Cache warm",
-    "statusServed": "Served from {source} · {timing}",
-    "statusCleared": "Redis cache cleared · next load is a cold start",
-    "toastRefetched": "Refetched from {source}{timing}.",
-    "toastInvalidated": "Vue Query cache invalidated — the next data page will refetch.",
-    "toastRedisFail": "Something went wrong. Redis cache was not cleared."
+    "toastRevalidated": "Revalidated — served from {source}{timing}.",
+    "toastNothingToRefetch": "Nothing to revalidate here — open the gallery or a picture.",
+    "toastClearFail": "Something went wrong. The cache was not cleared."
   },
   "menu": {
     "home": {
@@ -57,45 +60,50 @@
   "how": {
     "tagline": "Nuxt Cache",
     "heading": "How it works",
-    "leadBefore": "A slow, rate-limited API — made to feel instant. Three caches sit between you and NASA, each responsible for a ",
-    "leadHighlight": "different thing",
-    "leadAfter": ".",
+    "leadBefore": "A slow, rate-limited API — made to feel instant. A chain of caches sits between you and NASA. Each layer only asks the next when it is ",
+    "leadHighlight": "empty",
+    "leadAfter": ", and fills itself on the way back — so a request stops at the first warm layer.",
+    "docsLabel": "Docs ↗",
     "steps": [
       {
-        "name": "NASA APOD API",
-        "role": "origin",
-        "desc": "The single source of truth. Every real request is rate-limited and takes the better part of a second."
+        "name": "Vue Query",
+        "role": "client cache",
+        "desc": "Holds a copy in your browser. A repeat view renders instantly, with no network at all. Invalidate it to force a fresh look at the server chain.",
+        "href": "https://tanstack.com/query/latest/docs/framework/vue/overview"
+      },
+      {
+        "name": "Nitro",
+        "role": "server cache · SWR",
+        "desc": "An in-process stale-while-revalidate cache in front of Redis. Serves instantly — even a slightly stale value — and refreshes in the background. Fresh for 30s, then stale-served up to 24h.",
+        "href": "https://nitro.build/guide/cache"
       },
       {
         "name": "Redis",
         "role": "server cache",
-        "desc": "Stores the normalized data for 24 hours, shared by every visitor to the site."
+        "desc": "The persistent backing store, shared by every visitor. Keeps the normalized data for 24 hours; Nitro falls through to it on a miss.",
+        "href": "https://redis.io/docs/latest/"
       },
       {
-        "name": "Vue Query",
-        "role": "client cache",
-        "desc": "Keeps a copy in the browser, so returning to a page renders instantly — no round-trip at all."
-      },
-      {
-        "name": "Your browser",
-        "role": "images",
-        "desc": "The HTTP cache and Netlify Image CDN deliver the pictures themselves — a separate layer from the data."
+        "name": "NASA APOD API",
+        "role": "origin",
+        "desc": "The single source of truth. Rate-limited and slow — the better part of a second per request — which is exactly why the caches exist.",
+        "href": "https://github.com/nasa/apod-api"
       }
     ],
     "guideHeading": "Try it yourself",
     "guideLead": "The controls in the footer work on every page — here is what to watch.",
     "guide": [
       {
-        "title": "Read the badges",
-        "desc": "Each card and the hero show which layer served the data: the Vue Query mark for the client cache, the Redis mark for the server cache, or the NASA meatball for a fresh fetch."
+        "title": "Read the chain",
+        "desc": "The footer shows the chain with a dot per layer — filled means that cache holds data. The badge on each card and the hero shows which layer is the current active source."
       },
       {
         "title": "Invalidate Vue Query",
-        "desc": "Drops the browser copy and refetches — from Redis if it is still warm, otherwise straight from NASA. The footer reports the source and how long it took."
+        "desc": "Revalidates the browser cache and refetches from the server chain — Nitro if warm, else Redis, else NASA. The footer reports the source and how long it took."
       },
       {
-        "title": "Clear Redis",
-        "desc": "Wipes the server cache. The source badge flips to the NASA meatball and the next load is a real, rate-limited request — a genuine cold start."
+        "title": "Delete Nitro or Redis",
+        "desc": "Empties a server layer. The badge flips instantly to the next layer down. Delete both and the next request goes all the way to NASA — a genuine, rate-limited cold start."
       }
     ]
   },
@@ -103,12 +111,12 @@
     "tagline": "About",
     "heading": "Making a slow API feel instant",
     "lead1": "A small side project about caching. The idea is simple: take NASA's Astronomy Picture of the Day, a lovely but slow and rate-limited API, and see how instant it can feel with a couple of caches in front of it.",
-    "lead2": "The browser never calls NASA directly. A Nuxt server route fetches and normalises the data, Redis keeps it for 24 hours, and Vue Query holds a copy in your browser. Clear either cache from the footer and watch where the next request really goes.",
+    "lead2": "The browser never calls NASA directly. Requests flow through a chain of caches — Vue Query in the browser, a Nitro stale-while-revalidate cache and Redis on the server — each asking the next only when it is empty, and filling itself on the way back. Clear or invalidate any layer from the footer and watch where the next request really goes.",
     "techStackLabel": "Tech stack",
     "techStack": [
       { "label": "Framework", "value": "Nuxt 4 · Vue 3.5 (SSR)" },
       { "label": "Language", "value": "TypeScript, strict" },
-      { "label": "Server cache", "value": "Redis" },
+      { "label": "Server caches", "value": "Nitro SWR → Redis" },
       { "label": "Client cache", "value": "TanStack Vue Query" },
       { "label": "Validation", "value": "Zod" },
       { "label": "Images", "value": "@nuxt/image · Netlify Image CDN" },

@@ -1,33 +1,31 @@
 <script setup lang="ts">
-import { AppWindow } from "@lucide/vue";
-import type { Component } from "vue";
 import { how } from "~/assets/json/static-text.json";
 
 useSeoMeta({
   title: "How it works - Nuxt Cache",
   description:
-    "How three caches — Redis, TanStack Vue Query and the browser — sit between you and NASA's APOD API to make it feel instant.",
+    "The cache chain behind Nuxt Cache: Vue Query (client) → Nitro (SWR) → Redis → NASA's APOD API — each layer asks the next only when it is empty.",
   ogTitle: "How it works — Nuxt Cache",
   ogDescription:
-    "The caching architecture behind Nuxt Cache: NASA APOD → Redis (server) → Vue Query (client) → your browser.",
+    "The caching architecture behind Nuxt Cache: Vue Query → Nitro → Redis → NASA APOD, a fall-through chain.",
   twitterTitle: "How it works — Nuxt Cache",
   twitterDescription:
-    "The caching architecture behind Nuxt Cache: NASA APOD → Redis (server) → Vue Query (client) → your browser.",
+    "The caching architecture behind Nuxt Cache: Vue Query → Nitro → Redis → NASA APOD, a fall-through chain.",
 });
 
 type StepMeta = {
-  img?: string;
-  icon?: Component;
+  img: string;
   nodeBorder: string;
   roleClass: string;
 };
 
-// Visual bits per timeline step; copy lives in static-text.json.
+// Visual bits per timeline step (order matches the chain, client → origin);
+// copy lives in static-text.json.
 const stepMeta: StepMeta[] = [
-  { img: "/svg/marks/nasa.svg", nodeBorder: "border-white/[0.14]", roleClass: "text-white/65" },
-  { img: "/svg/marks/redis.svg", nodeBorder: "border-[rgba(248,113,113,0.35)]", roleClass: "text-redis" },
   { img: "/svg/marks/query.svg", nodeBorder: "border-[rgba(56,189,248,0.35)]", roleClass: "text-tanstack" },
-  { icon: AppWindow, nodeBorder: "border-white/[0.14]", roleClass: "text-text-muted" },
+  { img: "/svg/marks/nitro.svg", nodeBorder: "border-[rgba(74,222,128,0.35)]", roleClass: "text-nitro" },
+  { img: "/svg/marks/redis.svg", nodeBorder: "border-[rgba(248,113,113,0.35)]", roleClass: "text-redis" },
+  { img: "/svg/marks/nasa.svg", nodeBorder: "border-white/[0.14]", roleClass: "text-white/65" },
 ];
 
 const steps = how.steps.map((step, i) => ({
@@ -63,17 +61,7 @@ const steps = how.steps.map((step, i) => ({
               class="grid size-[50px] flex-none place-items-center rounded-full border bg-surface-panel"
               :class="step.meta.nodeBorder"
             >
-              <img
-                v-if="step.meta.img"
-                :src="step.meta.img"
-                alt=""
-                class="h-4 w-auto"
-              >
-              <component
-                :is="step.meta.icon"
-                v-else
-                class="h-5 w-5 text-text-secondary"
-              />
+              <img :src="step.meta.img" alt="" class="h-4 w-auto">
             </div>
             <div
               v-if="i < steps.length - 1"
@@ -93,6 +81,14 @@ const steps = how.steps.map((step, i) => ({
             >
               {{ step.desc }}
             </p>
+            <a
+              :href="step.href"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="mt-2 inline-flex items-center text-[13px] font-medium text-text-muted transition-colors hover:text-foreground"
+            >
+              {{ how.docsLabel }}
+            </a>
           </div>
         </li>
       </ol>

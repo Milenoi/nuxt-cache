@@ -56,6 +56,9 @@
   --nasa: #fafafa;
   --nasa-border: rgba(255, 255, 255, 0.3);
   --nasa-tint: rgba(255, 255, 255, 0.07);
+  --nitro: #4ade80;
+  --nitro-border: rgba(74, 222, 128, 0.34);
+  --nitro-tint: rgba(74, 222, 128, 0.08);
   --redis-online: #34d399;
 
   /* Fonts (self-hosted by @nuxt/fonts) */
@@ -103,6 +106,9 @@
   --color-nasa: var(--nasa);
   --color-nasa-border: var(--nasa-border);
   --color-nasa-tint: var(--nasa-tint);
+  --color-nitro: var(--nitro);
+  --color-nitro-border: var(--nitro-border);
+  --color-nitro-tint: var(--nitro-tint);
   --color-redis-online: var(--redis-online);
 
   --radius-sm: calc(var(--radius) - 4px);

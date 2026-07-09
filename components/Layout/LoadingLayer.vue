@@ -2,14 +2,19 @@
 // Import static text
 import { common } from "~/assets/json/static-text.json";
 
-// Redis is only ever empty right after a manual clear (otherwise the key lives
-// for 24h), so the next fetch source is predictable: NASA after a clear, else
-// Redis — matching what the badge will show once the data arrives.
-const redisCleared = useState("redis-cleared", () => false);
-const source = computed(() => (redisCleared.value ? "NASA" : "Redis"));
-const logoSrc = computed(() =>
-  redisCleared.value ? "/svg/marks/nasa.svg" : "/svg/marks/redis.svg",
-);
+// While fetching we hint at the source: the active server layer (the frontmost
+// one still holding data) is what a request falls through to.
+const { activeServerSource } = useCacheStatus();
+
+const prediction = computed(() => {
+  if (activeServerSource.value === "nitro") {
+    return { label: "Nitro", mark: "/svg/marks/nitro.svg", cls: "text-nitro" };
+  }
+  if (activeServerSource.value === "redis") {
+    return { label: "Redis", mark: "/svg/marks/redis.svg", cls: "text-redis" };
+  }
+  return { label: "NASA", mark: "/svg/marks/nasa.svg", cls: "text-nasa" };
+});
 </script>
 
 <template>
@@ -44,12 +49,12 @@ const logoSrc = computed(() =>
         class="inline-flex items-center gap-2 text-sm text-text-secondary"
       >
         {{ common.isFetchingFromLabel }}
-        <span :class="redisCleared ? 'text-nasa' : 'text-redis'" class="font-medium">
-          {{ source }}
+        <span :class="prediction.cls" class="font-medium">
+          {{ prediction.label }}
         </span>
         <img
-          :src="logoSrc"
-          :alt="source"
+          :src="prediction.mark"
+          :alt="prediction.label"
           class="h-[15px] w-auto"
         >
       </span>

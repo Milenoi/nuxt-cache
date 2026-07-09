@@ -4,18 +4,42 @@ import { toast } from "vue-sonner";
 import { footer } from "~/assets/json/static-text.json";
 import type { ApodSource } from "~/types";
 
-// Fixed cache-control bar. Replaces the Vuetify CacheActionBar + AppFooter.
-// All caching behaviour is preserved 1:1 — only the presentation changed.
+// Fixed cache-control bar. It makes the cache CHAIN tangible:
+//   Vue Query (browser) -> Nitro (SWR) -> Redis (persistent) -> NASA (origin)
+// The chain on the left shows each layer's full/empty state and highlights the
+// active SERVER layer (the frontmost one still holding data). Each layer's button
+// uses its natural operation: Vue Query INVALIDATES (revalidate → refetch from
+// the server); Nitro and Redis CLEAR (empty the server cache). Clearing a server
+// layer flips the badge to the next layer instantly.
 
-// Shared with useFetchApod: flips the badge to "nasa" after Redis is cleared.
-const redisCleared = useState("redis-cleared", () => false);
-// Duration of the last real fetch (ms), written by useFetchApod.
+// Last real fetch timing + source, written by useFetchApod.
 const lastFetchMs = useState<number | null>("last-fetch-ms", () => null);
-// Source of the last real fetch, written by useFetchApod. Correct on any page
-// (list or detail) — unlike inspecting a fixed query key here.
 const lastFetchSource = useState<ApodSource>("last-fetch-source", () => "nasa");
 
 const queryClient = useQueryClient();
+
+// Live full/empty state of the server layers + the derived active server source.
+const {
+  status: serverStatus,
+  refresh: refreshStatus,
+  activeServerSource,
+} = useCacheStatus();
+
+// Client (Vue Query) layer: full when any apod query holds data.
+const vueQueryFull = ref(false);
+const syncVueQueryFull = () => {
+  vueQueryFull.value = queryClient
+    .getQueryCache()
+    .findAll({ queryKey: ["apod"] })
+    .some((query) => query.state.data !== undefined);
+};
+
+onMounted(() => {
+  syncVueQueryFull();
+  refreshStatus();
+  const unsubscribe = queryClient.getQueryCache().subscribe(syncVueQueryFull);
+  onUnmounted(unsubscribe);
+});
 
 // Fill {placeholders} in a static-text template with runtime values.
 const fill = (template: string, vars: Record<string, string | number>) =>
@@ -29,59 +53,74 @@ const timing = computed(() =>
     ? `${(lastFetchMs.value / 1000).toFixed(2)} s`
     : "",
 );
-const sourceLabel = computed(() =>
-  lastFetchSource.value === "redis" ? "Redis" : "NASA",
-);
-
-// Shown right after a manual clear until the next real fetch resolves.
-const justCleared = ref(false);
-watch(lastFetchMs, () => {
-  justCleared.value = false;
+const sourceLabel = computed(() => {
+  const source = lastFetchSource.value;
+  if (source === "redis") return "Redis";
+  if (source === "nitro") return "Nitro";
+  return "NASA";
 });
 
-// Page-agnostic status: reflects the last real fetch (source + timing), which is
-// correct on the list AND detail pages.
-const status = computed(() => {
-  if (justCleared.value) return footer.statusCleared;
-  if (lastFetchMs.value === null) return footer.statusReady;
-  return fill(footer.statusServed, {
-    source: sourceLabel.value,
-    timing: timing.value,
-  });
-});
+// The active SERVER layer (frontmost full) — highlighted in the chain and shown
+// by the page badge.
+const activeLayer = computed<ApodSource>(() => activeServerSource.value);
 
-const invalidateQuery = async () => {
-  // Only an ACTIVE apod query actually refetches. On static pages (how/about)
-  // there is none, so report an honest "invalidated" instead of a fake refetch.
+// The chain, from client (front) to origin (back). NASA is the origin and is
+// always available — it can't be emptied.
+const chain = computed(() => [
+  { key: "client", label: footer.vueQuery, full: vueQueryFull.value, dot: "bg-tanstack" },
+  { key: "nitro", label: footer.nitro, full: serverStatus.value.nitro, dot: "bg-nitro" },
+  { key: "redis", label: footer.redis, full: serverStatus.value.redis, dot: "bg-redis" },
+  { key: "nasa", label: footer.nasa, full: true, dot: "bg-white/70" },
+]);
+
+// Layer 1 — Vue Query (client): INVALIDATE. Marks the client cache stale and
+// refetches from the server chain, so you see which server layer answers + how
+// fast. (This is TanStack's natural operation — not a plain "empty".)
+const invalidateVueQuery = async () => {
   const active = queryClient
     .getQueryCache()
     .findAll({ queryKey: ["apod"], type: "active" });
-  await queryClient.invalidateQueries();
+  await queryClient.invalidateQueries({ queryKey: ["apod"] });
+  await refreshStatus();
   if (active.length > 0) {
     toast.success(
-      fill(footer.toastRefetched, {
+      fill(footer.toastRevalidated, {
         source: sourceLabel.value,
         timing: timing.value ? ` in ${timing.value}` : "",
       }),
     );
   } else {
-    toast.info(footer.toastInvalidated);
+    toast.info(footer.toastNothingToRefetch);
   }
 };
 
-const clearRedisCache = async () => {
+// CLEAR Layer 2 — Nitro (server SWR front).
+const clearNitro = async () => {
   try {
-    const data = await useClearRedisCache();
+    const data = await useClearNitroCache();
     if (data.status === 200) {
-      // Redis is now empty → flip the badge to "nasa" straight away.
-      redisCleared.value = true;
-      justCleared.value = true;
+      await refreshStatus();
       toast.success(data.message);
     } else {
       toast.error(data.message);
     }
   } catch {
-    toast.error(footer.toastRedisFail);
+    toast.error(footer.toastClearFail);
+  }
+};
+
+// CLEAR Layer 3 — Redis (server persistent backing store).
+const clearRedis = async () => {
+  try {
+    const data = await useClearRedisCache();
+    if (data.status === 200) {
+      await refreshStatus();
+      toast.success(data.message);
+    } else {
+      toast.error(data.message);
+    }
+  } catch {
+    toast.error(footer.toastClearFail);
   }
 };
 </script>
@@ -91,59 +130,98 @@ const clearRedisCache = async () => {
     class="fixed bottom-0 left-1/2 z-[60] w-full max-w-[1920px] -translate-x-1/2 border-t border-white/[0.08] bg-[rgba(7,7,9,0.74)] backdrop-blur-[18px] backdrop-saturate-[1.2]"
   >
     <div
-      class="container mx-auto flex h-16 items-center gap-3 px-5 md:px-8"
+      class="container mx-auto flex flex-col items-center gap-2 px-5 py-3 md:px-8 xl:h-16 xl:flex-row xl:gap-4 xl:py-0"
     >
-      <!-- Left: full status on sm+, short "Clear:" label on phones -->
-      <span class="text-xs text-text-dim sm:hidden">{{ footer.clearShort }}</span>
-      <div class="hidden min-w-0 items-center sm:flex">
-        <!-- Live cache state is client-runtime only; SSR shows a stable fallback
-             so the layout footer doesn't hydration-mismatch the page's fetch. -->
-        <ClientOnly>
-          <span class="truncate text-sm text-text-muted" :title="status">
-            {{ status }}
+      <!-- Left: the cache chain with live full/empty dots + active highlight -->
+      <ClientOnly>
+        <div class="flex flex-wrap items-center justify-center gap-x-2 gap-y-1">
+          <div class="flex items-center gap-1">
+            <template v-for="(node, i) in chain" :key="node.key">
+              <span
+                class="inline-flex items-center gap-1.5 rounded-md px-1.5 py-1 transition-colors"
+                :class="node.key === activeLayer ? 'bg-white/[0.06]' : ''"
+              >
+                <span
+                  class="size-1.5 shrink-0 rounded-full transition-colors"
+                  :class="node.full ? node.dot : 'bg-white/20'"
+                />
+                <span
+                  class="text-xs"
+                  :class="node.key === activeLayer ? 'text-foreground' : 'text-text-dim'"
+                >
+                  {{ node.label }}
+                </span>
+              </span>
+              <span v-if="i < chain.length - 1" class="text-text-dim/50">→</span>
+            </template>
+          </div>
+          <span
+            v-if="timing"
+            class="whitespace-nowrap text-xs font-medium text-text-muted"
+          >
+            · {{ timing }}
           </span>
-          <template #fallback>
-            <span class="truncate text-sm text-text-muted">
-              {{ footer.statusReady }}
-            </span>
-          </template>
-        </ClientOnly>
-      </div>
+        </div>
 
-      <!-- Actions: always pushed to the right -->
-      <div class="ml-auto flex items-center gap-2 sm:gap-3">
-        <span class="hidden text-xs text-text-dim sm:inline">
-          {{ footer.clearCache }}
-        </span>
+        <template #fallback>
+          <span class="text-sm text-text-muted">{{ footer.statusReady }}</span>
+        </template>
+      </ClientOnly>
 
-        <!-- Vue Query: invalidate the client cache -> refetch -->
+      <!-- Right: clear a layer. Each button empties its cache; the active layer
+           (and the page badge) moves to the next full layer instantly. -->
+      <div
+        class="flex flex-wrap items-center justify-center gap-2 sm:gap-3 xl:ml-auto xl:flex-nowrap"
+      >
+        <span class="hidden text-xs text-text-dim md:inline">{{ footer.invalidateLabel }}</span>
+
+        <!-- Layer 1: Vue Query (client) — INVALIDATE (revalidate → refetch) -->
         <UiTooltip>
           <UiTooltipTrigger as-child>
             <button
               type="button"
-              class="inline-flex items-center gap-2 rounded-lg border border-tanstack-border bg-tanstack-tint px-3 py-2 text-sm font-medium text-text-strong transition-all hover:border-[rgba(56,189,248,0.5)] hover:bg-[rgba(56,189,248,0.14)] sm:px-4"
-              @click="invalidateQuery"
+              class="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-tanstack-border bg-tanstack-tint px-3 py-2 text-sm font-medium text-text-strong transition-all hover:border-[rgba(56,189,248,0.5)] hover:bg-[rgba(56,189,248,0.14)] sm:px-4"
+              @click="invalidateVueQuery"
             >
               <img src="/svg/marks/query.svg" alt="" class="h-4 w-auto">
-              {{ footer.vueQuery }}
+              <span class="hidden sm:inline">{{ footer.vueQuery }}</span>
             </button>
           </UiTooltipTrigger>
-          <UiTooltipContent>{{ footer.vueQueryTitle }}</UiTooltipContent>
+          <UiTooltipContent class="z-[70] max-w-[260px]">{{ footer.vueQueryTitle }}</UiTooltipContent>
         </UiTooltip>
 
-        <!-- Redis: wipe the apod: namespace -->
+        <span class="hidden h-7 w-px bg-white/[0.12] md:block" />
+
+        <span class="hidden text-xs text-text-dim md:inline">{{ footer.deleteLabel }}</span>
+
+        <!-- Clear Layer 2: Nitro (server SWR front) -->
         <UiTooltip>
           <UiTooltipTrigger as-child>
             <button
               type="button"
-              class="inline-flex items-center gap-2 rounded-lg border border-redis-border bg-redis-tint px-3 py-2 text-sm font-medium text-[#f4b4b4] transition-all hover:border-[rgba(248,113,113,0.55)] hover:bg-[rgba(248,113,113,0.16)] sm:px-4"
-              @click="clearRedisCache"
+              class="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-nitro-border bg-nitro-tint px-3 py-2 text-sm font-medium text-nitro transition-all hover:border-[rgba(74,222,128,0.55)] hover:bg-[rgba(74,222,128,0.16)] sm:px-4"
+              @click="clearNitro"
             >
-              <img src="/svg/marks/redis.svg" alt="" class="h-4 w-auto">
-              {{ footer.redis }}
+              <img src="/svg/marks/nitro.svg" alt="" class="h-4 w-auto">
+              <span class="hidden sm:inline">{{ footer.nitro }}</span>
             </button>
           </UiTooltipTrigger>
-          <UiTooltipContent>{{ footer.redisTitle }}</UiTooltipContent>
+          <UiTooltipContent class="z-[70] max-w-[260px]">{{ footer.nitroTitle }}</UiTooltipContent>
+        </UiTooltip>
+
+        <!-- Clear Layer 3: Redis (server persistent) -->
+        <UiTooltip>
+          <UiTooltipTrigger as-child>
+            <button
+              type="button"
+              class="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-redis-border bg-redis-tint px-3 py-2 text-sm font-medium text-[#f4b4b4] transition-all hover:border-[rgba(248,113,113,0.55)] hover:bg-[rgba(248,113,113,0.16)] sm:px-4"
+              @click="clearRedis"
+            >
+              <img src="/svg/marks/redis.svg" alt="" class="h-4 w-auto">
+              <span class="hidden sm:inline">{{ footer.redis }}</span>
+            </button>
+          </UiTooltipTrigger>
+          <UiTooltipContent class="z-[70] max-w-[260px]">{{ footer.redisTitle }}</UiTooltipContent>
         </UiTooltip>
       </div>
     </div>

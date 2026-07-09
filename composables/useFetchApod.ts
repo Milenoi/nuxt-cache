@@ -10,8 +10,10 @@ import type { ApodList, ApodSource } from "~/types";
  * single entry (`ApodEntry`). Pass the expected shape as the type parameter.
  *
  * Also exposes the cache layers for the UI badges:
- * - `serverSource`: "redis" (server cache) or "nasa" (fresh) — from the payload
- * - `fromClientCache`: true when Vue Query served it from the client cache
+ * - `serverSource`: which server layer is currently the active source — the
+ *   frontmost one still holding data (Nitro -> Redis -> NASA). Flips instantly
+ *   when a layer is cleared, so the badge always reflects live cache state.
+ * - `fromClientCache`: true when Vue Query holds this data on the client.
  */
 export default async function useFetchApod<T = ApodList>(
   date?: string,
@@ -27,15 +29,14 @@ export default async function useFetchApod<T = ApodList>(
 }> {
   const url = date ? `/api/apod?date=${date}` : "/api/apod";
 
-  // Shared with the "Clear Redis" button. Read before any await so the Nuxt
-  // instance is still in scope.
-  const redisCleared = useState("redis-cleared", () => false);
-  // Duration of the last real fetch (ms) — a Redis hit is far faster than a
-  // fresh NASA round-trip, which makes the cache benefit visible.
+  // Live cache state → the currently active server layer (drives the badges).
+  const { activeServerSource, refresh: refreshCacheStatus } = useCacheStatus();
+
+  // Duration of the last real fetch (ms) — a warm cache layer is far faster than
+  // a fresh NASA round-trip, which makes the cache benefit visible.
   const lastFetchMs = useState<number | null>("last-fetch-ms", () => null);
-  // Source of the last real fetch (redis hit vs fresh from NASA). Read by the
-  // cache footer so "Refetched from X" is correct on every page (list AND
-  // detail), instead of always inspecting the list query key.
+  // Which chain layer actually served the last real fetch (for the invalidate
+  // toast: "revalidated — served from Redis in 0.01 s").
   const lastFetchSource = useState<ApodSource>("last-fetch-source", () => "nasa");
 
   const fetchApod = async (): Promise<T> => {
@@ -45,11 +46,9 @@ export default async function useFetchApod<T = ApodList>(
       // makes the typed $fetch recurse ("excessive stack depth").
       const result = await ($fetch as (u: string) => Promise<T>)(url);
       lastFetchMs.value = Math.round(performance.now() - start);
-      const isRedisHit = !!(result as { redis?: string })?.redis;
-      lastFetchSource.value = isRedisHit ? "redis" : "nasa";
-      // A real Redis hit means the cache is warm again — clear the "cleared" flag
-      // so the loader/badge stop predicting NASA.
-      if (isRedisHit) redisCleared.value = false;
+      lastFetchSource.value = (result as { _source?: ApodSource })?._source ?? "nasa";
+      // The fetch re-warms the layers it passed through — refresh the live state.
+      if (import.meta.client) refreshCacheStatus();
       return result;
     } catch (error) {
       // Preserve the real upstream status (fetchFromNasa already forwards
@@ -86,17 +85,14 @@ export default async function useFetchApod<T = ApodList>(
 
   await suspense();
 
-  // Where the server got it: the Redis flag says whether it was server-cached.
-  // Also honours the "Clear Redis" flag (Redis now empty → next fetch is NASA).
-  const serverSource = computed<ApodSource>(() => {
-    if (redisCleared.value) return "nasa";
-    return (data.value as { redis?: string } | undefined)?.redis
-      ? "redis"
-      : "nasa";
-  });
+  // The active server layer for the badges: the frontmost server cache still
+  // holding data. Clearing a layer flips this instantly (via the live cache
+  // status), so the badge reflects "who would serve the next request".
+  const serverSource = activeServerSource;
+
   // Whether the client Vue Query cache currently holds this data. Hidden while a
   // fetch is in flight (the loader shows the source then), and shown again once
-  // the refetch has repopulated the cache. Clearing Redis doesn't touch it.
+  // the refetch has repopulated the cache.
   const fromClientCache = computed(() => !isFetching.value && !!data.value);
 
   return {

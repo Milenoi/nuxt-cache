@@ -14,8 +14,12 @@ export interface ApodQueryParams {
 
 export type ApodMediaType = "image" | "video" | "other";
 
-/** Where the server got the current APOD data (for the source badge). */
-export type ApodSource = "redis" | "nasa";
+/**
+ * Which layer of the cache chain served a response, from origin outward:
+ * NASA (origin) -> Redis (persistent) -> Nitro (SWR front). Vue Query (client)
+ * sits in front of all of these and is tracked separately.
+ */
+export type ApodSource = "nasa" | "redis" | "nitro";
 
 /** Normalized entry consumed by the UI. */
 export interface ApodEntry {
@@ -28,13 +32,13 @@ export interface ApodEntry {
     thumbnailUrl: string | null;
     copyright: string | null;
     formattedDate: string;
-    /** Present only when the payload was served from the Redis cache. */
-    redis?: string;
+    /** Where this response came from — set fresh by the server on every request. */
+    _source?: ApodSource;
 }
 
 export interface ApodList {
     entries: ApodEntry[];
-    redis?: string;
+    _source?: ApodSource;
 }
 
 export interface ApodEmbed {

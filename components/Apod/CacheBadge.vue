@@ -9,9 +9,11 @@ const props = defineProps<{ serverSource: ApodSource }>();
 // Forward positioning classes (e.g. `absolute left-3 top-3`) to the trigger span.
 defineOptions({ inheritAttrs: false });
 
-const serverMark = computed(() =>
-  props.serverSource === "nasa" ? "/svg/marks/nasa.svg" : "/svg/marks/redis.svg",
-);
+const serverMark = computed(() => {
+  if (props.serverSource === "nitro") return "/svg/marks/nitro.svg";
+  if (props.serverSource === "redis") return "/svg/marks/redis.svg";
+  return "/svg/marks/nasa.svg";
+});
 </script>
 
 <template>

@@ -11,8 +11,8 @@ export default defineEventHandler(async () => {
     const count = keys.length;
     const message =
       count === 0
-        ? "Redis cache is already empty — the next fetch will hit NASA."
-        : `Cleared ${count} cached ${count === 1 ? "entry" : "entries"} — the next fetch will hit NASA.`;
+        ? "Redis cache was already empty."
+        : `Redis cache cleared (${count} ${count === 1 ? "entry" : "entries"}).`;
 
     return { status: 200, message };
   } catch {

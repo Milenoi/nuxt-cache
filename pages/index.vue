@@ -70,21 +70,30 @@ const clientPill = {
   cls: "bg-[rgba(6,16,28,0.62)] border-[rgba(56,189,248,0.45)] text-[#7dd3fc]",
 };
 
-const serverPill = computed(() =>
-  serverSource.value === "nasa"
-    ? {
-        label: hero.serverNasa,
-        layer: hero.serverNasaLayer,
-        mark: "/svg/marks/nasa.svg",
-        cls: "bg-[rgba(10,12,18,0.62)] border-[rgba(255,255,255,0.4)] text-[#fafafa]",
-      }
-    : {
-        label: hero.serverRedis,
-        layer: hero.serverRedisLayer,
-        mark: "/svg/marks/redis.svg",
-        cls: "bg-[rgba(20,6,6,0.62)] border-[rgba(248,113,113,0.45)] text-[#fca5a5]",
-      },
-);
+const serverPill = computed(() => {
+  if (serverSource.value === "nitro") {
+    return {
+      label: hero.serverNitro,
+      layer: hero.serverNitroLayer,
+      mark: "/svg/marks/nitro.svg",
+      cls: "bg-[rgba(6,20,12,0.62)] border-[rgba(74,222,128,0.45)] text-[#86efac]",
+    };
+  }
+  if (serverSource.value === "redis") {
+    return {
+      label: hero.serverRedis,
+      layer: hero.serverRedisLayer,
+      mark: "/svg/marks/redis.svg",
+      cls: "bg-[rgba(20,6,6,0.62)] border-[rgba(248,113,113,0.45)] text-[#fca5a5]",
+    };
+  }
+  return {
+    label: hero.serverNasa,
+    layer: hero.serverNasaLayer,
+    mark: "/svg/marks/nasa.svg",
+    cls: "bg-[rgba(10,12,18,0.62)] border-[rgba(255,255,255,0.4)] text-[#fafafa]",
+  };
+});
 </script>
 
 <template>
