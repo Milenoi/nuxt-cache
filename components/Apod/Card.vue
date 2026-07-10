@@ -35,10 +35,13 @@ const imageSrc = computed(() =>
         loading="lazy"
         class="h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-110"
       />
+      <!-- Video without a NASA thumbnail: seek to 0.1s so iOS paints a first
+           frame as the preview; a dark gradient backs it if no frame renders
+           (iOS shows a plain <video> as pure black otherwise). -->
       <video
         v-else-if="isVideo"
-        :src="entry.url"
-        class="h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-110"
+        :src="`${entry.url}#t=0.1`"
+        class="h-full w-full bg-[radial-gradient(circle_at_50%_35%,#1b1b22,#0b0b0e)] object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-110"
         preload="metadata"
         muted
         playsinline

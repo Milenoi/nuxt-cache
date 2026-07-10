@@ -130,11 +130,11 @@ const clearRedis = async () => {
     class="fixed bottom-0 left-1/2 z-[60] w-full max-w-[1920px] -translate-x-1/2 border-t border-white/[0.08] bg-[rgba(7,7,9,0.74)] backdrop-blur-[18px] backdrop-saturate-[1.2]"
   >
     <div
-      class="container mx-auto flex flex-col items-center gap-2 px-5 py-3 md:px-8 xl:h-16 xl:flex-row xl:gap-4 xl:py-0"
+      class="container mx-auto flex flex-col items-center gap-3 px-5 py-3.5 md:px-8 xl:h-16 xl:flex-row xl:gap-4 xl:py-0"
     >
       <!-- Left: the cache chain with live full/empty dots + active highlight -->
       <ClientOnly>
-        <div class="flex flex-wrap items-center justify-center gap-x-2 gap-y-1">
+        <div class="flex flex-wrap items-center justify-center gap-x-2 gap-y-2">
           <div class="flex items-center gap-1">
             <template v-for="(node, i) in chain" :key="node.key">
               <span
@@ -146,7 +146,7 @@ const clearRedis = async () => {
                   :class="node.full ? node.dot : 'bg-white/20'"
                 />
                 <span
-                  class="text-xs"
+                  class="whitespace-nowrap text-xs"
                   :class="node.key === activeLayer ? 'text-foreground' : 'text-text-dim'"
                 >
                   {{ node.label }}
@@ -168,61 +168,60 @@ const clearRedis = async () => {
         </template>
       </ClientOnly>
 
-      <!-- Right: clear a layer. Each button empties its cache; the active layer
-           (and the page badge) moves to the next full layer instantly. -->
+      <!-- Right: two labelled groups — Invalidate (client) and Delete (server
+           layers). Each group wraps as a unit, so on mobile they stack cleanly
+           and stay labelled. -->
       <div
-        class="flex flex-wrap items-center justify-center gap-2 sm:gap-3 xl:ml-auto xl:flex-nowrap"
+        class="flex flex-nowrap items-center justify-center gap-3 sm:gap-4 xl:ml-auto"
       >
-        <span class="hidden text-xs text-text-dim md:inline">{{ footer.invalidateLabel }}</span>
+        <!-- Invalidate group: Vue Query (client) — revalidate → refetch -->
+        <div class="flex items-center gap-2">
+          <span class="text-xs text-text-dim">{{ footer.invalidateLabel }}</span>
+          <UiTooltip>
+            <UiTooltipTrigger as-child>
+              <button
+                type="button"
+                class="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-tanstack-border bg-tanstack-tint px-3 py-2 text-sm font-medium text-text-strong transition-all hover:border-[rgba(56,189,248,0.5)] hover:bg-[rgba(56,189,248,0.14)] sm:px-4"
+                @click="invalidateVueQuery"
+              >
+                <img src="/svg/marks/query.svg" alt="" class="h-4 w-auto">
+                <span class="hidden sm:inline">{{ footer.vueQuery }}</span>
+              </button>
+            </UiTooltipTrigger>
+            <UiTooltipContent class="z-[70] max-w-[260px]">{{ footer.vueQueryTitle }}</UiTooltipContent>
+          </UiTooltip>
+        </div>
 
-        <!-- Layer 1: Vue Query (client) — INVALIDATE (revalidate → refetch) -->
-        <UiTooltip>
-          <UiTooltipTrigger as-child>
-            <button
-              type="button"
-              class="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-tanstack-border bg-tanstack-tint px-3 py-2 text-sm font-medium text-text-strong transition-all hover:border-[rgba(56,189,248,0.5)] hover:bg-[rgba(56,189,248,0.14)] sm:px-4"
-              @click="invalidateVueQuery"
-            >
-              <img src="/svg/marks/query.svg" alt="" class="h-4 w-auto">
-              <span class="hidden sm:inline">{{ footer.vueQuery }}</span>
-            </button>
-          </UiTooltipTrigger>
-          <UiTooltipContent class="z-[70] max-w-[260px]">{{ footer.vueQueryTitle }}</UiTooltipContent>
-        </UiTooltip>
-
-        <span class="hidden h-7 w-px bg-white/[0.12] md:block" />
-
-        <span class="hidden text-xs text-text-dim md:inline">{{ footer.deleteLabel }}</span>
-
-        <!-- Clear Layer 2: Nitro (server SWR front) -->
-        <UiTooltip>
-          <UiTooltipTrigger as-child>
-            <button
-              type="button"
-              class="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-nitro-border bg-nitro-tint px-3 py-2 text-sm font-medium text-nitro transition-all hover:border-[rgba(74,222,128,0.55)] hover:bg-[rgba(74,222,128,0.16)] sm:px-4"
-              @click="clearNitro"
-            >
-              <img src="/svg/marks/nitro.svg" alt="" class="h-4 w-auto">
-              <span class="hidden sm:inline">{{ footer.nitro }}</span>
-            </button>
-          </UiTooltipTrigger>
-          <UiTooltipContent class="z-[70] max-w-[260px]">{{ footer.nitroTitle }}</UiTooltipContent>
-        </UiTooltip>
-
-        <!-- Clear Layer 3: Redis (server persistent) -->
-        <UiTooltip>
-          <UiTooltipTrigger as-child>
-            <button
-              type="button"
-              class="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-redis-border bg-redis-tint px-3 py-2 text-sm font-medium text-[#f4b4b4] transition-all hover:border-[rgba(248,113,113,0.55)] hover:bg-[rgba(248,113,113,0.16)] sm:px-4"
-              @click="clearRedis"
-            >
-              <img src="/svg/marks/redis.svg" alt="" class="h-4 w-auto">
-              <span class="hidden sm:inline">{{ footer.redis }}</span>
-            </button>
-          </UiTooltipTrigger>
-          <UiTooltipContent class="z-[70] max-w-[260px]">{{ footer.redisTitle }}</UiTooltipContent>
-        </UiTooltip>
+        <!-- Delete group: Nitro + Redis (server caches) -->
+        <div class="flex items-center gap-2">
+          <span class="text-xs text-text-dim">{{ footer.deleteLabel }}</span>
+          <UiTooltip>
+            <UiTooltipTrigger as-child>
+              <button
+                type="button"
+                class="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-nitro-border bg-nitro-tint px-3 py-2 text-sm font-medium text-nitro transition-all hover:border-[rgba(74,222,128,0.55)] hover:bg-[rgba(74,222,128,0.16)] sm:px-4"
+                @click="clearNitro"
+              >
+                <img src="/svg/marks/nitro.svg" alt="" class="h-4 w-auto">
+                <span class="hidden sm:inline">{{ footer.nitro }}</span>
+              </button>
+            </UiTooltipTrigger>
+            <UiTooltipContent class="z-[70] max-w-[260px]">{{ footer.nitroTitle }}</UiTooltipContent>
+          </UiTooltip>
+          <UiTooltip>
+            <UiTooltipTrigger as-child>
+              <button
+                type="button"
+                class="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-redis-border bg-redis-tint px-3 py-2 text-sm font-medium text-[#f4b4b4] transition-all hover:border-[rgba(248,113,113,0.55)] hover:bg-[rgba(248,113,113,0.16)] sm:px-4"
+                @click="clearRedis"
+              >
+                <img src="/svg/marks/redis.svg" alt="" class="h-4 w-auto">
+                <span class="hidden sm:inline">{{ footer.redis }}</span>
+              </button>
+            </UiTooltipTrigger>
+            <UiTooltipContent class="z-[70] max-w-[260px]">{{ footer.redisTitle }}</UiTooltipContent>
+          </UiTooltip>
+        </div>
       </div>
     </div>
   </footer>

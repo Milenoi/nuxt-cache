@@ -97,7 +97,7 @@ const serverPill = computed(() => {
 </script>
 
 <template>
-  <section class="group relative h-screen min-h-[600px] overflow-hidden">
+  <section class="group relative h-[100dvh] min-h-[600px] overflow-hidden">
     <!-- Background: newest APOD. A direct video file or a YouTube/Vimeo embed
          plays muted+looping; otherwise a single responsive AVIF image. -->
     <div class="absolute inset-0 overflow-hidden">
@@ -145,7 +145,7 @@ const serverPill = computed(() => {
 
     <!-- Content, flush with header/footer container -->
     <div class="absolute inset-x-0 bottom-0 z-10">
-      <div class="container mx-auto px-5 pb-[92px] md:px-8 md:pb-[118px]">
+      <div class="container mx-auto px-5 pb-[155px] md:px-8 xl:pb-[112px]">
         <div class="mb-6 flex flex-wrap items-center gap-2">
           <!-- client cache layer -->
           <div
@@ -178,7 +178,7 @@ const serverPill = computed(() => {
         </div>
 
         <h1
-          class="m-0 max-w-[15ch] font-serif text-[clamp(48px,7.4vw,102px)] font-normal leading-[0.94] tracking-[-0.01em] text-balance [text-shadow:0_2px_30px_rgba(0,0,0,0.4)]"
+          class="m-0 max-w-[15ch] font-serif text-[clamp(46px,7.4vw,102px)] font-normal leading-[1.04] tracking-[-0.01em] text-balance md:leading-[0.94] [text-shadow:0_2px_30px_rgba(0,0,0,0.4)]"
         >
           {{ latestApod?.title ?? hero.tagline }}
         </h1>

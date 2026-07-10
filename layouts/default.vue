@@ -8,7 +8,7 @@ const isFetching = useIsFetching();
 
 <template>
   <UiTooltipProvider :delay-duration="200">
-    <div class="mx-auto min-h-screen max-w-[1920px] bg-background text-foreground">
+    <div class="mx-auto min-h-[100dvh] max-w-[1920px] bg-background text-foreground">
       <a
         href="#main"
         class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:border focus:border-white/20 focus:bg-surface-panel focus:px-4 focus:py-2 focus:text-sm focus:text-foreground"
