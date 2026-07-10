@@ -74,13 +74,13 @@
       {
         "name": "Nitro",
         "role": "server cache · SWR",
-        "desc": "An in-process stale-while-revalidate cache in front of Redis. Serves instantly — even a slightly stale value — and refreshes in the background. Fresh for 30s, then stale-served up to 24h.",
+        "desc": "An in-process, in-memory stale-while-revalidate cache in front of Redis. A warm hit never leaves the server process, so it beats the Redis network hop; while fresh (30s) it answers directly, and once stale it serves the old value instantly AND refreshes in the background — no request waits for a refresh. It doesn't survive serverless cold starts; then the request simply falls through to Redis.",
         "href": "https://nitro.build/guide/cache"
       },
       {
         "name": "Redis",
         "role": "server cache",
-        "desc": "The persistent backing store, shared by every visitor. Keeps the normalized data for 24 hours; Nitro falls through to it on a miss.",
+        "desc": "The persistent store, shared by every visitor and kept for 24 hours. A plain cache-aside store with no revalidation of its own: when an entry is gone, the next request blocks and refetches — exactly the wait that Nitro's SWR avoids. Nitro falls through to Redis on a miss.",
         "href": "https://redis.io/docs/latest/"
       },
       {

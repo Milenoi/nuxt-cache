@@ -73,7 +73,7 @@ const paragraphs = computed(() => {
       {{ listPage.title }}
     </div>
     <h1
-      class="m-0 mx-auto max-w-[80%] text-balance text-center font-serif text-[clamp(34px,4.6vw,56px)] font-normal leading-tight tracking-tight lg:mx-0 lg:max-w-none lg:text-left"
+      class="m-0 mx-auto max-w-[92%] text-balance text-center font-serif text-[clamp(40px,4.6vw,56px)] font-normal leading-[1.08] tracking-tight lg:mx-0 lg:max-w-none lg:text-left"
     >
       {{ item.title }}
     </h1>

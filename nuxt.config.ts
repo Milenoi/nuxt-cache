@@ -114,18 +114,14 @@ export default defineNuxtConfig({
         password: process.env.NUXT_REDIS_PASSWORD,
         ttl: 86400, // Defaults to 0
       },
-      // Nitro's own cache layer (defineCachedFunction / SWR). Backed by the same
-      // Redis instance but under a separate `nitro:` key namespace, so the SWR
-      // cache is persistent, inspectable, and clearable independently of our
-      // explicit `apod:` cache-aside entries.
+      // Nitro's own cache layer (defineCachedFunction / SWR). Kept IN-MEMORY (in
+      // the server process) on purpose: a warm hit never leaves the process, so
+      // it is genuinely faster than the Redis network round-trip — that's the
+      // point of a front cache. The trade-off: it does not survive serverless
+      // cold starts and is not shared between instances, so on a miss the request
+      // simply falls through to the persistent, shared Redis layer below.
       cache: {
-        driver: "redis",
-        base: "nitro",
-        port: process.env.NUXT_REDIS_PORT,
-        host: process.env.NUXT_REDIS_HOST,
-        username: process.env.NUXT_REDIS_USERNAME,
-        password: process.env.NUXT_REDIS_PASSWORD,
-        ttl: 86400,
+        driver: "memory",
       },
     },
   },
