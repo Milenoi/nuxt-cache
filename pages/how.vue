@@ -1,5 +1,12 @@
 <script setup lang="ts">
+import { ChevronDown, Code2 } from "@lucide/vue";
 import { how } from "~/assets/json/static-text.json";
+import codeSnippets from "~/assets/json/code-snippets.json";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 
 useSeoMeta({
   title: "How it works - Nuxt Cache",
@@ -28,9 +35,13 @@ const stepMeta: StepMeta[] = [
   { img: "/svg/marks/nasa.svg", nodeBorder: "border-white/[0.14]", roleClass: "text-white/65" },
 ];
 
+type Snippet = { key: string; file: string; html: string };
+
 const steps = how.steps.map((step, i) => ({
   ...step,
   meta: stepMeta[i] as StepMeta,
+  // Real code excerpt for this layer (order matches `how.steps`).
+  snippet: codeSnippets[i] as Snippet | undefined,
 }));
 </script>
 
@@ -89,6 +100,34 @@ const steps = how.steps.map((step, i) => ({
             >
               {{ how.docsLabel }}
             </a>
+
+            <!-- Real code for this layer, collapsed by default -->
+            <Collapsible v-if="step.snippet" v-slot="{ open }" class="group mt-4">
+              <CollapsibleTrigger
+                class="inline-flex items-center gap-1.5 rounded-md text-[13px] font-medium text-text-muted transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+              >
+                <Code2 class="size-3.5" aria-hidden="true" />
+                <span>{{ open ? how.codeHide : how.codeShow }}</span>
+                <ChevronDown
+                  class="size-3.5 transition-transform duration-200 group-data-[state=open]:rotate-180"
+                  aria-hidden="true"
+                />
+              </CollapsibleTrigger>
+              <CollapsibleContent>
+                <figure
+                  class="mt-3 overflow-hidden rounded-xl border border-white/[0.08] bg-surface-panel"
+                >
+                  <figcaption
+                    class="flex items-center gap-2 border-b border-white/[0.06] px-4 py-2 font-mono text-[12px] text-text-muted"
+                  >
+                    <span class="size-1.5 rounded-full bg-white/25" />
+                    {{ step.snippet.file }}
+                  </figcaption>
+                  <!-- eslint-disable-next-line vue/no-v-html -- Shiki output generated at build time from our own source -->
+                  <div class="code-panel overflow-x-auto p-4 text-[13px] leading-relaxed" v-html="step.snippet.html" />
+                </figure>
+              </CollapsibleContent>
+            </Collapsible>
           </div>
         </li>
       </ol>
@@ -120,3 +159,13 @@ const steps = how.steps.map((step, i) => ({
     </div>
   </section>
 </template>
+
+<style scoped>
+/* Shiki output is injected via v-html, so reach it with :deep. */
+.code-panel :deep(pre.shiki) {
+  margin: 0;
+  background: transparent !important;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  white-space: pre;
+}
+</style>

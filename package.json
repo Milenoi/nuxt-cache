@@ -6,9 +6,10 @@
     "node": ">=24"
   },
   "scripts": {
-    "build": "nuxt build",
+    "snippets": "node scripts/generate-snippets.mjs",
+    "build": "yarn snippets && nuxt build",
     "dev": "nuxt dev",
-    "generate": "nuxt generate",
+    "generate": "yarn snippets && nuxt generate",
     "preview": "nuxt preview",
     "typecheck": "nuxt typecheck",
     "postinstall": "nuxt prepare",
@@ -32,6 +33,7 @@
     "nuxt": "^4.4.8",
     "shadcn-nuxt": "^2.7.4",
     "sharp": "^0.35.3",
+    "shiki": "^4.3.1",
     "tailwindcss": "^4.3.2",
     "typescript": "^6.0.3",
     "vite": "^7",

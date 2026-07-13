@@ -64,6 +64,8 @@
     "leadHighlight": "empty",
     "leadAfter": ", and fills itself on the way back — so a request stops at the first warm layer.",
     "docsLabel": "Docs ↗",
+  "codeShow": "Show code",
+  "codeHide": "Hide code",
     "steps": [
       {
         "name": "Vue Query",
