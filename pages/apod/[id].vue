@@ -52,6 +52,10 @@ const imgHeight = computed(() => {
   return Math.round((RENDER_WIDTH * height) / width);
 });
 
+// Flips to true if the optimized image errors (e.g. Netlify 502 on a huge, slow
+// NASA source); we then render the raw NASA image instead.
+const rawImage = ref(false);
+
 // NASA delivers the explanation as one blob — split it into readable paragraphs
 // of ~2 sentences each.
 const paragraphs = computed(() => {
@@ -106,7 +110,19 @@ const paragraphs = computed(() => {
       <!-- Image: full natural-ratio width on mobile; fixed 3:2 (contain) only in
            the 2-column layout, where a reserved box keeps the grid aligned. -->
       <div v-if="item.mediaType === 'image'" class="w-full lg:aspect-[3/2]">
+        <!-- Some APOD originals are huge (6000px+) and NASA can be slow, so the
+             Netlify image optimizer times out (502). Fall back to the raw NASA
+             image on error — the browser has no such fetch cap. -->
+        <img
+          v-if="rawImage"
+          :src="item.hdurl || item.url"
+          :alt="item.title"
+          :width="RENDER_WIDTH"
+          :height="imgHeight"
+          class="block h-auto w-full lg:h-full lg:object-contain"
+        >
         <NuxtImg
+          v-else
           :src="item.hdurl || item.url"
           :alt="item.title"
           :width="RENDER_WIDTH"
@@ -117,6 +133,7 @@ const paragraphs = computed(() => {
           quality="80"
           :placeholder="[80, 53, 40, 6]"
           class="block h-auto w-full lg:h-full lg:object-contain"
+          @error="rawImage = true"
         />
       </div>
 

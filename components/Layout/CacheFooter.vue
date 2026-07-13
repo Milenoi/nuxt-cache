@@ -181,6 +181,7 @@ const clearRedis = async () => {
             <UiTooltipTrigger as-child>
               <button
                 type="button"
+                :aria-label="`${footer.invalidateLabel} ${footer.vueQuery}`"
                 class="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-tanstack-border bg-tanstack-tint px-3 py-2 text-sm font-medium text-text-strong transition-all hover:border-[rgba(56,189,248,0.5)] hover:bg-[rgba(56,189,248,0.14)] sm:px-4"
                 @click="invalidateVueQuery"
               >
@@ -199,6 +200,7 @@ const clearRedis = async () => {
             <UiTooltipTrigger as-child>
               <button
                 type="button"
+                :aria-label="`${footer.deleteLabel} ${footer.nitro}`"
                 class="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-nitro-border bg-nitro-tint px-3 py-2 text-sm font-medium text-nitro transition-all hover:border-[rgba(74,222,128,0.55)] hover:bg-[rgba(74,222,128,0.16)] sm:px-4"
                 @click="clearNitro"
               >
@@ -212,6 +214,7 @@ const clearRedis = async () => {
             <UiTooltipTrigger as-child>
               <button
                 type="button"
+                :aria-label="`${footer.deleteLabel} ${footer.redis}`"
                 class="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-redis-border bg-redis-tint px-3 py-2 text-sm font-medium text-[#f4b4b4] transition-all hover:border-[rgba(248,113,113,0.55)] hover:bg-[rgba(248,113,113,0.16)] sm:px-4"
                 @click="clearRedis"
               >
