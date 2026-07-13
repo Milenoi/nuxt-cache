@@ -39,7 +39,22 @@ const normalizeEntry = (raw: ApodApiEntry): ApodEntry => ({
   // NASA sometimes embeds line breaks in the copyright field.
   copyright: raw.copyright?.replace(/\s+/g, " ").trim() || null,
   formattedDate: getFormatDate(raw.date),
+  // Filled lazily on the detail path (see withDimensions); the API gives no size.
+  width: null,
+  height: null,
 });
+
+/**
+ * Enrich an image entry with its intrinsic dimensions if they aren't known yet.
+ * Only images need this (the detail page reserves their aspect ratio). Returns
+ * the same entry untouched for videos/other, or when probing yields nothing.
+ */
+const withDimensions = async (entry: ApodEntry): Promise<ApodEntry> => {
+  if (entry.mediaType !== "image" || entry.width) return entry;
+  // Probe the display-size url (smaller than hdurl); same aspect ratio.
+  const size = await getImageSize(entry.url);
+  return size ? { ...entry, width: size.width, height: size.height } : entry;
+};
 
 /**
  * Fetch from NASA, translating any upstream failure into a clean HTTP error.
@@ -110,11 +125,17 @@ const loadDetail = async (date: string): Promise<ApodEntry> => {
     const cached = await storage.getItem<ApodEntry>(cacheKey);
     if (cached) {
       servedBy = "redis";
-      return cached;
+      // Entries pre-cached by the list have no dimensions yet — probe once and
+      // backfill so every later detail hit is already complete.
+      const enriched = await withDimensions(cached);
+      if (enriched !== cached) {
+        await storage.setItem(cacheKey, enriched, { ttl: CACHE_TTL });
+      }
+      return enriched;
     }
 
     servedBy = "nasa";
-    const entry = await fetchDetail(d);
+    const entry = await withDimensions(await fetchDetail(d));
     await storage.setItem(cacheKey, entry, { ttl: CACHE_TTL });
     return entry;
   };

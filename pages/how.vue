@@ -72,7 +72,13 @@ const steps = how.steps.map((step, i) => ({
               class="grid size-[50px] flex-none place-items-center rounded-full border bg-surface-panel"
               :class="step.meta.nodeBorder"
             >
-              <img :src="step.meta.img" alt="" class="h-4 w-auto">
+              <img
+                :src="step.meta.img"
+                :width="getMarkSize(step.meta.img).width"
+                :height="getMarkSize(step.meta.img).height"
+                alt=""
+                class="h-4 w-auto"
+              >
             </div>
             <div
               v-if="i < steps.length - 1"

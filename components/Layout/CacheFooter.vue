@@ -184,7 +184,7 @@ const clearRedis = async () => {
                 class="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-tanstack-border bg-tanstack-tint px-3 py-2 text-sm font-medium text-text-strong transition-all hover:border-[rgba(56,189,248,0.5)] hover:bg-[rgba(56,189,248,0.14)] sm:px-4"
                 @click="invalidateVueQuery"
               >
-                <img src="/svg/marks/query.svg" alt="" class="h-4 w-auto">
+                <img src="/svg/marks/query.svg" alt="" width="24" height="24" class="h-4 w-auto">
                 <span class="hidden sm:inline">{{ footer.vueQuery }}</span>
               </button>
             </UiTooltipTrigger>
@@ -202,7 +202,7 @@ const clearRedis = async () => {
                 class="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-nitro-border bg-nitro-tint px-3 py-2 text-sm font-medium text-nitro transition-all hover:border-[rgba(74,222,128,0.55)] hover:bg-[rgba(74,222,128,0.16)] sm:px-4"
                 @click="clearNitro"
               >
-                <img src="/svg/marks/nitro.svg" alt="" class="h-4 w-auto">
+                <img src="/svg/marks/nitro.svg" alt="" width="24" height="24" class="h-4 w-auto">
                 <span class="hidden sm:inline">{{ footer.nitro }}</span>
               </button>
             </UiTooltipTrigger>
@@ -215,7 +215,7 @@ const clearRedis = async () => {
                 class="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-redis-border bg-redis-tint px-3 py-2 text-sm font-medium text-[#f4b4b4] transition-all hover:border-[rgba(248,113,113,0.55)] hover:bg-[rgba(248,113,113,0.16)] sm:px-4"
                 @click="clearRedis"
               >
-                <img src="/svg/marks/redis.svg" alt="" class="h-4 w-auto">
+                <img src="/svg/marks/redis.svg" alt="" width="24" height="24" class="h-4 w-auto">
                 <span class="hidden sm:inline">{{ footer.redis }}</span>
               </button>
             </UiTooltipTrigger>

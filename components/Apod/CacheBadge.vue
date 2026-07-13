@@ -23,9 +23,15 @@ const serverMark = computed(() => {
         v-bind="$attrs"
         class="inline-flex items-center gap-3 rounded-full border border-white/[0.12] bg-[rgba(6,6,8,0.6)] px-3.5 py-2 backdrop-blur-sm"
       >
-        <img src="/svg/marks/query.svg" alt="" class="h-5 w-auto">
+        <img src="/svg/marks/query.svg" alt="" width="24" height="24" class="h-5 w-auto">
         <span class="h-5 w-px bg-white/[0.18]" />
-        <img :src="serverMark" alt="" class="h-5 w-auto">
+        <img
+          :src="serverMark"
+          :width="getMarkSize(serverMark).width"
+          :height="getMarkSize(serverMark).height"
+          alt=""
+          class="h-5 w-auto"
+        >
       </span>
     </UiTooltipTrigger>
     <UiTooltipContent>{{ apod.all.bothCaches }}</UiTooltipContent>

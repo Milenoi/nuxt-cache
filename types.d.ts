@@ -32,6 +32,11 @@ export interface ApodEntry {
     thumbnailUrl: string | null;
     copyright: string | null;
     formattedDate: string;
+    /** Intrinsic image dimensions, probed server-side so the UI can reserve the
+     *  exact aspect ratio and avoid layout shift. Null for videos/other or when
+     *  probing failed. */
+    width: number | null;
+    height: number | null;
     /** Where this response came from — set fresh by the server on every request. */
     _source?: ApodSource;
 }

@@ -42,6 +42,16 @@ const embed = computed(() =>
   item.value?.mediaType === "video" ? getApodEmbed(item.value.url) : null,
 );
 
+// Reserve the image's real aspect ratio to avoid layout shift. We request a
+// 1200px-wide render and derive a proportional height from the probed
+// dimensions; undefined (video/other/unknown) falls back to natural height.
+const RENDER_WIDTH = 1200;
+const imgHeight = computed(() => {
+  const { width, height } = item.value ?? {};
+  if (!width || !height) return undefined;
+  return Math.round((RENDER_WIDTH * height) / width);
+});
+
 // NASA delivers the explanation as one blob — split it into readable paragraphs
 // of ~2 sentences each.
 const paragraphs = computed(() => {
@@ -99,7 +109,8 @@ const paragraphs = computed(() => {
         <NuxtImg
           :src="item.hdurl || item.url"
           :alt="item.title"
-          width="1200"
+          :width="RENDER_WIDTH"
+          :height="imgHeight"
           sizes="100vw lg:1120px"
           densities="x1"
           format="avif"

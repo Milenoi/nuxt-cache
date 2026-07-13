@@ -54,6 +54,8 @@ const prediction = computed(() => {
         </span>
         <img
           :src="prediction.mark"
+          :width="getMarkSize(prediction.mark).width"
+          :height="getMarkSize(prediction.mark).height"
           :alt="prediction.label"
           class="h-[15px] w-auto"
         >

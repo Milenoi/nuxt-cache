@@ -153,7 +153,13 @@ const serverPill = computed(() => {
             class="inline-flex items-center gap-2 rounded-full border px-[14px] py-[6px] text-[12.5px] font-medium backdrop-blur-[10px] [text-shadow:none]"
             :class="clientPill.cls"
           >
-            <img :src="clientPill.mark" alt="" class="h-[13px] w-auto">
+            <img
+              :src="clientPill.mark"
+              :width="getMarkSize(clientPill.mark).width"
+              :height="getMarkSize(clientPill.mark).height"
+              alt=""
+              class="h-[13px] w-auto"
+            >
             {{ clientPill.label }}
             <span class="hidden font-normal opacity-70 sm:inline">· {{ clientPill.layer }}</span>
           </div>
@@ -162,7 +168,13 @@ const serverPill = computed(() => {
             class="inline-flex items-center gap-2 rounded-full border px-[14px] py-[6px] text-[12.5px] font-medium backdrop-blur-[10px] [text-shadow:none]"
             :class="serverPill.cls"
           >
-            <img :src="serverPill.mark" alt="" class="h-[13px] w-auto">
+            <img
+              :src="serverPill.mark"
+              :width="getMarkSize(serverPill.mark).width"
+              :height="getMarkSize(serverPill.mark).height"
+              alt=""
+              class="h-[13px] w-auto"
+            >
             {{ serverPill.label }}
             <span class="hidden font-normal opacity-70 sm:inline">· {{ serverPill.layer }}</span>
           </div>
