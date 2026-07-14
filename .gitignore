@@ -20,6 +20,7 @@ logs
 
 # Local AI assistant notes (not shared)
 CLAUDE.md
+AGENTS.md
 
 # Local env files
 .env
