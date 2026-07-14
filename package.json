@@ -9,6 +9,8 @@
     "snippets": "node scripts/generate-snippets.mjs",
     "build": "yarn snippets && nuxt build",
     "dev": "nuxt dev",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "generate": "yarn snippets && nuxt generate",
     "preview": "nuxt preview",
     "typecheck": "nuxt typecheck",
@@ -38,6 +40,7 @@
     "tailwindcss": "^4.3.2",
     "typescript": "^6.0.3",
     "vite": "^7",
+    "vitest": "^4.1.10",
     "vue": "^3.5.39",
     "vue-router": "^5.1.0",
     "vue-tsc": "^3.3.7"
