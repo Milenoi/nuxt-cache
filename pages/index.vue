@@ -38,6 +38,21 @@ const heroImage = computed(() => {
   return entry.thumbnailUrl ?? "/images/apod.jpg";
 });
 
+// A raw <video poster> URL bypasses <NuxtImg>, so the static JPEG fallback would
+// ship at full size in a legacy format. Route it through the image pipeline
+// (IPX in dev, Netlify CDN in prod) so the poster is served as WebP, sized to
+// the hero instead of shipping the ~200 KiB source.
+const img = useImage();
+const heroPoster = computed(() =>
+  img(heroImage.value, {
+    width: 1280,
+    height: 720,
+    fit: "cover",
+    format: "webp",
+    quality: 70,
+  }),
+);
+
 const ytId = (u: string) =>
   u.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|watch\?v=|v\/))([\w-]{11})/)?.[1];
 const vimeoId = (u: string) => u.match(/vimeo\.com\/(?:video\/)?(\d+)/)?.[1];
@@ -108,7 +123,7 @@ const serverPill = computed(() => {
         muted
         loop
         playsinline
-        :poster="heroImage"
+        :poster="heroPoster"
         class="h-full w-full object-cover"
       />
       <iframe
