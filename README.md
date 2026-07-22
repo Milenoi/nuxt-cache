@@ -83,7 +83,7 @@ Images are optimized responsively with `@nuxt/image`:
 - **Production (Netlify):** the **Netlify Image CDN** (`provider: "netlify"`),
   which generates AVIF/WebP variants on the fly at the edge.
 
-The dev/prod switch lives in `utils/getImageConfig.ts`. Remote image domains
+The dev/prod switch lives in `app/utils/getImageConfig.ts`. Remote image domains
 (`apod.nasa.gov`, YouTube thumbnails) are allowlisted in **both** the Nuxt image
 config **and** `netlify.toml` (`remote_images`).
 
@@ -93,6 +93,32 @@ Static pages (`/`, `/about`, `/how`) send `Cache-Control: public, s-maxage=3600,
 stale-while-revalidate=86400` via `routeRules`, so Netlify's CDN serves them
 instantly and revalidates in the background. `/apod` stays SSR so its Redis/NASA
 indicator is always live.
+
+---
+
+## Project structure
+
+This project uses the **Nuxt 4 `app/` directory structure**:
+
+```text
+app/                  # application code (Nuxt 4 srcDir → ~/ and @/ resolve here)
+  components/          # UI: Apod/*, Layout/*, ui/* (shadcn-vue)
+  composables/         # useFetchApod, useClearRedisCache, ...
+  layouts/             # default shell (header, loader, footer)
+  pages/               # /, /apod, /apod/[id], /how, /about
+  plugins/             # vue-query (SSR dehydrate/hydrate)
+  utils/               # getApodEmbed, getImageConfig, getMarkSize
+  lib/                 # shadcn-vue helpers (cn)
+  assets/              # tailwind.css, static-text.json
+  app.vue · error.vue
+server/                # Nitro API + utils — stays at the root (#server/...)
+  api/apod.get.ts      # the cache chain
+shared/types/          # types shared by app + server (#shared/types)
+public/                # static files, brand SVGs
+```
+
+Code shared between the Vue app and the Nitro server lives in `shared/`; the
+server stays at the project root (not under `app/`).
 
 ---
 
@@ -106,8 +132,8 @@ indicator is always live.
 ### Installation
 
 ```bash
-git clone git@github.com:Milenoi/nuxt-cache.git
-cd nuxt-cache
+git clone git@github.com:Milenoi/nuxt-nasa-cache.git
+cd nuxt-nasa-cache
 nvm use          # switch to Node 24
 yarn install
 ```
