@@ -158,8 +158,10 @@ const serverPill = computed(() => {
       class="absolute inset-0 bg-[linear-gradient(180deg,rgba(5,5,6,0.5)_0%,rgba(5,5,6,0)_28%,rgba(5,5,6,0)_46%,rgba(5,5,6,0.72)_84%,#050506_100%)]"
     />
 
-    <!-- Content, flush with header/footer container -->
-    <div class="absolute inset-x-0 bottom-0 z-10">
+    <!-- Content, flush with header/footer container. Only the overlay fades in
+         (opacity-only) so the hero image stays visible from the first frame and
+         the LCP is not delayed. The background is deliberately not animated. -->
+    <div class="absolute inset-x-0 bottom-0 z-10 [animation:fadeIn_0.5s_ease]">
       <div class="container mx-auto px-5 pb-[155px] md:px-8 xl:pb-[112px]">
         <div class="mb-6 flex flex-wrap items-center gap-2">
           <!-- client cache layer -->
