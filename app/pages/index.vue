@@ -140,17 +140,21 @@ const serverPill = computed(() => {
         aria-hidden="true"
         tabindex="-1"
       />
+      <!-- Explicit per-breakpoint px sizes, not "100vw": a bare vw value does not
+           resolve against the screens config here and collapses the srcset to a
+           useless 1w/2w ladder, so every device downloads the full image. Listed
+           widths give a real responsive ladder (a phone pulls ~960w, desktop
+           1920w). No width/height/fit: the hero fills a fixed-height, absolutely
+           positioned stage, so CSS object-cover handles crop and there is no CLS
+           to reserve against. quality 50 — it sits behind a gradient and text and
+           slow-zooms, so the extra bytes of q80 buy no visible fidelity. -->
       <NuxtImg
         v-else
         :src="heroImage"
         :alt="latestApod?.title ?? hero.tagline"
-        width="1920"
-        height="1080"
-        sizes="100vw xl:1920px"
-        densities="x1"
-        fit="cover"
+        sizes="xs:600px sm:960px md:1280px lg:1600px xl:1920px"
         format="avif"
-        quality="80"
+        quality="50"
         preload
         fetchpriority="high"
         loading="eager"
