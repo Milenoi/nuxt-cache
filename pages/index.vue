@@ -114,8 +114,13 @@ const serverPill = computed(() => {
 <template>
   <section class="group relative h-[100dvh] min-h-[600px] overflow-hidden">
     <!-- Background: newest APOD. A direct video file or a YouTube/Vimeo embed
-         plays muted+looping; otherwise a single responsive AVIF image. -->
-    <div class="absolute inset-0 overflow-hidden">
+         plays muted+looping; otherwise a single responsive AVIF image. The
+         wrapper does a one-off fade + zoom-in on mount; the inner image keeps
+         its endless ambient slowzoom. The two live on separate elements on
+         purpose: both animate transform: scale, and two scale animations on the
+         same element would overwrite each other. Splitting them lets the entry
+         zoom and the ambient drift compose instead of clash. -->
+    <div class="absolute inset-0 overflow-hidden [animation:heroZoomIn_0.9s_ease-out]">
       <video
         v-if="heroVideo"
         :src="heroVideo"
@@ -158,10 +163,8 @@ const serverPill = computed(() => {
       class="absolute inset-0 bg-[linear-gradient(180deg,rgba(5,5,6,0.5)_0%,rgba(5,5,6,0)_28%,rgba(5,5,6,0)_46%,rgba(5,5,6,0.72)_84%,#050506_100%)]"
     />
 
-    <!-- Content, flush with header/footer container. Only the overlay fades in
-         (opacity-only) so the hero image stays visible from the first frame and
-         the LCP is not delayed. The background is deliberately not animated. -->
-    <div class="absolute inset-x-0 bottom-0 z-10 [animation:fadeIn_0.5s_ease]">
+    <!-- Content, flush with header/footer container. -->
+    <div class="absolute inset-x-0 bottom-0 z-10">
       <div class="container mx-auto px-5 pb-[155px] md:px-8 xl:pb-[112px]">
         <div class="mb-6 flex flex-wrap items-center gap-2">
           <!-- client cache layer -->
