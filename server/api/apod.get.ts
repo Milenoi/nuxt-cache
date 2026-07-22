@@ -1,12 +1,12 @@
 import type { ZodType } from "zod";
-import { getFormatDate } from "~/server/utils/helpers";
-import getApodApi from "~/server/utils/getApodApi";
+import { getFormatDate } from "#server/utils/helpers";
+import getApodApi from "#server/utils/getApodApi";
 import {
   ApodApiEntrySchema,
   ApodApiListSchema,
   type ApodApiEntry,
-} from "~/server/utils/apodSchema";
-import type { ApodEntry, ApodList, ApodMediaType, ApodSource } from "~/types";
+} from "#server/utils/apodSchema";
+import type { ApodEntry, ApodList, ApodMediaType, ApodSource } from "#shared/types";
 
 const RANGE_DAYS = 60;
 const CACHE_TTL = 86400; // 24h

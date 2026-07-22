@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Play, Telescope } from "@lucide/vue";
 import { apod, menu } from "~/assets/json/static-text.json";
-import type { ApodEntry, ApodSource } from "~/types";
+import type { ApodEntry, ApodSource } from "#shared/types";
 
 const props = defineProps<{ entry: ApodEntry; serverSource: ApodSource }>();
 

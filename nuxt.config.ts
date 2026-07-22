@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 
 import tailwindcss from "@tailwindcss/vite";
-import imageConfig from "./utils/getImageConfig";
+import imageConfig from "./app/utils/getImageConfig";
 
 export default defineNuxtConfig({
   ssr: true,

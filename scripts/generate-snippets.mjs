@@ -1,7 +1,7 @@
 // Build-time syntax highlighting for the "How it works" code samples.
 //
 // Curated, faithful excerpts of the real cache-chain code (one per layer) are
-// highlighted with Shiki here and written to assets/json/code-snippets.json as
+// highlighted with Shiki here and written to app/assets/json/code-snippets.json as
 // ready-made HTML. The page renders that HTML directly, so Shiki never ships to
 // the client and there is no SSR cost. Re-run with `yarn snippets` whenever the
 // source excerpts below change (this also runs automatically before a build).
@@ -12,7 +12,7 @@ import { fileURLToPath } from "node:url";
 import { codeToHtml } from "shiki";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const OUT_FILE = resolve(__dirname, "../assets/json/code-snippets.json");
+const OUT_FILE = resolve(__dirname, "../app/assets/json/code-snippets.json");
 const THEME = "vitesse-dark";
 
 // Order matches `how.steps` in static-text.json: Vue Query -> Nitro -> Redis -> NASA.

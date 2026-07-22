@@ -1,4 +1,4 @@
-import type { ApodQueryParams } from "~/types";
+import type { ApodQueryParams } from "#shared/types";
 
 const APOD_BASE = "https://api.nasa.gov/planetary/apod";
 

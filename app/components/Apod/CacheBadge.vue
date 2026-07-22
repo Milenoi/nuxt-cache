@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { apod } from "~/assets/json/static-text.json";
-import type { ApodSource } from "~/types";
+import type { ApodSource } from "#shared/types";
 
 // Every gallery item flows through both caches, so we show the client (Vue Query)
 // mark next to the live server source (Redis, or NASA once the cache is cleared).

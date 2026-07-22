@@ -1,7 +1,7 @@
 import type { QueryObserverResult } from "@tanstack/vue-query";
 import { useQuery } from "@tanstack/vue-query";
 import { experimental_createQueryPersister } from "@tanstack/query-persist-client-core";
-import type { ApodList, ApodSource } from "~/types";
+import type { ApodList, ApodSource } from "#shared/types";
 
 /**
  * Fetch NASA APOD data through the internal cached endpoint.

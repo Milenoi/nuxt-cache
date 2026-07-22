@@ -1,4 +1,4 @@
-import type { ApodEmbed } from "~/types";
+import type { ApodEmbed } from "#shared/types";
 
 /**
  * Classify an APOD video URL so the detail view can pick the right player.

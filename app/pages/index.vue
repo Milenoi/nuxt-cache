@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ArrowRight } from "@lucide/vue";
 import { hero } from "~/assets/json/static-text.json";
-import type { ApodList } from "~/types";
+import type { ApodList } from "#shared/types";
 
 useSeoMeta({
   title: "Nuxt Cache",

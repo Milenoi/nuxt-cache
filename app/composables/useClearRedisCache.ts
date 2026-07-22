@@ -1,4 +1,4 @@
-import type { ClearRedisCacheResponse } from "~/types";
+import type { ClearRedisCacheResponse } from "#shared/types";
 
 /**
  * Clear the server-side Redis cache via the POST endpoint.

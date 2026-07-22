@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ArrowLeft } from "@lucide/vue";
 import { apod, common } from "~/assets/json/static-text.json";
-import type { ApodEntry } from "~/types";
+import type { ApodEntry } from "#shared/types";
 
 const { all, listPage } = apod;
 

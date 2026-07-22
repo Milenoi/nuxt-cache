@@ -1,4 +1,4 @@
-import type { ApodSource } from "~/types";
+import type { ApodSource } from "#shared/types";
 
 interface ServerCacheStatus {
   redis: boolean;

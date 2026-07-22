@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useRouteQuery } from "@vueuse/router";
 import { apod } from "~/assets/json/static-text.json";
-import type { ApodList, ApodMediaType } from "~/types";
+import type { ApodList, ApodMediaType } from "#shared/types";
 
 const { listPage, all } = apod;
 

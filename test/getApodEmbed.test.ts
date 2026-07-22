@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getApodEmbed } from "../utils/getApodEmbed";
+import { getApodEmbed } from "../app/utils/getApodEmbed";
 
 describe("getApodEmbed", () => {
   describe("youtube", () => {

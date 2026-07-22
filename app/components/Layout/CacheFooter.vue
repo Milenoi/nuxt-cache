@@ -2,7 +2,7 @@
 import { useQueryClient } from "@tanstack/vue-query";
 import { toast } from "vue-sonner";
 import { footer } from "~/assets/json/static-text.json";
-import type { ApodSource } from "~/types";
+import type { ApodSource } from "#shared/types";
 
 // Fixed cache-control bar. It makes the cache CHAIN tangible:
 //   Vue Query (browser) -> Nitro (SWR) -> Redis (persistent) -> NASA (origin)
