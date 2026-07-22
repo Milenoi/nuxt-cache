@@ -146,7 +146,7 @@ const serverPill = computed(() => {
            widths give a real responsive ladder (a phone pulls ~960w, desktop
            1920w). No width/height/fit: the hero fills a fixed-height, absolutely
            positioned stage, so CSS object-cover handles crop and there is no CLS
-           to reserve against. quality 50 — it sits behind a gradient and text and
+           to reserve against. quality 60 — it sits behind a gradient and text and
            slow-zooms, so the extra bytes of q80 buy no visible fidelity. -->
       <NuxtImg
         v-else
@@ -154,7 +154,7 @@ const serverPill = computed(() => {
         :alt="latestApod?.title ?? hero.tagline"
         sizes="xs:600px sm:960px md:1280px lg:1600px xl:1920px"
         format="avif"
-        quality="50"
+        quality="60"
         preload
         fetchpriority="high"
         loading="eager"
