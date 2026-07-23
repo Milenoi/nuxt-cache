@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { about } from "~/assets/json/static-text.json";
+import type { ContentSource } from "#shared/types";
 
 useSeoMeta({
   title: "About - Nuxt Cache",
@@ -13,14 +13,28 @@ useSeoMeta({
     "Why and how Nuxt Cache layers Redis and TanStack Vue Query over a slow, rate-limited NASA API.",
 });
 
+// The copy on this page rides the same cache chain as the APOD data: it comes
+// through the internal /api/content endpoint (Vue Query -> Nitro -> Redis -> JSON)
+// instead of being imported at build time.
+const { data: content, serverSource } = await useContent();
+const about = computed(() => content.value?.about);
+
 const githubUrl = "https://github.com/Milenoi/nuxt-cache";
+
+// Human-readable label for the layer that served this content (the same
+// cache-source idea as the APOD badges, kept lightweight here).
+const sourceLabel: Record<ContentSource, string> = {
+  origin: "the bundled JSON",
+  redis: "Redis",
+  nitro: "Nitro (SWR)",
+};
 </script>
 
 <template>
   <section
     class="mx-auto min-h-screen max-w-3xl px-5 pb-40 pt-32 md:px-8 [animation:fadeUp_0.4s_ease]"
   >
-    <div class="text-center">
+    <div v-if="about" class="text-center">
       <div class="mb-3 text-[15px] font-medium tracking-[0.01em] text-text-muted">
         {{ about.tagline }}
       </div>
@@ -75,6 +89,24 @@ const githubUrl = "https://github.com/Milenoi/nuxt-cache";
         >
           {{ about.creditLinkLabel }}
         </a>
+      </p>
+
+      <p class="mx-auto mt-3 max-w-[56ch] text-center text-sm leading-relaxed text-text-muted">
+        {{ about.siblingText }}
+        <a
+          :href="about.siblingUrl"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="RAG demo (opens in a new tab)"
+          class="text-text-strong underline decoration-white/20 underline-offset-4 transition-colors hover:text-foreground hover:decoration-white/50"
+        >
+          {{ about.siblingLinkLabel }}
+        </a>
+        {{ about.siblingSuffix }}
+      </p>
+
+      <p class="mx-auto mt-8 text-center text-xs text-text-faint">
+        This page's copy was served from {{ sourceLabel[serverSource] }}.
       </p>
     </div>
   </section>

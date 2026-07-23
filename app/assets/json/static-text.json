@@ -128,7 +128,11 @@
     "creditText": "Built by Melanie Stief — who has always dreamed of flying to space, or at least working at NASA (which, sadly, will probably never happen in this lifetime).",
     "creditSep": "·",
     "creditLinkLabel": "viridis.de",
-    "creditUrl": "https://viridis.de"
+    "creditUrl": "https://viridis.de",
+    "siblingText": "A sibling to the",
+    "siblingLinkLabel": "RAG demo ↗",
+    "siblingUrl": "https://nuxt-rag.netlify.app/",
+    "siblingSuffix": "— the same editorial style, applied to retrieval-augmented generation."
   },
   "apod": {
     "all": {

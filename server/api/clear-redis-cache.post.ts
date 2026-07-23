@@ -1,11 +1,14 @@
 // POST-only (via the .post suffix) so it can't be triggered by a GET prefetch,
-// crawler or link. It also clears ONLY this app's `apod:` namespace, never the
-// whole Redis instance (which may be shared).
+// crawler or link. It also clears ONLY this app's own namespaces (`apod:` and
+// `content:`), never the whole Redis instance (which may be shared).
 export default defineEventHandler(async () => {
   const storage = useStorage("redis");
 
   try {
-    const keys = await storage.getKeys("apod");
+    const keys = [
+      ...(await storage.getKeys("apod")),
+      ...(await storage.getKeys("content")),
+    ];
     await Promise.all(keys.map((key) => storage.removeItem(key)));
 
     const count = keys.length;
