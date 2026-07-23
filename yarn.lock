@@ -8622,9 +8622,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nuxt-app@workspace:.":
+"nuxt-nasa-cache@workspace:.":
   version: 0.0.0-use.local
-  resolution: "nuxt-app@workspace:."
+  resolution: "nuxt-nasa-cache@workspace:."
   dependencies:
     "@lucide/vue": "npm:^1.23.0"
     "@nuxt/eslint": "npm:^1.16.0"
